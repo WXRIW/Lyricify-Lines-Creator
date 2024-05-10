@@ -189,6 +189,13 @@
     <ClInclude Include="HiEasyX\HiSysGUI\SysRadioButton.h" />
     <ClInclude Include="HiEasyX\HiSysGUI\SysStatic.h" />
     <ClInclude Include="HiEasyX\HiWindow.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Lyricify Lines Creator.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="D:\Sources\repos\Lyricify\LyricifyLauncher\Lyricify Icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

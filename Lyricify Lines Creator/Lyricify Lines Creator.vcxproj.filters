@@ -203,5 +203,18 @@
     <ClInclude Include="HiEasyX\HiSysGUI\SysStatic.h">
       <Filter>Header Files\HiEasyX</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Lyricify Lines Creator.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="D:\Sources\repos\Lyricify\LyricifyLauncher\Lyricify Icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
