@@ -133,7 +133,7 @@ void AddWindowControls(HWND hwnd)
 /// <summary>
 /// 窗口大小改变时调用的方法，用于控件位置和尺寸自适应
 /// </summary>
-void ResizeMoveControls()
+static void ResizeMoveControls()
 {
 	int left, top;
 	int w = CanvasMain.GetWidth();
