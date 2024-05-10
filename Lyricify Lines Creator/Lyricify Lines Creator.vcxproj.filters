@@ -13,189 +13,195 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\HiEasyX">
+      <UniqueIdentifier>{c36d647c-7b7c-4161-bd88-e1304ce5e7fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\HiEasyX">
+      <UniqueIdentifier>{efe7b861-006b-447c-bccf-21a538fc30c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HiEasyX\HiCanvas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiContainer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiDrawingProperty.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiFPS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiFunc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiGdiplus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiGif.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiGUI\Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiGUI\ControlBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiGUI\Page.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiGUI\ProgressCtrl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiGUI\ScrollBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiGUI\Static.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiIcon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiMouseDrag.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiMusicMCI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiStart.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiSysGUI\SysButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiSysGUI\SysCheckBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiSysGUI\SysComboBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiSysGUI\SysControlBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiSysGUI\SysEdit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiSysGUI\SysGroup.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiSysGUI\SysGroupBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiSysGUI\SysRadioButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiSysGUI\SysStatic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HiEasyX\HiWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HiEasyX\HiGUI\Button.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiGUI\ControlBase.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiCanvas.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiContainer.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiDrawingProperty.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiFPS.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiFunc.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiGdiplus.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiGif.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiIcon.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiMouseDrag.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiMusicMCI.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiStart.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiWindow.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiGUI\Page.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiGUI\ProgressCtrl.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiGUI\ScrollBar.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiGUI\Static.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiSysGUI\SysButton.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiSysGUI\SysCheckBox.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiSysGUI\SysComboBox.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiSysGUI\SysControlBase.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiSysGUI\SysEdit.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiSysGUI\SysGroup.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiSysGUI\SysGroupBox.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiSysGUI\SysRadioButton.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="HiEasyX\HiSysGUI\SysStatic.cpp">
+      <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HiEasyX\HiCanvas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiContainer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiDef.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiDrawingProperty.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiFPS.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiFunc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiGdiplus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiGif.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HiEasyX\HiGUI\Button.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\HiEasyX</Filter>
     </ClInclude>
     <ClInclude Include="HiEasyX\HiGUI\ControlBase.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\HiEasyX</Filter>
     </ClInclude>
-    <ClInclude Include="HiEasyX\HiGUI\HiGUI.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="HiEasyX\HiCanvas.h">
+      <Filter>Header Files\HiEasyX</Filter>
     </ClInclude>
-    <ClInclude Include="HiEasyX\HiGUI\Page.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="HiEasyX\HiContainer.h">
+      <Filter>Header Files\HiEasyX</Filter>
     </ClInclude>
-    <ClInclude Include="HiEasyX\HiGUI\ProgressCtrl.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="HiEasyX\HiDef.h">
+      <Filter>Header Files\HiEasyX</Filter>
     </ClInclude>
-    <ClInclude Include="HiEasyX\HiGUI\ScrollBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiGUI\Static.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiIcon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiMacro.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiMouseDrag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiMusicMCI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiStart.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiSysGUI\HiSysGUI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiSysGUI\SysButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiSysGUI\SysCheckBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiSysGUI\SysComboBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiSysGUI\SysControlBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiSysGUI\SysEdit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiSysGUI\SysGroup.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiSysGUI\SysGroupBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiSysGUI\SysRadioButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiSysGUI\SysStatic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HiEasyX\HiWindow.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="HiEasyX\HiDrawingProperty.h">
+      <Filter>Header Files\HiEasyX</Filter>
     </ClInclude>
     <ClInclude Include="HiEasyX.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiFPS.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiFunc.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiGdiplus.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiGif.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiGUI\HiGUI.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiIcon.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiMacro.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiMouseDrag.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiMusicMCI.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiStart.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiSysGUI\HiSysGUI.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiWindow.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiGUI\Page.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiGUI\ProgressCtrl.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiGUI\ScrollBar.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiGUI\Static.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiSysGUI\SysButton.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiSysGUI\SysCheckBox.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiSysGUI\SysComboBox.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiSysGUI\SysControlBase.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiSysGUI\SysEdit.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiSysGUI\SysGroup.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiSysGUI\SysGroupBox.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiSysGUI\SysRadioButton.h">
+      <Filter>Header Files\HiEasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="HiEasyX\HiSysGUI\SysStatic.h">
+      <Filter>Header Files\HiEasyX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
