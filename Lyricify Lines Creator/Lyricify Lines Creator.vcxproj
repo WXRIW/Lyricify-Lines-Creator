@@ -159,6 +159,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="WindowAbout.cpp" />
+    <ClCompile Include="WindowMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonDefine.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="WindowAbout.h" />
+    <ClInclude Include="WindowMain.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Lyricify Lines Creator.rc" />
