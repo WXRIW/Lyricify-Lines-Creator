@@ -1,53 +1,21 @@
-#include "DpiHelper.h"
-
 #include <fstream>
 #include <vector>
 #include <string>
 
-#include "HiEasyX.h"
+#include "DpiHelper.h" // 须优先引用，其中定义了系统要求常量
+#include "CommonDefine.h"
 #include "LyricsHelper.h"
 #include "resource.h"
+#include "WindowAbout.h"
 
-#pragma warning(disable: 4244) // 禁用转换损失的 warning
+#pragma warning(disable: 4244) // 禁用转换精度损失的 warning
 
-#pragma region Const Definations
+#pragma region Varibles Defination
 
-#define ENABLE_HIGHDPI // 启用高 DPI 支持
-
-//constexpr auto DEFAULT_FONT = L"PingFang SC Pro";
-constexpr auto DEFAULT_FONT = L"Microsoft YaHei UI";
-constexpr auto DEFAULT_BUTTON_FONTSIZE = 18;
-
-constexpr auto BACKGROUND_COLOR = CLASSICGRAY;
-
-constexpr auto WINDOW_WIDTH = 800;
-constexpr auto WINDOW_HEIGHT = 500;
-
-constexpr auto MARGIN_HORIZONTAL = 15;
-constexpr auto MARGIN_VERTICAL = 15;
-
-constexpr auto CONTROL_HEIGHT = 23;
-
-constexpr auto BUTTON_WIDTH = 80;
-constexpr auto BUTTON_HEIGHT = 26;
-// 让 Button 的位置与其他控件保持居中所需要的位移值
-constexpr auto BUTTON_HEIGHT_OFFSET = (CONTROL_HEIGHT - BUTTON_HEIGHT) / 2.0;
-
-// 控件默认间距 (不含控件本身高度)
-constexpr auto CONTROL_PADDING_HORIZONTAL = 10;
-// 控件默认行距 (竖直方向间距) (含控件本身高度)
-constexpr auto CONTROL_PADDING_VERTICAL = 28;
-
-constexpr auto LYRICS_PADDING_VERTICAL = 32;
+double DPI_Scale = 1;
 
 // 顶部区域左侧 Label 的宽度，后期本地化时在这里更改尺寸
 int TOP_LEFT_LABEL_MAX_WIDTH = 65;
-
-#pragma endregion
-
-#pragma region Public Varibles Defination
-
-double DPI_Scale = 1;
 
 #pragma endregion
 
@@ -90,6 +58,55 @@ hiex::SysButton ButtonStart;
 
 #pragma endregion
 
+#pragma region Button Clicks
+
+void ButtonChooseAudio_Click()
+{
+
+}
+
+void ButtonChooseRawLyrics_Click()
+{
+
+}
+
+void ButtonOutputPath_Click()
+{
+
+}
+
+void ButtonPlayPause_Click()
+{
+
+}
+
+void ButtonAbout_Click()
+{
+	WindowAbout::Show(DPI_Scale);
+}
+
+void ButtonViewOutput_Click()
+{
+
+}
+
+void ButtonPreview_Click()
+{
+
+}
+
+void ButtonRestart_Click()
+{
+
+}
+
+void ButtonStart_Click()
+{
+
+}
+
+#pragma endregion
+
 /// <summary>
 /// 添加主窗体的控件
 /// </summary>
@@ -112,16 +129,16 @@ void AddWindowControls(HWND hwnd)
 
 
 	left = w - MARGIN_HORIZONTAL - BUTTON_WIDTH;
-	ButtonChooseAudio.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT,  L"导入音频");
-	ButtonChooseRawLyrics.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT , L"导入歌词");
-	ButtonOutputPath.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, BUTTON_WIDTH, BUTTON_HEIGHT , L"选择路径");
+	ButtonChooseAudio.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT, L"导入音频");
+	ButtonChooseRawLyrics.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT, L"导入歌词");
+	ButtonOutputPath.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, BUTTON_WIDTH, BUTTON_HEIGHT, L"选择路径");
 
 #pragma endregion
 
 #pragma region 播放区域
 
 	top = MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 3 + 25;
-	ButtonPlayPause.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + top, BUTTON_WIDTH, BUTTON_HEIGHT,  L"暂停");
+	ButtonPlayPause.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + top, BUTTON_WIDTH, BUTTON_HEIGHT, L"暂停");
 
 #pragma endregion
 
@@ -149,6 +166,17 @@ void AddWindowControls(HWND hwnd)
 	ButtonPreview.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
 	ButtonRestart.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
 	ButtonStart.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+
+	// 注册点击消息
+	ButtonChooseAudio.RegisterMessage(ButtonChooseAudio_Click);
+	ButtonChooseRawLyrics.RegisterMessage(ButtonChooseRawLyrics_Click);
+	ButtonOutputPath.RegisterMessage(ButtonOutputPath_Click);
+	ButtonPlayPause.RegisterMessage(ButtonPlayPause_Click);
+	ButtonAbout.RegisterMessage(ButtonAbout_Click);
+	ButtonViewOutput.RegisterMessage(ButtonViewOutput_Click);
+	ButtonPreview.RegisterMessage(ButtonPreview_Click);
+	ButtonRestart.RegisterMessage(ButtonRestart_Click);
+	ButtonStart.RegisterMessage(ButtonStart_Click);
 }
 
 /// <summary>
@@ -326,13 +354,14 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPara
 
 int main()
 {
-#ifdef ENABLE_HIGHDPI
-	// 高 DPI 支持
-	DPI_Scale = GetDpiScale(); // 必须先获取，在设置 DPI Aware 后这个值将变为 1
-	EnableDpiAwareness();
+	if (ENABLE_HIGHDPI)
+	{
+		// 高 DPI 支持
+		DPI_Scale = GetDpiScale(); // 必须先获取，在设置 DPI Aware 后这个值将变为 1
+		EnableDpiAwareness();
 
-	hiex::SysControlBase::DPI_Scale = DPI_Scale;
-#endif // ENABLE_HIGHDPI
+		hiex::SysControlBase::DPI_Scale = DPI_Scale;
+	}
 
 	// 初始化窗口
 	hiex::SetCustomIcon(MAKEINTRESOURCE(IDI_ICON1), MAKEINTRESOURCE(IDI_ICON1));

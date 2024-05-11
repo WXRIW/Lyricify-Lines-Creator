@@ -158,8 +158,10 @@
     <ClCompile Include="LyricsHelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StringHelper.cpp" />
+    <ClCompile Include="WindowAbout.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommonDefine.h" />
     <ClInclude Include="DpiHelper.h" />
     <ClInclude Include="HiEasyX.h" />
     <ClInclude Include="HiEasyX\HiCanvas.h" />
@@ -197,6 +199,7 @@
     <ClInclude Include="LyricsHelper.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="StringHelper.h" />
+    <ClInclude Include="WindowAbout.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Lyricify Lines Creator.rc" />
