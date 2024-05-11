@@ -198,7 +198,7 @@ namespace HiEasyX
 			m_hFont = nullptr;
 		}
 		m_hFont = CreateFont(
-			h, w,
+			(int)(h * DPI_Scale), (int)(w * DPI_Scale),
 			0, 0, 0, 0, 0, 0,
 			GB2312_CHARSET,
 			OUT_DEFAULT_PRECIS,

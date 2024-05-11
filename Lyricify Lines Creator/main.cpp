@@ -137,20 +137,18 @@ void AddWindowControls(HWND hwnd)
 #pragma endregion
 
 	// 设置字体
-	int fontSize = (int)(18 * DPI_Scale);
-	TextBoxChooseAudio.SetFont(fontSize, 0, DEFAULT_FONT);
-	TextBoxChooseRawLyrics.SetFont(fontSize, 0, DEFAULT_FONT);
-	TextBoxOutputPath.SetFont(fontSize, 0, DEFAULT_FONT);
-	fontSize = (int)(DEFAULT_BUTTON_FONTSIZE * DPI_Scale);
-	ButtonChooseAudio.SetFont(fontSize, 0, DEFAULT_FONT);
-	ButtonChooseRawLyrics.SetFont(fontSize, 0, DEFAULT_FONT);
-	ButtonOutputPath.SetFont(fontSize, 0, DEFAULT_FONT);
-	ButtonPlayPause.SetFont(fontSize, 0, DEFAULT_FONT);
-	ButtonAbout.SetFont(fontSize, 0, DEFAULT_FONT);
-	ButtonViewOutput.SetFont(fontSize, 0, DEFAULT_FONT);
-	ButtonPreview.SetFont(fontSize, 0, DEFAULT_FONT);
-	ButtonRestart.SetFont(fontSize, 0, DEFAULT_FONT);
-	ButtonStart.SetFont(fontSize, 0, DEFAULT_FONT);
+	TextBoxChooseAudio.SetFont(18, 0, DEFAULT_FONT);
+	TextBoxChooseRawLyrics.SetFont(18, 0, DEFAULT_FONT);
+	TextBoxOutputPath.SetFont(18, 0, DEFAULT_FONT);
+	ButtonChooseAudio.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+	ButtonChooseRawLyrics.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+	ButtonOutputPath.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+	ButtonPlayPause.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+	ButtonAbout.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+	ButtonViewOutput.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+	ButtonPreview.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+	ButtonRestart.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+	ButtonStart.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
 }
 
 /// <summary>
@@ -340,13 +338,14 @@ int main()
 	hiex::SetCustomIcon(MAKEINTRESOURCE(IDI_ICON1), MAKEINTRESOURCE(IDI_ICON1));
 	hiex::Window wnd(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, L"Lyricify Lyrics Creator");
 	wnd.BindCanvas(&CanvasMain);
-	// 设置 Canvas 字体
-	// 参考文档: https://docs.easyx.cn/zh-cn/LOGFONT
-	setfont(20, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
-	setaspectratio(DPI_Scale, DPI_Scale);
-	CanvasMain.SetTextColor(BLACK);
 	wnd.SetProcFunc(WndProc);
 	hiex::AutoExit();
+
+	setaspectratio(DPI_Scale, DPI_Scale);
+	CanvasMain.SetTextColor(BLACK);
+
+	// 设置 Canvas 字体，参考文档: https://docs.easyx.cn/zh-cn/LOGFONT
+	setfont(20, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
 
 	// 绘制窗体控件
 	AddWindowControls(wnd.GetHandle());
