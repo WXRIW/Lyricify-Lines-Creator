@@ -251,7 +251,7 @@ void DrawPlaybackArea()
 	setfont(20, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
 	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top - 1, L"按键提示：");
 	setfont(19, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-	CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 100, top, L"行起始：↑     行结束：→     回到上一行：↓     回退 5s：B     播放/暂停：Space");
+	CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 100, top, L"行起始：↑     行结束：→     回到上一行：↓     回退 3s：B     播放/暂停：Space");
 
 #pragma endregion
 
