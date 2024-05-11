@@ -1,5 +1,11 @@
 #include "DpiHelper.h"
+
+#include <fstream>
+#include <vector>
+#include <string>
+
 #include "HiEasyX.h"
+#include "LyricsHelper.h"
 #include "resource.h"
 
 #pragma warning(disable: 4244) // ½ûÓÃ×ª»»ËðÊ§µÄ warning

@@ -155,7 +155,9 @@
     <ClCompile Include="HiEasyX\HiSysGUI\SysRadioButton.cpp" />
     <ClCompile Include="HiEasyX\HiSysGUI\SysStatic.cpp" />
     <ClCompile Include="HiEasyX\HiWindow.cpp" />
+    <ClCompile Include="LyricsHelper.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="StringHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DpiHelper.h" />
@@ -191,7 +193,10 @@
     <ClInclude Include="HiEasyX\HiSysGUI\SysRadioButton.h" />
     <ClInclude Include="HiEasyX\HiSysGUI\SysStatic.h" />
     <ClInclude Include="HiEasyX\HiWindow.h" />
+    <ClInclude Include="Lyrics.h" />
+    <ClInclude Include="LyricsHelper.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="StringHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Lyricify Lines Creator.rc" />
