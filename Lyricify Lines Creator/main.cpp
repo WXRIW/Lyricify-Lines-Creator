@@ -156,14 +156,15 @@ static void ResizeMoveControls()
 
 #pragma region 播放区域
 
-	top = MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 3 + 20;
-	ButtonPlayPause.Move(left, top);
+	top = MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 3 + 25;
+	ButtonPlayPause.Move(left, BUTTON_HEIGHT_OFFSET + top);
 
 #pragma endregion
 
 #pragma region 底部区域
 
 	top = h - MARGIN_VERTICAL - BUTTON_HEIGHT;
+	ButtonAbout.Move(MARGIN_HORIZONTAL, top);
 	ButtonViewOutput.Move(w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 4 - CONTROL_PADDING_HORIZONTAL * 5, top);
 	ButtonPreview.Move(w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 3 - CONTROL_PADDING_HORIZONTAL * 4, top);
 	ButtonRestart.Move(w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL, top);
@@ -304,7 +305,9 @@ int main()
 	hiex::SetCustomIcon(MAKEINTRESOURCE(IDI_ICON1), MAKEINTRESOURCE(IDI_ICON1));
 	hiex::Window wnd(WINDOW_WIDTH, WINDOW_HEIGHT, EW_NORMAL, L"Lyricify Lyrics Creator");
 	wnd.BindCanvas(&CanvasMain);
-	setfont(20, 0, DEFAULT_FONT);
+	// 设置 Canvas 字体
+	// 参考文档: https://docs.easyx.cn/zh-cn/LOGFONT
+	setfont(20, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
 	CanvasMain.SetTextColor(BLACK);
 	wnd.SetProcFunc(WndProc);
 	hiex::AutoExit();
