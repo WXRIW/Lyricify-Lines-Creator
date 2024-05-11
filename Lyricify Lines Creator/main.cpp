@@ -1,8 +1,14 @@
+#include "DpiHelper.h"
 #include "HiEasyX.h"
 #include "resource.h"
 
+#pragma warning(disable: 4244) // 禁用转换损失的 warning
+
 #pragma region Const Definations
 
+#define ENABLE_HIGHDPI // 启用高 DPI 支持
+
+//constexpr auto DEFAULT_FONT = L"PingFang SC Pro";
 constexpr auto DEFAULT_FONT = L"Microsoft YaHei UI";
 constexpr auto DEFAULT_BUTTON_FONTSIZE = 18;
 
@@ -26,8 +32,16 @@ constexpr auto CONTROL_PADDING_HORIZONTAL = 10;
 // 控件默认行距 (竖直方向间距) (含控件本身高度)
 constexpr auto CONTROL_PADDING_VERTICAL = 28;
 
+constexpr auto LYRICS_PADDING_VERTICAL = 32;
+
 // 顶部区域左侧 Label 的宽度，后期本地化时在这里更改尺寸
-int TOP_LEFT_LABEL_MAX_WIDTH = 60;
+int TOP_LEFT_LABEL_MAX_WIDTH = 65;
+
+#pragma endregion
+
+#pragma region Public Varibles Defination
+
+double DPI_Scale = 1;
 
 #pragma endregion
 
@@ -77,7 +91,8 @@ hiex::SysButton ButtonStart;
 void AddWindowControls(HWND hwnd)
 {
 	int left, top;
-	int w = CanvasMain.GetWidth(), h = CanvasMain.GetHeight();
+	int w = CanvasMain.GetWidth() / DPI_Scale;
+	int h = CanvasMain.GetHeight() / DPI_Scale;
 
 #pragma region 顶部区域
 
@@ -91,16 +106,16 @@ void AddWindowControls(HWND hwnd)
 
 
 	left = w - MARGIN_HORIZONTAL - BUTTON_WIDTH;
-	ButtonChooseAudio.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT, L"导入音频");
-	ButtonChooseRawLyrics.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT, L"导入歌词");
-	ButtonOutputPath.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, BUTTON_WIDTH, BUTTON_HEIGHT, L"选择路径");
+	ButtonChooseAudio.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT,  L"导入音频");
+	ButtonChooseRawLyrics.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT , L"导入歌词");
+	ButtonOutputPath.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, BUTTON_WIDTH, BUTTON_HEIGHT , L"选择路径");
 
 #pragma endregion
 
 #pragma region 播放区域
 
 	top = MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 3 + 25;
-	ButtonPlayPause.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + top, BUTTON_WIDTH, BUTTON_HEIGHT, L"暂停");
+	ButtonPlayPause.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + top, BUTTON_WIDTH, BUTTON_HEIGHT,  L"暂停");
 
 #pragma endregion
 
@@ -116,18 +131,20 @@ void AddWindowControls(HWND hwnd)
 #pragma endregion
 
 	// 设置字体
-	TextBoxChooseAudio.SetFont(18, 0, DEFAULT_FONT);
-	TextBoxChooseRawLyrics.SetFont(18, 0, DEFAULT_FONT);
-	TextBoxOutputPath.SetFont(18, 0, DEFAULT_FONT);
-	ButtonChooseAudio.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
-	ButtonChooseRawLyrics.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
-	ButtonOutputPath.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
-	ButtonPlayPause.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
-	ButtonAbout.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
-	ButtonViewOutput.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
-	ButtonPreview.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
-	ButtonRestart.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
-	ButtonStart.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+	int fontSize = (int)(18 * DPI_Scale);
+	TextBoxChooseAudio.SetFont(fontSize, 0, DEFAULT_FONT);
+	TextBoxChooseRawLyrics.SetFont(fontSize, 0, DEFAULT_FONT);
+	TextBoxOutputPath.SetFont(fontSize, 0, DEFAULT_FONT);
+	fontSize = (int)(DEFAULT_BUTTON_FONTSIZE * DPI_Scale);
+	ButtonChooseAudio.SetFont(fontSize, 0, DEFAULT_FONT);
+	ButtonChooseRawLyrics.SetFont(fontSize, 0, DEFAULT_FONT);
+	ButtonOutputPath.SetFont(fontSize, 0, DEFAULT_FONT);
+	ButtonPlayPause.SetFont(fontSize, 0, DEFAULT_FONT);
+	ButtonAbout.SetFont(fontSize, 0, DEFAULT_FONT);
+	ButtonViewOutput.SetFont(fontSize, 0, DEFAULT_FONT);
+	ButtonPreview.SetFont(fontSize, 0, DEFAULT_FONT);
+	ButtonRestart.SetFont(fontSize, 0, DEFAULT_FONT);
+	ButtonStart.SetFont(fontSize, 0, DEFAULT_FONT);
 }
 
 /// <summary>
@@ -136,8 +153,8 @@ void AddWindowControls(HWND hwnd)
 static void ResizeMoveControls()
 {
 	int left, top;
-	int w = CanvasMain.GetWidth();
-	int h = CanvasMain.GetHeight();
+	int w = CanvasMain.GetWidth() / DPI_Scale;
+	int h = CanvasMain.GetHeight() / DPI_Scale;
 
 #pragma region 顶部区域
 
@@ -182,9 +199,9 @@ static void ResizeMoveControls()
 /// </summary>
 void DrawLabelControls()
 {
-	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, MARGIN_VERTICAL, L"选择音频：");
-	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, L"选择歌词：");
-	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, L"输出路径：");
+	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, 1 + MARGIN_VERTICAL, L"选择音频：");
+	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, 1 + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, L"选择歌词：");
+	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, 1 + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, L"输出路径：");
 }
 
 /// <summary>
@@ -194,6 +211,9 @@ void DrawPlaybackArea()
 {
 	auto top = MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 3 + 25;
 
+	int w = CanvasMain.GetWidth() / DPI_Scale;
+	int h = CanvasMain.GetHeight() / DPI_Scale;
+
 #pragma region 音频区域
 
 	// 当前时间
@@ -201,12 +221,12 @@ void DrawPlaybackArea()
 	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top, L"0:00.000");
 
 	// 进度条
-	auto right = CanvasMain.GetWidth() - MARGIN_HORIZONTAL - BUTTON_WIDTH - CONTROL_PADDING_HORIZONTAL;
+	auto right = w - MARGIN_HORIZONTAL - BUTTON_WIDTH - CONTROL_PADDING_HORIZONTAL;
 	auto progress = 0.333; // 暂设进度为 33.3%
 	auto width = right - (MARGIN_HORIZONTAL + 80);
 	CanvasMain.GP_SetLineWidth(3);
-	CanvasMain.GP_Line(MARGIN_HORIZONTAL + 80, top + 11, right, top + 11, true, RGB(0xBF, 0xBF, 0xBF));
-	CanvasMain.GP_Line(MARGIN_HORIZONTAL + 80, top + 11, right - width * (1 - progress), top + 11, true, RGB(0x7F, 0x7F, 0x7F));
+	CanvasMain.GP_Line(MARGIN_HORIZONTAL + 83, top + 11, right, top + 11, true, RGB(0xBF, 0xBF, 0xBF));
+	CanvasMain.GP_Line(MARGIN_HORIZONTAL + 83, top + 11, right - width * (1 - progress), top + 11, true, RGB(0x7F, 0x7F, 0x7F));
 	CanvasMain.GP_SetLineWidth(1); // 还原
 
 #pragma endregion
@@ -214,8 +234,8 @@ void DrawPlaybackArea()
 #pragma region 歌词区域
 
 	setfont(20, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
-	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + CONTROL_PADDING_VERTICAL, L"当前行：");
-	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + CONTROL_PADDING_VERTICAL * 2, L"下一行：");
+	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL, L"当前行：");
+	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL * 2, L"下一行：");
 
 	// 还原字体设置
 	setfont(20, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
@@ -227,10 +247,10 @@ void DrawPlaybackArea()
 
 #pragma region 提示区域
 
-	top = CanvasMain.GetHeight() - BUTTON_HEIGHT - MARGIN_VERTICAL - 12 - 35;
+	top = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12 - 35;
 	setfont(20, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
-	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top, L"按键提示：");
-	setfont(20, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+	CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top - 1, L"按键提示：");
+	setfont(19, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
 	CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 100, top, L"行起始：↑     行结束：→     回到上一行：↓     回退 5s：B     播放/暂停：Space");
 
 #pragma endregion
@@ -245,7 +265,8 @@ static void DrawAtWndProcPaint()
 	const auto LINE_COLOR = RGB(0xAF, 0xAF, 0xAF);
 	const auto SUBLINE_COLOR = RGB(0xCF, 0xCF, 0xCF);
 	int top;
-	int w = CanvasMain.GetWidth(), h = CanvasMain.GetHeight();
+	int w = CanvasMain.GetWidth() / DPI_Scale;
+	int h = CanvasMain.GetHeight() / DPI_Scale;
 
 	CanvasMain.SetBkColor(BACKGROUND_COLOR);
 	DrawLabelControls();
@@ -301,13 +322,22 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPara
 
 int main()
 {
+#ifdef ENABLE_HIGHDPI
+	// 高 DPI 支持
+	DPI_Scale = GetDpiScale(); // 必须先获取，在设置 DPI Aware 后这个值将变为 1
+	EnableDpiAwareness();
+
+	hiex::SysControlBase::DPI_Scale = DPI_Scale;
+#endif // ENABLE_HIGHDPI
+
 	// 初始化窗口
 	hiex::SetCustomIcon(MAKEINTRESOURCE(IDI_ICON1), MAKEINTRESOURCE(IDI_ICON1));
-	hiex::Window wnd(WINDOW_WIDTH, WINDOW_HEIGHT, EW_NORMAL, L"Lyricify Lyrics Creator");
+	hiex::Window wnd(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, L"Lyricify Lyrics Creator");
 	wnd.BindCanvas(&CanvasMain);
 	// 设置 Canvas 字体
 	// 参考文档: https://docs.easyx.cn/zh-cn/LOGFONT
 	setfont(20, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
+	setaspectratio(DPI_Scale, DPI_Scale);
 	CanvasMain.SetTextColor(BLACK);
 	wnd.SetProcFunc(WndProc);
 	hiex::AutoExit();

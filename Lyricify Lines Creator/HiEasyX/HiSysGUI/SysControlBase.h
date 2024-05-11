@@ -68,6 +68,8 @@ namespace HiEasyX
 
 	public:
 
+		static double DPI_Scale;
+
 		SysControlBase();
 
 		virtual ~SysControlBase();

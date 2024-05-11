@@ -4,6 +4,8 @@
 
 namespace HiEasyX
 {
+	double SysControlBase::DPI_Scale = 1;
+
 	void SysControlBase::Destory()
 	{
 		if (m_hFont)
@@ -24,10 +26,10 @@ namespace HiEasyX
 		c.hInstance = 0;
 		c.hMenu = (HMENU)(long long)GetID();
 		c.hwndParent = hParent;
-		c.cy = GetHeight();
-		c.cx = GetWidth();
-		c.y = GetY();
-		c.x = GetX();
+		c.cy = (int)(GetHeight() * DPI_Scale);
+		c.cx = (int)(GetWidth() * DPI_Scale);
+		c.y = (int)(GetY() * DPI_Scale);
+		c.x = (int)(GetX() * DPI_Scale);
 		c.style = dwStyle;
 		c.lpszName = lpszWindowName;
 		c.lpszClass = lpszClassName;
@@ -47,7 +49,12 @@ namespace HiEasyX
 
 	void SysControlBase::UpdateRect(RECT rctOld)
 	{
-		SetWindowPos(GetHandle(), 0, GetX(), GetY(), GetWidth(), GetHeight(), 0);
+		SetWindowPos(GetHandle(), 0,
+			(int)(GetX() * DPI_Scale),
+			(int)(GetY() * DPI_Scale),
+			(int)(GetWidth() * DPI_Scale),
+			(int)(GetHeight() * DPI_Scale),
+			0);
 	}
 
 	LRESULT SysControlBase::UpdateMessage(UINT msg, WPARAM wParam, LPARAM lParam, bool& bRet)
