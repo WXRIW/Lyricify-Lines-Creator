@@ -13,7 +13,7 @@ void WindowAbout::Show(double DPI_Scale)
 
 void WindowAbout::OpenWindow(bool* isOpened, double DPI_Scale)
 {
-	hiex::Window wnd(360 * DPI_Scale, 260 * DPI_Scale, EW_NORMAL, L"关于");
+	hiex::Window wnd(360 * DPI_Scale, 300 * DPI_Scale, EW_NORMAL, L"关于");
 	DisableResizing(wnd.GetHandle(), true);
 	hiex::Canvas canvas;
 	wnd.BindCanvas(&canvas);
@@ -47,7 +47,11 @@ void WindowAbout::OpenWindow(bool* isOpened, double DPI_Scale)
 	setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
 	canvas.CenterText(L"HiEasyX (MIT 协议)", { 0, top, w, top + 20 }); top += 20;
 	setfont(12, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
-	canvas.CenterText(L"https://github.com/zouhuidong/HiEasyX", { 0, top, w, top + 20 }); top += 10;
+	canvas.CenterText(L"https://github.com/zouhuidong/HiEasyX", { 0, top, w, top + 15 }); top += 22;
+	setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+	canvas.CenterText(L"irrKlang (非商用)", { 0, top, w, top + 20 }); top += 20;
+	setfont(12, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
+	canvas.CenterText(L"https://www.ambiera.com/irrklang/license.html", { 0, top, w, top + 15 }); top += 22;
 
 	wnd.Redraw();
 	hiex::init_end(wnd.GetHandle());
