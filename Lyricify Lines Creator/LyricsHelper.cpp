@@ -7,22 +7,23 @@ namespace Lyricify
 	/// </summary>
 	/// <param name="filePath">文件路径</param>
 	/// <returns>存入的 vector 列表，若失败则返回空列表</returns>
-	std::vector<std::string> LyricsHelper::ReadTextToLines(std::string filePath)
+	std::vector<std::wstring> LyricsHelper::ReadTextToLines(std::wstring filePath)
 	{
         std::ifstream inputFile(filePath);
 
         if (!inputFile) // 文件流创建失败
         {
-            return std::vector<std::string>(); // 返回空列表
+            return std::vector<std::wstring>(); // 返回空列表
         }
 
-        std::vector<std::string> lines;
+        std::vector<std::wstring> lines;
 
         std::string line;
         while (std::getline(inputFile, line))
         {
-            if (StringHelper::IsEmptyOrWhiteSpace(line)) continue; // 丢弃空行
-            lines.push_back(StringHelper::Trim(line));
+            auto ws = StringHelper::StringToWstring(line);
+            if (StringHelper::IsEmptyOrWhiteSpace(ws)) continue; // 丢弃空行
+            lines.push_back(StringHelper::Trim(ws));
         }
 
         inputFile.close();
@@ -35,7 +36,7 @@ namespace Lyricify
 	/// </summary>
 	/// <param name="lines">文本行 vector 列表</param>
 	/// <returns>存入的 vector 列表</returns>
-	std::vector<Lyricify::Lyrics> LyricsHelper::GetLyricsFromLines(std::vector<std::string> lines)
+	std::vector<Lyricify::Lyrics> LyricsHelper::GetLyricsFromLines(std::vector<std::wstring> lines)
 	{
         std::vector<Lyricify::Lyrics> list;
 

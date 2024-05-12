@@ -10,7 +10,7 @@ namespace Lyricify
 		/// <summary>
 		/// 歌词行原文
 		/// </summary>
-		std::string Text;
+		std::wstring Text;
 
 		/// <summary>
 		/// 歌词行起始时间
@@ -25,26 +25,26 @@ namespace Lyricify
 
 		Lyrics()
 		{
-			Text = "";
+			Text = L"";
 			StartTime = -1;
 			EndTime = -1;
 		}
 
-		Lyrics(std::string text)
+		Lyrics(std::wstring text)
 		{
 			Text = text;
 			StartTime = -1;
 			EndTime = -1;
 		}
 
-		Lyrics(std::string text, int start)
+		Lyrics(std::wstring text, int start)
 		{
 			Text = text;
 			StartTime = start;
 			EndTime = -1;
 		}
 
-		Lyrics(std::string text, int start, int end)
+		Lyrics(std::wstring text, int start, int end)
 		{
 			Text = text;
 			StartTime = start;

@@ -7,6 +7,8 @@
 #include "resource.h"
 #include "WindowAbout.h"
 
+#pragma warning(disable: 4244) // 禁用转换精度损失的 warning
+
 namespace WindowMain
 {
 	void AddWindowControls(HWND);

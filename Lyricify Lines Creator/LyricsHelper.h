@@ -11,7 +11,7 @@ namespace Lyricify
 	class LyricsHelper
 	{
 	public:
-		static std::vector<std::string> ReadTextToLines(std::string filePath);
-		static std::vector<Lyricify::Lyrics> GetLyricsFromLines(std::vector<std::string> lines);
+		static std::vector<std::wstring> ReadTextToLines(std::wstring filePath);
+		static std::vector<Lyricify::Lyrics> GetLyricsFromLines(std::vector<std::wstring> lines);
 	};
 }

@@ -6,8 +6,6 @@
 #include "CommonDefine.h"
 #include "WindowMain.h"
 
-#pragma warning(disable: 4244) // 禁用转换精度损失的 warning
-
 double DPI_Scale = 1;
 
 int main()
