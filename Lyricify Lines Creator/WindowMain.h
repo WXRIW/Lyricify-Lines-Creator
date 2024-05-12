@@ -3,6 +3,7 @@
 #include <functional>
 #include "CommonDefine.h"
 #include "LyricsHelper.h"
+#include "FileHelper.h"
 #include "resource.h"
 #include "WindowAbout.h"
 

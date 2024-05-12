@@ -41,17 +41,29 @@ namespace WindowMain
 
 	void ButtonChooseAudio_Click()
 	{
-
+		auto path = FileHelper::SelectFile(L"选择音频", L"音频 (*.mp3;*.wav;*.flac)\0*.mp3;*.wav;*.flac");
+		if (!path.empty())
+		{
+			TextBoxChooseAudio.SetText(path);
+		}
 	}
 
 	void ButtonChooseRawLyrics_Click()
 	{
-
+		auto path = FileHelper::SelectFile(L"选择歌词", L"文本文档 (*.txt)\0*.txt");
+		if (!path.empty())
+		{
+			TextBoxChooseRawLyrics.SetText(path);
+		}
 	}
 
 	void ButtonOutputPath_Click()
 	{
-
+		auto path = FileHelper::SelectFolder(L"选择导出路径");
+		if (!path.empty())
+		{
+			TextBoxOutputPath.SetText(path);
+		}
 	}
 
 	void ButtonPlayPause_Click()
