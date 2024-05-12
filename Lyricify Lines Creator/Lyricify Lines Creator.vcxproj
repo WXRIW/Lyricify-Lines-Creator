@@ -70,6 +70,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Platform)'=='Win32'">
+    <LibraryPath>irrKlang\lib\Win32-visualStudio;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='x64'">
+    <LibraryPath>irrKlang\lib\Winx64-visualStudio;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -158,6 +164,7 @@
     <ClCompile Include="HiEasyX\HiWindow.cpp" />
     <ClCompile Include="LyricsHelper.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MusicPlayer.cpp" />
     <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="WindowAbout.cpp" />
     <ClCompile Include="WindowMain.cpp" />
@@ -198,8 +205,30 @@
     <ClInclude Include="HiEasyX\HiSysGUI\SysRadioButton.h" />
     <ClInclude Include="HiEasyX\HiSysGUI\SysStatic.h" />
     <ClInclude Include="HiEasyX\HiWindow.h" />
+    <ClInclude Include="irrKlang\include\ik_ESoundEngineOptions.h" />
+    <ClInclude Include="irrKlang\include\ik_ESoundOutputDrivers.h" />
+    <ClInclude Include="irrKlang\include\ik_EStreamModes.h" />
+    <ClInclude Include="irrKlang\include\ik_IAudioRecorder.h" />
+    <ClInclude Include="irrKlang\include\ik_IAudioStream.h" />
+    <ClInclude Include="irrKlang\include\ik_IAudioStreamLoader.h" />
+    <ClInclude Include="irrKlang\include\ik_IFileFactory.h" />
+    <ClInclude Include="irrKlang\include\ik_IFileReader.h" />
+    <ClInclude Include="irrKlang\include\ik_IRefCounted.h" />
+    <ClInclude Include="irrKlang\include\ik_irrKlangTypes.h" />
+    <ClInclude Include="irrKlang\include\ik_ISound.h" />
+    <ClInclude Include="irrKlang\include\ik_ISoundDeviceList.h" />
+    <ClInclude Include="irrKlang\include\ik_ISoundEffectControl.h" />
+    <ClInclude Include="irrKlang\include\ik_ISoundEngine.h" />
+    <ClInclude Include="irrKlang\include\ik_ISoundMixedOutputReceiver.h" />
+    <ClInclude Include="irrKlang\include\ik_ISoundSource.h" />
+    <ClInclude Include="irrKlang\include\ik_ISoundStopEventReceiver.h" />
+    <ClInclude Include="irrKlang\include\ik_IVirtualRefCounted.h" />
+    <ClInclude Include="irrKlang\include\ik_SAudioStreamFormat.h" />
+    <ClInclude Include="irrKlang\include\ik_vec3d.h" />
+    <ClInclude Include="irrKlang\include\irrKlang.h" />
     <ClInclude Include="Lyrics.h" />
     <ClInclude Include="LyricsHelper.h" />
+    <ClInclude Include="MusicPlayer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="WindowAbout.h" />
@@ -210,6 +239,26 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Lyricify Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\ikpFlac.dll" Condition="'$(Platform)'=='Win32'">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\ikpMP3.dll" Condition="'$(Platform)'=='Win32'">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\irrKlang.dll" Condition="'$(Platform)'=='Win32'">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\ikpFlac.dll" Condition="'$(Platform)'=='x64'">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\ikpMP3.dll" Condition="'$(Platform)'=='x64'">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\irrKlang.dll" Condition="'$(Platform)'=='x64'">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

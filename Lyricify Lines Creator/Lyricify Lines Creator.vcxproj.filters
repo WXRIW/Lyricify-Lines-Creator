@@ -19,6 +19,12 @@
     <Filter Include="Header Files\HiEasyX">
       <UniqueIdentifier>{efe7b861-006b-447c-bccf-21a538fc30c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\irrKlang">
+      <UniqueIdentifier>{37110b82-da2a-4642-9544-c839f53a0563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Dlls">
+      <UniqueIdentifier>{06f5aaca-d959-425d-9159-74bfe9a62501}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,6 +110,27 @@
     </ClCompile>
     <ClCompile Include="HiEasyX\HiSysGUI\SysStatic.cpp">
       <Filter>Source Files\HiEasyX</Filter>
+    </ClCompile>
+    <ClCompile Include="DpiHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LyricsHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StringHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowAbout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicPlayer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +233,96 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CommonDefine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DpiHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lyrics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LyricsHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowAbout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_ESoundEngineOptions.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_ESoundOutputDrivers.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_EStreamModes.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_IAudioRecorder.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_IAudioStream.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_IAudioStreamLoader.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_IFileFactory.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_IFileReader.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_IRefCounted.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_irrKlangTypes.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_ISound.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_ISoundDeviceList.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_ISoundEffectControl.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_ISoundEngine.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_ISoundMixedOutputReceiver.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_ISoundSource.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_ISoundStopEventReceiver.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_IVirtualRefCounted.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_SAudioStreamFormat.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\ik_vec3d.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="irrKlang\include\irrKlang.h">
+      <Filter>Header Files\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Lyricify Lines Creator.rc">
@@ -213,8 +330,19 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="D:\Sources\repos\Lyricify\LyricifyLauncher\Lyricify Icon.ico">
+    <Image Include="Lyricify Icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\ikpFlac.dll">
+      <Filter>Resource Files\Dlls</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\ikpMP3.dll">
+      <Filter>Resource Files\Dlls</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\irrKlang.dll">
+      <Filter>Resource Files\Dlls</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>
