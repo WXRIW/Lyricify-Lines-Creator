@@ -59,13 +59,13 @@ bool MusicPlayer::Load(const std::wstring filePath, bool override)
 	
 	if (override || audio != nullptr)
 	{
-		if (MusicPlayer::currentAudio != nullptr)
+		if (currentAudio != nullptr)
 		{
-			MusicPlayer::currentAudio->stop();
-			MusicPlayer::currentAudio->drop();
+			currentAudio->stop();
+			currentAudio->drop();
 		}
 
-		MusicPlayer::currentAudio = audio;
+		currentAudio = audio;
 		CurrentAudioPath = (audio != nullptr) ? filePath : L"";
 
 		return (audio != nullptr);
@@ -77,53 +77,77 @@ bool MusicPlayer::Load(const std::wstring filePath, bool override)
 void MusicPlayer::Play()
 {
 	if (currentAudio != NULL)
-		MusicPlayer::currentAudio->setIsPaused(false);
+		currentAudio->setIsPaused(false);
 }
 
 void MusicPlayer::Pause()
 {
 	if (currentAudio != NULL)
-		MusicPlayer::currentAudio->setIsPaused(true);
+		currentAudio->setIsPaused(true);
 }
 
 bool MusicPlayer::IsPlaying()
 {
 	if (currentAudio != NULL)
-		return !(MusicPlayer::currentAudio->getIsPaused() || MusicPlayer::currentAudio->isFinished());
+		return !(currentAudio->getIsPaused() || currentAudio->isFinished());
 	return false; // 空音频，则认为不在播放
 }
 
 int MusicPlayer::GetCurrentPositionMs()
 {
 	if (currentAudio != NULL)
-		return MusicPlayer::currentAudio->getPlayPosition();
+		return currentAudio->getPlayPosition();
 	return -1;
 }
 
 int MusicPlayer::GetTotalDurationMs()
 {
 	if (currentAudio != NULL)
-		return MusicPlayer::currentAudio->getPlayLength();
+		return currentAudio->getPlayLength();
 	return -1;
 }
 
 bool MusicPlayer::SeekTo(int ms)
 {
 	if (currentAudio != NULL)
-		return MusicPlayer::currentAudio->setPlayPosition(ms);
+		return currentAudio->setPlayPosition(ms);
+	return false;
+}
+
+bool MusicPlayer::SeekBack(int ms)
+{
+	if (currentAudio != NULL)
+	{
+		int pos = currentAudio->getPlayPosition();
+		pos -= ms;
+		if (pos < 0) pos = 0;
+		return currentAudio->setPlayPosition(pos);
+	}
+	return false;
+}
+
+bool MusicPlayer::SeekForward(int ms)
+{
+	if (currentAudio != NULL)
+	{
+		int pos = currentAudio->getPlayPosition();
+		pos += ms;
+		if (pos > currentAudio->getPlayLength()) pos = currentAudio->getPlayLength();
+		return currentAudio->setPlayPosition(pos);
+	}
 	return false;
 }
 
 bool MusicPlayer::SetPlaybackSpeed(float speed)
 {
 	if (currentAudio != NULL)
-		return MusicPlayer::currentAudio->setPlaybackSpeed(speed);
+		return currentAudio->setPlaybackSpeed(speed);
 	return false;
 }
 
 float MusicPlayer::GetPlaybackSpeed()
 {
 	if (currentAudio != NULL)
-		return MusicPlayer::currentAudio->getPlaybackSpeed();
+		return currentAudio->getPlaybackSpeed();
 	return 1.0f;
 }

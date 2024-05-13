@@ -320,7 +320,7 @@ namespace WindowMain
 		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
 		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top, L"按键提示：");
 		setfont(DEFAULT_CANVAS_FONTSIZE - 1, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 100, top + 1, L"行起始：↑     行结束：→     回到上一行：↓     回退 3s：B     播放/暂停：Space");
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 80, top + 1, L"行起始：↑     行结束：→     回到上一行：↓     回退 3s：B     前进 3s：N     前进 10s：M     播放/暂停：Space");
 
 #pragma endregion
 
@@ -390,6 +390,31 @@ namespace WindowMain
 			ResizeMoveControls();
 			break;
 		}
+
+		case WM_KEYDOWN:
+			switch (wParam)
+			{
+			case VK_SPACE:
+				ButtonPlayPause_Click();
+				break;
+
+			case 'B':
+				MusicPlayer::SeekBack(3000);
+				break;
+
+			case 'N':
+				MusicPlayer::SeekForward(3000);
+				break;
+
+			case 'M':
+				MusicPlayer::SeekForward(10000);
+				break;
+
+			default:
+				break;
+			}
+			break;
+
 		default:
 			return HIWINDOW_DEFAULT_PROC;
 			break;

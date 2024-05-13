@@ -71,6 +71,20 @@ public:
 	static bool SeekTo(int ms);
 
 	/// <summary>
+	/// 向后跳转音频，单位为毫秒
+	/// </summary>
+	/// <param name="ms">要跳转的毫秒数</param>
+	/// <returns>是否成功跳转</returns>
+	static bool SeekBack(int ms);
+
+	/// <summary>
+	/// 向前跳转音频，单位为毫秒
+	/// </summary>
+	/// <param name="ms">要跳转的毫秒数</param>
+	/// <returns>是否成功跳转</returns>
+	static bool SeekForward(int ms);
+
+	/// <summary>
 	/// 设置播放速率
 	/// </summary>
 	/// <param name="speed">播放速率，默认为 1.0f</param>
