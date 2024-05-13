@@ -147,9 +147,9 @@ namespace WindowMain
 #pragma endregion
 
 		// 设置字体
-		TextBoxChooseAudio.SetFont(18, 0, DEFAULT_FONT);
-		TextBoxChooseRawLyrics.SetFont(18, 0, DEFAULT_FONT);
-		TextBoxOutputPath.SetFont(18, 0, DEFAULT_FONT);
+		TextBoxChooseAudio.SetFont(DEFAULT_TEXTBOX_FONTSIZE, 0, DEFAULT_FONT);
+		TextBoxChooseRawLyrics.SetFont(DEFAULT_TEXTBOX_FONTSIZE, 0, DEFAULT_FONT);
+		TextBoxOutputPath.SetFont(DEFAULT_TEXTBOX_FONTSIZE, 0, DEFAULT_FONT);
 		ButtonChooseAudio.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
 		ButtonChooseRawLyrics.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
 		ButtonOutputPath.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
@@ -242,28 +242,29 @@ namespace WindowMain
 #pragma region 音频区域
 
 		// 当前时间
-		setfont(20, 0, L"Consolas");
+		setfont(DEFAULT_CANVAS_FONTSIZE, 0, L"Consolas");
 		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top, L"0:00.000");
 
 		// 进度条
+		auto left = MARGIN_HORIZONTAL + 84;
 		auto right = w - MARGIN_HORIZONTAL - BUTTON_WIDTH - CONTROL_PADDING_HORIZONTAL;
 		auto progress = 0.333; // 暂设进度为 33.3%
-		auto width = right - (MARGIN_HORIZONTAL + 80);
+		auto width = right - left;
 		CanvasMain.GP_SetLineWidth(3);
-		CanvasMain.GP_Line(MARGIN_HORIZONTAL + 83, top + 11, right, top + 11, true, RGB(0xBF, 0xBF, 0xBF));
-		CanvasMain.GP_Line(MARGIN_HORIZONTAL + 83, top + 11, right - width * (1 - progress), top + 11, true, RGB(0x7F, 0x7F, 0x7F));
+		CanvasMain.GP_Line(left, top + 11, right, top + 11, true, RGB(0xBF, 0xBF, 0xBF));
+		CanvasMain.GP_Line(left, top + 11, right - width * (1 - progress), top + 11, true, RGB(0x7F, 0x7F, 0x7F));
 		CanvasMain.GP_SetLineWidth(1); // 还原
 
 #pragma endregion
 
 #pragma region 歌词区域
 
-		setfont(20, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
+		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
 		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL, L"当前行：");
 		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL * 2, L"下一行：");
 
 		// 还原字体设置
-		setfont(20, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
 
 		// 绘制歌词文本
 		// 可通过剩余高度 判断绘制多行歌词
@@ -272,11 +273,11 @@ namespace WindowMain
 
 #pragma region 提示区域
 
-		top = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12 - 35;
-		setfont(20, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top - 1, L"按键提示：");
-		setfont(19, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 100, top, L"行起始：↑     行结束：→     回到上一行：↓     回退 3s：B     播放/暂停：Space");
+		top = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12 - 36;
+		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top, L"按键提示：");
+		setfont(DEFAULT_CANVAS_FONTSIZE - 1, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 100, top + 1, L"行起始：↑     行结束：→     回到上一行：↓     回退 3s：B     播放/暂停：Space");
 
 #pragma endregion
 
@@ -368,7 +369,7 @@ namespace WindowMain
 		CanvasMain.SetTextColor(BLACK);
 
 		// 设置 Canvas 字体，参考文档: https://docs.easyx.cn/zh-cn/LOGFONT
-		setfont(20, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
+		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
 
 		// 绘制窗体控件
 		AddWindowControls(wnd.GetHandle());
