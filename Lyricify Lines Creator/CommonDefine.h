@@ -2,6 +2,8 @@
 
 #include "HiEasyX.h"
 
+constexpr auto VERSION = L"0.1-alpha";
+
 constexpr auto ENABLE_HIGHDPI = true; // 启用高 DPI 支持
 
 //constexpr auto DEFAULT_FONT = L"PingFang SC Pro";

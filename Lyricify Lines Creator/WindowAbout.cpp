@@ -49,8 +49,8 @@ void WindowAbout::OpenWindow(bool* isOpened, double DPI_Scale, RECT rect)
 	setfont(24, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
 	canvas.CenterText(L"Lyricify Lines Creator", { 0, 20, w, 45 });
 	canvas.SetTextColor(GRAY);
-	setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-	canvas.CenterText(L"Version 0.1-alpha", { 0, 50, w, 70 });
+	setfont(16, 0, L"Consolas", 0, 0, FW_DONTCARE, false, false, false);
+	canvas.CenterText((std::wstring(L"Version ") + std::wstring(VERSION)).c_str(), {0, 50, w, 70});
 
 	top += 85;
 	canvas.SetTextColor(BLACK);
