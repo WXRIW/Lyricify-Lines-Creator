@@ -46,6 +46,32 @@ namespace Lyricify
             list.push_back(line);
         }
 
-        return list;
+		return list;
+	}
+
+	/// <summary>
+	/// 解析歌词到列表
+	/// </summary>
+	/// <param name="raw">原始 Lyricify Lines 歌词字符串</param>
+	/// <returns>歌词列表</returns>
+	std::vector<Lyricify::Lyrics> LyricsHelper::ParseLyricsFromLyricifyLinesString(std::wstring raw)
+	{
+		std::vector<Lyricify::Lyrics> list;
+
+		// TODO
+
+		return list;
+	}
+
+	/// <summary>
+	/// 生成 Lyricify Lines 歌词字符串
+	/// </summary>
+	/// <param name="lyrics">歌词列表</param>
+	/// <returns>生成的字符串</returns>
+	std::wstring LyricsHelper::GenerateLyricifyLinesFromLyricsList(std::vector<Lyricify::Lyrics> lyrics)
+	{
+		// TODO
+
+		return L"";
 	}
 }
