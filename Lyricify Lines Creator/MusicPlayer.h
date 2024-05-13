@@ -9,22 +9,17 @@
 class MusicPlayer
 {
 private:
-	irrklang::ISoundEngine* engine;
-	irrklang::ISound* currentAudio;
+	static irrklang::ISoundEngine* engine;
+	static irrklang::ISound* currentAudio;
+	static bool CheckInitiation(bool init = true);
 
 public:
-	bool Open(const std::wstring filePath, bool override = false);
-	void Play();
-	void Pause();
-	bool IsPlaying();
-	int GetCurrentPositionMs();
-	int GetTotalDurationMs();
-	bool SeekTo(int);
-
-	MusicPlayer()
-	{
-		engine = irrklang::createIrrKlangDevice();
-		currentAudio = nullptr;
-	}
+	static void InitPlayer();
+	static bool Open(const std::wstring filePath, bool override = false);
+	static void Play();
+	static void Pause();
+	static bool IsPlaying();
+	static int GetCurrentPositionMs();
+	static int GetTotalDurationMs();
+	static bool SeekTo(int);
 };
-

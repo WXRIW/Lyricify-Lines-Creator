@@ -1,6 +1,42 @@
 #include "MusicPlayer.h"
 
 /// <summary>
+/// irrKlang 播放引擎的实例
+/// </summary>
+irrklang::ISoundEngine* MusicPlayer::engine = nullptr;
+
+/// <summary>
+/// 当前正在播放音频的实例
+/// </summary>
+irrklang::ISound* MusicPlayer::currentAudio = nullptr;
+
+/// <summary>
+/// 初始化播放器
+/// </summary>
+void MusicPlayer::InitPlayer()
+{
+	if (engine == nullptr)
+	{
+		engine = irrklang::createIrrKlangDevice();
+	}
+}
+
+/// <summary>
+/// 检查是否完成了播放器初始化
+/// </summary>
+/// <param name="init">如果未完成，是否进行初始化</param>
+/// <returns>是否完成了初始化</returns>
+bool MusicPlayer::CheckInitiation(bool init)
+{
+	if (engine == nullptr)
+	{
+		engine = irrklang::createIrrKlangDevice();
+		return engine != nullptr;
+	}
+	return true;
+}
+
+/// <summary>
 /// 打开音频文件
 /// </summary>
 /// <param name="filePath">音频文件路径</param>
@@ -8,6 +44,8 @@
 /// <returns>是否成功打开</returns>
 bool MusicPlayer::Open(const std::wstring filePath, bool override)
 {
+	CheckInitiation();
+
 	const int nBufferSize = 2048; // large enough, but best would be wcslen(yourFilename)*3.
 	char strBuffer[nBufferSize];
 	irrklang::makeUTF8fromUTF16string(filePath.c_str(), strBuffer, nBufferSize);
