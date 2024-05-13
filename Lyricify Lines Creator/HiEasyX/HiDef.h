@@ -11,7 +11,7 @@
 //#define _NATIVE_EASYX_
 
 // 取消 Release 模式的程序启动动画
-//#define _NO_START_ANIMATION_
+#define _NO_START_ANIMATION_
 
 // 取消系统控件的现代样式（仅在 MSVC 编译器下可以设置）
 //#define _NO_MORDEN_SYSCTRL_
