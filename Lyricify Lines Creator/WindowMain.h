@@ -7,6 +7,7 @@
 #include "resource.h"
 #include "WindowAbout.h"
 #include "MusicPlayer.h"
+#include "TaskHelper.h"
 
 #pragma warning(disable: 4244) // 禁用转换精度损失的 warning
 

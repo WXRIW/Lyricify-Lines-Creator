@@ -10,6 +10,11 @@ irrklang::ISoundEngine* MusicPlayer::engine = nullptr;
 /// </summary>
 irrklang::ISound* MusicPlayer::currentAudio = nullptr;
 
+/// <summary>
+/// 当前正在播放音频的文件路径
+/// </summary>
+std::wstring MusicPlayer::CurrentAudioPath = L"";
+
 void MusicPlayer::InitPlayer()
 {
 	if (engine == nullptr)
@@ -28,7 +33,19 @@ bool MusicPlayer::CheckInitiation(bool init)
 	return true;
 }
 
-bool MusicPlayer::Open(const std::wstring filePath, bool override)
+class SoundEndReceiver : public irrklang::ISoundStopEventReceiver
+{
+public:
+	virtual void OnSoundStopped(irrklang::ISound* sound, irrklang::E_STOP_EVENT_CAUSE reason, void* userData)
+	{
+		if (reason == irrklang::ESEC_SOUND_FINISHED_PLAYING)
+		{
+			MusicPlayer::Load(MusicPlayer::CurrentAudioPath, true);
+		}
+	}
+};
+
+bool MusicPlayer::Load(const std::wstring filePath, bool override)
 {
 	CheckInitiation();
 
@@ -37,8 +54,24 @@ bool MusicPlayer::Open(const std::wstring filePath, bool override)
 	irrklang::makeUTF8fromUTF16string(filePath.c_str(), strBuffer, nBufferSize);
 
 	auto audio = engine->play2D(strBuffer, false, true);
-	MusicPlayer::currentAudio = audio;
-	return audio != NULL;
+	SoundEndReceiver* myReceiver = new SoundEndReceiver();
+	audio->setSoundStopEventReceiver(myReceiver, nullptr);
+	
+	if (override || audio != nullptr)
+	{
+		if (MusicPlayer::currentAudio != nullptr)
+		{
+			MusicPlayer::currentAudio->stop();
+			MusicPlayer::currentAudio->drop();
+		}
+
+		MusicPlayer::currentAudio = audio;
+		CurrentAudioPath = (audio != nullptr) ? filePath : L"";
+
+		return (audio != nullptr);
+	}
+
+	return false;
 }
 
 void MusicPlayer::Play()
@@ -56,7 +89,7 @@ void MusicPlayer::Pause()
 bool MusicPlayer::IsPlaying()
 {
 	if (currentAudio != NULL)
-		return !MusicPlayer::currentAudio->getIsPaused();
+		return !(MusicPlayer::currentAudio->getIsPaused() || MusicPlayer::currentAudio->isFinished());
 	return false; // 空音频，则认为不在播放
 }
 
@@ -79,4 +112,18 @@ bool MusicPlayer::SeekTo(int ms)
 	if (currentAudio != NULL)
 		return MusicPlayer::currentAudio->setPlayPosition(ms);
 	return false;
+}
+
+bool MusicPlayer::SetPlaybackSpeed(float speed)
+{
+	if (currentAudio != NULL)
+		return MusicPlayer::currentAudio->setPlaybackSpeed(speed);
+	return false;
+}
+
+float MusicPlayer::GetPlaybackSpeed()
+{
+	if (currentAudio != NULL)
+		return MusicPlayer::currentAudio->getPlaybackSpeed();
+	return 1.0f;
 }

@@ -47,6 +47,11 @@ namespace WindowMain
 		if (!path.empty())
 		{
 			TextBoxChooseAudio.SetText(path);
+
+			if (!MusicPlayer::Load(path))
+			{
+				MessageBox(wnd.GetHandle(), L"音频加载失败！", L"加载失败", MB_OK);
+			}
 		}
 	}
 
@@ -70,7 +75,42 @@ namespace WindowMain
 
 	void ButtonPlayPause_Click()
 	{
+		if (MusicPlayer::IsPlaying())
+		{
+			MusicPlayer::Pause();
+			ButtonPlayPause.SetText(L"播放");
+		}
+		else
+		{
+			if (MusicPlayer::CurrentAudioPath.empty() && !TextBoxChooseAudio.GetText().empty()
+				|| MusicPlayer::CurrentAudioPath != TextBoxChooseAudio.GetText())
+			{
+				// 没有加载音频，或音频变更时，需要重新加载
+				if (!MusicPlayer::Load(TextBoxChooseAudio.GetText()))
+				{
+					MessageBox(wnd.GetHandle(), L"音频加载失败！", L"加载失败", MB_OK);
+				}
+			}
 
+			MusicPlayer::Play();
+			ButtonPlayPause.SetText(L"暂停");
+
+			std::thread([]()
+				{
+					auto audio = MusicPlayer::CurrentAudioPath;
+					while (audio == MusicPlayer::CurrentAudioPath && MusicPlayer::IsPlaying())
+					{
+						CanvasMain.Clear(true, BACKGROUND_COLOR);
+						DrawAtWndProcPaint();
+						wnd.Redraw();
+						TaskHelper::Delay(25).wait();
+					}
+					if (!MusicPlayer::IsPlaying())
+					{
+						ButtonPlayPause.SetText(L"播放");
+					}
+				}).detach();
+		}
 	}
 
 	void ButtonAbout_Click()
@@ -131,7 +171,7 @@ namespace WindowMain
 #pragma region 播放区域
 
 		top = MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 3 + 25;
-		ButtonPlayPause.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + top, BUTTON_WIDTH, BUTTON_HEIGHT, L"暂停");
+		ButtonPlayPause.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + top, BUTTON_WIDTH, BUTTON_HEIGHT, L"播放");
 
 #pragma endregion
 
@@ -242,17 +282,20 @@ namespace WindowMain
 #pragma region 音频区域
 
 		// 当前时间
+		auto progress = MusicPlayer::GetCurrentPositionMs();
+		auto timeStr = StringHelper::TimeMsToString(progress == -1 ? 0 : progress);
+		timeStr = timeStr.substr(0, timeStr.length() - 1);
 		setfont(DEFAULT_CANVAS_FONTSIZE, 0, L"Consolas");
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top, L"0:00.000");
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top, (StringHelper::StringToWstring(timeStr)).c_str());
 
 		// 进度条
-		auto left = MARGIN_HORIZONTAL + 84;
+		auto left = MARGIN_HORIZONTAL + (timeStr.length() == 7 ? 76 : 86);
 		auto right = w - MARGIN_HORIZONTAL - BUTTON_WIDTH - CONTROL_PADDING_HORIZONTAL;
-		auto progress = 0.333; // 暂设进度为 33.3%
+		double percent = progress == -1 ? 0 : (double)progress / MusicPlayer::GetTotalDurationMs();
 		auto width = right - left;
 		CanvasMain.GP_SetLineWidth(3);
 		CanvasMain.GP_Line(left, top + 11, right, top + 11, true, RGB(0xBF, 0xBF, 0xBF));
-		CanvasMain.GP_Line(left, top + 11, right - width * (1 - progress), top + 11, true, RGB(0x7F, 0x7F, 0x7F));
+		CanvasMain.GP_Line(left, top + 11, right - width * (1 - percent), top + 11, true, RGB(0x7F, 0x7F, 0x7F));
 		CanvasMain.GP_SetLineWidth(1); // 还原
 
 #pragma endregion

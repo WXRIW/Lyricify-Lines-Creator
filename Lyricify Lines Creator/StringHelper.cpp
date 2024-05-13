@@ -1,6 +1,6 @@
 #include "StringHelper.h"
 
-std::wstring StringHelper::StringToWstring(std::string& str)
+std::wstring StringHelper::StringToWstring(const std::string& str)
 {
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 	return converter.from_bytes(str);
@@ -74,4 +74,23 @@ bool StringHelper::IsEmptyOrWhiteSpace(const std::wstring& str)
 	if (str.empty()) return true;
 	if (Trim(str).empty()) return true;
 	return false;
+}
+
+std::string StringHelper::TimeMsToString(long long ms)
+{
+	std::chrono::milliseconds _ms(ms);
+
+	std::chrono::minutes mm = std::chrono::duration_cast<std::chrono::minutes>(_ms);
+	_ms -= mm;
+	std::chrono::seconds ss = std::chrono::duration_cast<std::chrono::seconds>(_ms);
+	_ms -= ss;
+
+	// 使用 stringstream 构造字符串
+	std::stringstream ss_time;
+	ss_time << std::setfill('0')
+		/*<< std::setw(2)*/ << mm.count() << ":"
+		<< std::setw(2) << ss.count() << "."
+		<< std::setw(3) << _ms.count();
+
+	return ss_time.str();
 }

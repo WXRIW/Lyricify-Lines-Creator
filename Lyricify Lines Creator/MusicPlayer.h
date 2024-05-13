@@ -20,6 +20,8 @@ private:
 	static bool CheckInitiation(bool init = true);
 
 public:
+	static std::wstring CurrentAudioPath;
+
 	/// <summary>
 	/// 初始化播放器
 	/// </summary>
@@ -31,7 +33,7 @@ public:
 	/// <param name="filePath">音频文件路径</param>
 	/// <param name="override">覆盖原音频 (如果有)</param>
 	/// <returns>是否成功打开</returns>
-	static bool Open(const std::wstring filePath, bool override = false);
+	static bool Load(const std::wstring filePath, bool override = true);
 
 	/// <summary>
 	/// 开始播放 / 恢复播放
@@ -66,5 +68,18 @@ public:
 	/// </summary>
 	/// <param name="ms">要跳转到的毫秒数</param>
 	/// <returns>是否成功跳转</returns>
-	static bool SeekTo(int);
+	static bool SeekTo(int ms);
+
+	/// <summary>
+	/// 设置播放速率
+	/// </summary>
+	/// <param name="speed">播放速率，默认为 1.0f</param>
+	/// <returns>是否成功设置</returns>
+	static bool SetPlaybackSpeed(float speed = 1.0f);
+
+	/// <summary>
+	/// 获取播放速率
+	/// </summary>
+	/// <returns>播放速率，默认为 1.0f</returns>
+	static float GetPlaybackSpeed();
 };

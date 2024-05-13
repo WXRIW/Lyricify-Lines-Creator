@@ -147,6 +147,9 @@
     <ClCompile Include="WindowMain.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="TaskHelper.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HiEasyX\HiGUI\Button.h">
@@ -338,6 +341,9 @@
     <ClInclude Include="WindowMain.h">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="TaskHelper.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Lyricify Lines Creator.rc">
@@ -350,14 +356,8 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\ikpFlac.dll">
-      <Filter>Resource Files\Dlls</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\ikpMP3.dll">
-      <Filter>Resource Files\Dlls</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\irrKlang.dll">
-      <Filter>Resource Files\Dlls</Filter>
-    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\ikpFlac.dll" />
+    <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\ikpMP3.dll" />
+    <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\irrKlang.dll" />
   </ItemGroup>
 </Project>
