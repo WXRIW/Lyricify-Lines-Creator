@@ -1,10 +1,5 @@
 #include "WindowAbout.h"
 
-/// <summary>
-/// 显示关于窗体
-/// </summary>
-/// <param name="DPI_Scale">DPI 缩放比</param>
-/// <param name="rect">父窗口区域，不传入则随机位置</param>
 void WindowAbout::Show(double DPI_Scale, RECT rect)
 {
 	static bool IsOpened = false;
@@ -15,12 +10,6 @@ void WindowAbout::Show(double DPI_Scale, RECT rect)
 	}
 }
 
-/// <summary>
-/// 打开窗口
-/// </summary>
-/// <param name="isOpened">窗口是否已经关闭</param>
-/// <param name="DPI_Scale">DPI 缩放比</param>
-/// <param name="rect">父窗口区域，不传入则随机位置</param>
 void WindowAbout::OpenWindow(bool* isOpened, double DPI_Scale, RECT rect)
 {
 	*isOpened = true;

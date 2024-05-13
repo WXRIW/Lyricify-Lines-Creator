@@ -1,11 +1,5 @@
 #include "FileHelper.h"
 
-/// <summary>
-/// 选择文件
-/// </summary>
-/// <param name="title">对话框标题</param>
-/// <param name="fileFilter">文件类型筛选器</param>
-/// <returns>文件名，未选择为空字符串</returns>
 std::wstring FileHelper::SelectFile(LPCWSTR title, LPCWSTR fileFilter)
 {
 	OPENFILENAME ofn;
@@ -31,11 +25,6 @@ std::wstring FileHelper::SelectFile(LPCWSTR title, LPCWSTR fileFilter)
 	return L"";
 }
 
-/// <summary>
-/// 选择文件夹
-/// </summary>
-/// <param name="title">对话框标题</param>
-/// <returns>路径，未选择为空字符串</returns>
 std::wstring FileHelper::SelectFolder(LPCWSTR title)
 {
 	BROWSEINFO bi = { 0 };

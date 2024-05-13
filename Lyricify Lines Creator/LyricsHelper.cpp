@@ -2,11 +2,6 @@
 
 namespace Lyricify
 {
-	/// <summary>
-	/// 从文件读取文本行存入 vector 列表
-	/// </summary>
-	/// <param name="filePath">文件路径</param>
-	/// <returns>存入的 vector 列表，若失败则返回空列表</returns>
 	std::vector<std::wstring> LyricsHelper::ReadTextToLines(std::wstring filePath)
 	{
         std::ifstream inputFile(filePath);
@@ -31,11 +26,6 @@ namespace Lyricify
         return lines;
 	}
 
-	/// <summary>
-	/// 将文本行列表存入新的 Lyricify.Lyrics 的 vector 列表
-	/// </summary>
-	/// <param name="lines">文本行 vector 列表</param>
-	/// <returns>存入的 vector 列表</returns>
 	std::vector<Lyricify::Lyrics> LyricsHelper::GetLyricsFromLines(std::vector<std::wstring> lines)
 	{
         std::vector<Lyricify::Lyrics> list;
@@ -49,11 +39,6 @@ namespace Lyricify
 		return list;
 	}
 
-	/// <summary>
-	/// 解析歌词到列表
-	/// </summary>
-	/// <param name="raw">原始 Lyricify Lines 歌词字符串</param>
-	/// <returns>歌词列表</returns>
 	std::vector<Lyricify::Lyrics> LyricsHelper::ParseLyricsFromLyricifyLinesString(std::wstring raw)
 	{
 		std::vector<Lyricify::Lyrics> list;
@@ -63,11 +48,6 @@ namespace Lyricify
 		return list;
 	}
 
-	/// <summary>
-	/// 生成 Lyricify Lines 歌词字符串
-	/// </summary>
-	/// <param name="lyrics">歌词列表</param>
-	/// <returns>生成的字符串</returns>
 	std::wstring LyricsHelper::GenerateLyricifyLinesFromLyricsList(std::vector<Lyricify::Lyrics> lyrics)
 	{
 		// TODO

@@ -8,8 +8,19 @@
 #include "WinUser.h"
 #include <Windows.h>
 
+/// <summary>
+/// 启用 DPI 感知 (程序自动处理 DPI)
+/// </summary>
 void EnableDpiAwareness();
 
+/// <summary>
+/// 获取 DPI 值
+/// </summary>
+/// <returns>DPI 值 (默认为 96)</returns>
 int GetDpi();
 
+/// <summary>
+/// 获取 DPI 缩放比
+/// </summary>
+/// <returns>DPI 缩放比 (默认为 1.0)</returns>
 double GetDpiScale();
