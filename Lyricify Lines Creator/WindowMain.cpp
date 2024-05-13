@@ -41,7 +41,7 @@ namespace WindowMain
 
 	void ButtonChooseAudio_Click()
 	{
-		auto path = FileHelper::SelectFile(L"—°‘Ò“Ù∆µ", L"“Ù∆µ (*.mp3;*.wav;*.flac)\0*.mp3;*.wav;*.flac");
+		auto path = FileHelper::SelectFile(L"—°‘Ò“Ù∆µ", L"“Ù∆µ (*.mp3;*.wav;*.flac;*.ogg)\0*.mp3;*.wav;*.flac;*.ogg");
 		if (!path.empty())
 		{
 			TextBoxChooseAudio.SetText(path);
