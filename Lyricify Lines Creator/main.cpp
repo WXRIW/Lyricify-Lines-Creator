@@ -19,6 +19,7 @@ int main()
 		hiex::SysControlBase::DPI_Scale = DPI_Scale;
 	}
 
+	hiex::SetCustomIcon(MAKEINTRESOURCE(IDI_ICON1), MAKEINTRESOURCE(IDI_ICON1));
 	WindowMain::Show(DPI_Scale);
 
 	closegraph();

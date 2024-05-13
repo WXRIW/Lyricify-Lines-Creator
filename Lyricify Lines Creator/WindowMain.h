@@ -28,6 +28,7 @@ namespace WindowMain
 	void ButtonRestart_Click();
 	void ButtonStart_Click();
 
+	RECT GetWindowRect();
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	void Show(double scale = 1);
 };

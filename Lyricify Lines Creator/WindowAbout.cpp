@@ -1,20 +1,43 @@
 #include "WindowAbout.h"
 
-void WindowAbout::Show(double DPI_Scale)
+/// <summary>
+/// 显示关于窗体
+/// </summary>
+/// <param name="DPI_Scale">DPI 缩放比</param>
+/// <param name="rect">父窗口区域，不传入则随机位置</param>
+void WindowAbout::Show(double DPI_Scale, RECT rect)
 {
 	static bool IsOpened = false;
 
 	if (!IsOpened)
 	{
-		IsOpened = true;
-		std::thread(OpenWindow, &IsOpened, DPI_Scale).detach();
+		std::thread(OpenWindow, &IsOpened, DPI_Scale, rect).detach();
 	}
 }
 
-void WindowAbout::OpenWindow(bool* isOpened, double DPI_Scale)
+/// <summary>
+/// 打开窗口
+/// </summary>
+/// <param name="isOpened">窗口是否已经关闭</param>
+/// <param name="DPI_Scale">DPI 缩放比</param>
+/// <param name="rect">父窗口区域，不传入则随机位置</param>
+void WindowAbout::OpenWindow(bool* isOpened, double DPI_Scale, RECT rect)
 {
-	hiex::Window wnd(360 * DPI_Scale, 300 * DPI_Scale, EW_NORMAL, L"关于");
+	*isOpened = true;
+	const int WIDTH = 360;
+	const int HEIGHT = 300;
+
+	hiex::Window wnd;
+	if (rect.left != -1 && rect.right != -1 && rect.top != -1 && rect.bottom != -1)
+	{
+		int left = (rect.left + rect.right) / 2 - WIDTH * DPI_Scale / 2;
+		int top = (rect.top + rect.bottom) / 2 - HEIGHT * DPI_Scale / 2;
+		wnd.PreSetPos(left, top);
+	}
+	wnd.InitWindow(WIDTH * DPI_Scale, HEIGHT * DPI_Scale, EW_NORMAL, L"关于");
 	DisableResizing(wnd.GetHandle(), true);
+	SetWindowPos(wnd.GetHandle(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE); // Topmost
+
 	hiex::Canvas canvas;
 	wnd.BindCanvas(&canvas);
 	setfont(20, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);

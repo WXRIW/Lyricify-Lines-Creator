@@ -11,6 +11,8 @@ namespace WindowMain
 
 #pragma region Control Definations
 
+	hiex::Window wnd;
+
 	// 顶部区域
 
 	hiex::Canvas CanvasMain;
@@ -73,7 +75,7 @@ namespace WindowMain
 
 	void ButtonAbout_Click()
 	{
-		WindowAbout::Show(DPI_Scale);
+		WindowAbout::Show(DPI_Scale, GetWindowRect());
 	}
 
 	void ButtonViewOutput_Click()
@@ -312,13 +314,24 @@ namespace WindowMain
 #pragma endregion
 
 	/// <summary>
-		/// 主窗口回调函数
-		/// </summary>
-		/// <param name="hWnd">窗口句柄</param>
-		/// <param name="msg">消息ID</param>
-		/// <param name="wParam">消息参数 wParam</param>
-		/// <param name="lParam">消息参数 lParam</param>
-		/// <returns></returns>
+	/// 获取窗口区域矩形
+	/// </summary>
+	/// <returns>窗口区域矩形</returns>
+	RECT GetWindowRect()
+	{
+		auto pos = wnd.GetPos();
+		auto size = wnd.GetWindowSize();
+		return { pos.x, pos.y, pos.x + size.cx, pos.y + size.cy };
+	}
+
+	/// <summary>
+	/// 主窗口回调函数
+	/// </summary>
+	/// <param name="hWnd">窗口句柄</param>
+	/// <param name="msg">消息ID</param>
+	/// <param name="wParam">消息参数 wParam</param>
+	/// <param name="lParam">消息参数 lParam</param>
+	/// <returns></returns>
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg)
@@ -346,8 +359,7 @@ namespace WindowMain
 		DPI_Scale = scale;
 
 		// 初始化窗口
-		hiex::SetCustomIcon(MAKEINTRESOURCE(IDI_ICON1), MAKEINTRESOURCE(IDI_ICON1));
-		hiex::Window wnd(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, L"Lyricify Lyrics Creator");
+		wnd.InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, L"Lyricify Lyrics Creator");
 		wnd.BindCanvas(&CanvasMain);
 		wnd.SetProcFunc(WndProc);
 		hiex::AutoExit();
