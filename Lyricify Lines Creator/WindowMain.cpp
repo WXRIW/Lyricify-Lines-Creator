@@ -97,7 +97,7 @@ namespace WindowMain
 
 			std::thread([]()
 				{
-					auto audio = MusicPlayer::CurrentAudioPath;
+					std::wstring audio = MusicPlayer::CurrentAudioPath;
 					while (audio == MusicPlayer::CurrentAudioPath && MusicPlayer::IsPlaying())
 					{
 						CanvasMain.Clear(true, BACKGROUND_COLOR);
