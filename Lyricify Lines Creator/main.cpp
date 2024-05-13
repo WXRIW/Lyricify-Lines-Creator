@@ -6,6 +6,8 @@
 #include "CommonDefine.h"
 #include "WindowMain.h"
 
+#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"") // 不显示控制台
+
 double DPI_Scale = 1;
 
 int main()
