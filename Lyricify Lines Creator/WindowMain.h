@@ -18,7 +18,8 @@ namespace WindowMain
 	void ResizeMoveControls();
 	void DrawLabelControls();
 	void DrawPlaybackArea();
-	void DrawAtWndProcPaint();
+	void DrawAtWndProcPaint(bool ignoreInRefreshUI);
+	void RefreshUI();
 
 	void ButtonChooseAudio_Click();
 	void ButtonChooseRawLyrics_Click();
@@ -30,6 +31,12 @@ namespace WindowMain
 	void ButtonRestart_Click();
 	void ButtonStart_Click();
 
+	int GetCurrentLineIndex();
+	Lyricify::Lyrics* GetCurrentLine(int index = -1);
+	std::wstring GetCurrentLineString(int index = -2);
+	std::vector<std::wstring> GetComingLinesString(int index = -2, size_t maxSize = -1);
+
+	void KeyboardEvents(WPARAM wParam);
 	RECT GetWindowRect();
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	void Show(double scale = 1);

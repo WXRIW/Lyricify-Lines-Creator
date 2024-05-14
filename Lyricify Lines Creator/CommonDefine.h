@@ -2,7 +2,7 @@
 
 #include "HiEasyX.h"
 
-#pragma warning(disable: 4244) // 禁用转换精度损失的 warning
+#pragma warning(disable: 4244 4267) // 禁用转换精度损失的 warning
 
 constexpr auto VERSION = L"0.1-alpha";
 
@@ -15,6 +15,7 @@ constexpr auto DEFAULT_TEXTBOX_FONTSIZE = 18;
 constexpr auto DEFAULT_BUTTON_FONTSIZE = 18;
 
 constexpr auto BACKGROUND_COLOR = CLASSICGRAY;
+constexpr auto FOREGROUND_COLOR = BLACK;
 
 constexpr auto WINDOW_WIDTH = 800;
 constexpr auto WINDOW_HEIGHT = 500;

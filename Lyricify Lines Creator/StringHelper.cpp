@@ -2,8 +2,18 @@
 
 std::wstring StringHelper::StringToWstring(const std::string& str)
 {
-	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-	return converter.from_bytes(str);
+	int size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
+	std::wstring wstr(size_needed, 0);
+	MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &wstr[0], size_needed);
+	return wstr;
+}
+
+std::string StringHelper::WstringToString(const std::wstring& wstr)
+{
+	int size_needed = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
+	std::string str(size_needed, 0);
+	WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), &str[0], size_needed, NULL, NULL);
+	return str;
 }
 
 std::string StringHelper::Trim(const std::string& str)
@@ -93,4 +103,74 @@ std::string StringHelper::TimeMsToString(long long ms)
 		<< std::setw(3) << _ms.count();
 
 	return ss_time.str();
+}
+
+std::string StringHelper::GetFileNameFromPath(const std::string& path)
+{
+	size_t pos = path.find_last_of("\\/");
+	if (pos != std::string::npos)
+	{
+		return path.substr(pos + 1);
+	}
+	return path; // 如果没有找到路径分隔符，返回整个路径
+}
+
+std::wstring StringHelper::GetFileNameFromPath(const std::wstring& path)
+{
+	size_t pos = path.find_last_of(L"\\/");
+	if (pos != std::string::npos)
+	{
+		return path.substr(pos + 1);
+	}
+	return path; // 如果没有找到路径分隔符，返回整个路径
+}
+
+std::string StringHelper::GetDirectoryFromPath(const std::string& path)
+{
+	size_t pos = path.find_last_of("\\/");
+	if (pos != std::string::npos)
+	{
+		return path.substr(0, pos);
+	}
+	return path; // 如果没有找到路径分隔符，返回整个路径
+}
+
+std::wstring StringHelper::GetDirectoryFromPath(const std::wstring& path)
+{
+	size_t pos = path.find_last_of(L"\\/");
+	if (pos != std::string::npos)
+	{
+		return path.substr(0, pos);
+	}
+	return path; // 如果没有找到路径分隔符，返回整个路径
+}
+
+std::string StringHelper::ReplaceFileNameExtension(const std::string& filename, const std::string& newExtension)
+{
+	size_t dotPos = filename.find_last_of('.');
+	if (dotPos == std::string::npos)
+	{
+		// 如果没有找到点，直接添加新的扩展名
+		return filename + "." + newExtension;
+	}
+	else
+	{
+		// 否则替换掉旧的扩展名
+		return filename.substr(0, dotPos + 1) + newExtension;
+	}
+}
+
+std::wstring StringHelper::ReplaceFileNameExtension(const std::wstring& filename, const std::wstring& newExtension)
+{
+	size_t dotPos = filename.find_last_of(L'.');
+	if (dotPos == std::wstring::npos)
+	{
+		// 如果没有找到点，直接添加新的扩展名
+		return filename + L"." + newExtension;
+	}
+	else
+	{
+		// 否则替换掉旧的扩展名
+		return filename.substr(0, dotPos + 1) + newExtension;
+	}
 }

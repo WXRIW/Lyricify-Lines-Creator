@@ -6,6 +6,7 @@
 #include <locale>
 #include <sstream>
 #include <string>
+#include <windows.h>
 
 class StringHelper
 {
@@ -16,6 +17,13 @@ public:
 	/// <param name="str">std::string 类型的字符串</param>
 	/// <returns>std::wstring 类型的字符串</returns>
 	static std::wstring StringToWstring(const std::string& str);
+
+	/// <summary>
+	/// 将 std::wstring 转换为 std::string
+	/// </summary>
+	/// <param name="str">std::wstring 类型的字符串</param>
+	/// <returns>std::string 类型的字符串</returns>
+	static std::string WstringToString(const std::wstring& str);
 
 	/// <summary>
 	/// 去除字符串首尾的空白字符
@@ -63,4 +71,48 @@ public:
 	/// <param name="ms">时间，单位毫秒</param>
 	/// <returns>std:string 字符串</returns>
 	static std::string TimeMsToString(long long ms);
+
+	/// <summary>
+	/// 从路径中获取文件名
+	/// </summary>
+	/// <param name="path">路径字符串</param>
+	/// <returns>文件名。如果没有找到路径分隔符，则返回整个路径</returns>
+	static std::string GetFileNameFromPath(const std::string& path);
+
+	/// <summary>
+	/// 从路径中获取文件名
+	/// </summary>
+	/// <param name="path">路径字符串</param>
+	/// <returns>文件名。如果没有找到路径分隔符，则返回整个路径</returns>
+	static std::wstring GetFileNameFromPath(const std::wstring& path);
+	
+	/// <summary>
+	/// 从路径中获取目录路径 (不含末尾分隔符)
+	/// </summary>
+	/// <param name="path">路径字符串</param>
+	/// <returns>目录路径。如果没有找到路径分隔符，则返回整个路径</returns>
+	static std::string GetDirectoryFromPath(const std::string& path);
+
+	/// <summary>
+	/// 从路径中获取目录路径 (不含末尾分隔符)
+	/// </summary>
+	/// <param name="path">路径字符串</param>
+	/// <returns>目录路径。如果没有找到路径分隔符，则返回整个路径</returns>
+	static std::wstring GetDirectoryFromPath(const std::wstring& path);
+
+	/// <summary>
+	/// 替换文件名的扩展名
+	/// </summary>
+	/// <param name="filename">文件名字符串</param>
+	/// <param name="newExtension">要替换成的扩展名</param>
+	/// <returns>替换后的文件名，若原文件名没有扩展名，则会添加扩展名</returns>
+	static std::string ReplaceFileNameExtension(const std::string& filename, const std::string& newExtension);
+
+	/// <summary>
+	/// 替换文件名的扩展名
+	/// </summary>
+	/// <param name="filename">文件名字符串</param>
+	/// <param name="newExtension">要替换成的扩展名</param>
+	/// <returns>替换后的文件名，若原文件名没有扩展名，则会添加扩展名</returns>
+	static std::wstring ReplaceFileNameExtension(const std::wstring& filename, const std::wstring& newExtension);
 };

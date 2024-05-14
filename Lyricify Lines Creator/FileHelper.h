@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <string>
 #include <ShlObj.h>
 
@@ -20,4 +21,11 @@ public:
 	/// <param name="title">对话框标题</param>
 	/// <returns>路径，未选择为空字符串</returns>
 	static std::wstring SelectFolder(LPCWSTR title);
+
+	/// <summary>
+	/// 确保路径存在，不存在时尝试创建目录
+	/// </summary>
+	/// <param name="path">要确保存在的路径</param>
+	/// <returns>路径是否存在</returns>
+	static bool EnsureDirectoryExists(const std::wstring& path);
 };

@@ -7,6 +7,11 @@ namespace WindowMain
 	// 顶部区域左侧 Label 的宽度，后期本地化时在这里更改尺寸
 	int TOP_LEFT_LABEL_MAX_WIDTH = 65;
 
+	bool IsInRefreshUI = false;
+	bool IsInDrawAtWndProcPaint = false;
+	bool IsMaking = false;
+	std::vector<Lyricify::Lyrics> LyricsList;
+
 #pragma region Controls
 
 #pragma region Control Definations
@@ -61,6 +66,19 @@ namespace WindowMain
 		if (!path.empty())
 		{
 			TextBoxChooseRawLyrics.SetText(path);
+
+			auto stringLines = Lyricify::LyricsHelper::ReadTextToLines(TextBoxChooseRawLyrics.GetText());
+			if (stringLines.size() == 0)
+			{
+				MessageBox(wnd.GetHandle(), L"文本为空，或出现读取错误！", L"预处理错误", MB_OK);
+				return;
+			}
+
+			// 加载歌词文本
+			LyricsList = Lyricify::LyricsHelper::GetLyricsFromLines(stringLines);
+
+			// 加载到 UI 中
+			RefreshUI();
 		}
 	}
 
@@ -104,12 +122,9 @@ namespace WindowMain
 					std::wstring audio = MusicPlayer::CurrentAudioPath;
 					while (audio == MusicPlayer::CurrentAudioPath && MusicPlayer::IsPlaying())
 					{
-						if (!WindowAbout::IsOpened())
+						if (!WindowAbout::IsOpened()) // 关于被打开时，不再刷新进度，防止渲染错乱
 						{
-							// 关于被打开时，不再刷新进度，防止渲染错乱
-							CanvasMain.Clear(true, BACKGROUND_COLOR);
-							DrawAtWndProcPaint();
-							wnd.Redraw();
+							RefreshUI();
 						}
 						TaskHelper::Delay(25).wait();
 					}
@@ -140,15 +155,108 @@ namespace WindowMain
 
 	void ButtonRestart_Click()
 	{
-
+		// 清空歌词的时间信息，并返回头部
+		for (auto& line : LyricsList)
+		{
+			line.StartTime = -1;
+			line.EndTime = -1;
+		}
+		MusicPlayer::SeekTo(0);
 	}
 
 	void ButtonStart_Click()
 	{
+		if (!IsMaking)
+		{
+			// 开始制作
+			// 检查配置状态
+			if (TextBoxChooseAudio.GetTextLength() == 0)
+			{
+				MessageBox(wnd.GetHandle(), L"未选择音频！", L"预处理错误", MB_OK);
+				return;
+			}
+			if (MusicPlayer::CurrentAudioPath != TextBoxChooseAudio.GetText() && !MusicPlayer::Load(TextBoxChooseAudio.GetText()))
+			{
+				MessageBox(wnd.GetHandle(), L"音频加载失败！", L"预处理错误", MB_OK);
+				return;
+			}
+			if (TextBoxChooseRawLyrics.GetTextLength() == 0)
+			{
+				MessageBox(wnd.GetHandle(), L"未选择歌词文本！", L"预处理错误", MB_OK);
+				return;
+			}
+			auto stringLines = Lyricify::LyricsHelper::ReadTextToLines(TextBoxChooseRawLyrics.GetText());
+			if (stringLines.size() == 0)
+			{
+				MessageBox(wnd.GetHandle(), L"文本为空，或出现读取错误！", L"预处理错误", MB_OK);
+				return;
+			}
 
+			// 加载歌词文本
+			LyricsList = Lyricify::LyricsHelper::GetLyricsFromLines(stringLines);
+
+			// 开始播放音频
+			if (!MusicPlayer::IsPlaying())
+			{
+				ButtonPlayPause_Click();
+			}
+
+			// 更新按钮状态
+			ButtonRestart.Enable(true);
+			ButtonStart.SetText(L"保存歌词");
+		}
+		else
+		{
+			// 保存歌词
+			// 暂停播放音频
+			if (MusicPlayer::IsPlaying())
+			{
+				ButtonPlayPause_Click();
+			}
+
+			// 保存至文件
+			auto outputPath = TextBoxOutputPath.GetText();
+			if (outputPath.empty())
+			{
+				TCHAR exePath[MAX_PATH];
+				GetModuleFileName(NULL, exePath, MAX_PATH);
+				outputPath = StringHelper::GetDirectoryFromPath(exePath) + L"\\output\\";
+			}
+			if (outputPath.back() != L'/' && outputPath.back() != '\\') outputPath += L'\\';
+			FileHelper::EnsureDirectoryExists(outputPath);
+			auto filename = StringHelper::GetFileNameFromPath(TextBoxChooseAudio.GetText());
+			filename = StringHelper::ReplaceFileNameExtension(filename, L"lyl");
+			auto lyricifyLinesString = Lyricify::LyricsHelper::GenerateLyricifyLinesFromLyricsList(LyricsList);
+			if (lyricifyLinesString.empty())
+			{
+				MessageBox(wnd.GetHandle(), L"保存失败，没有歌词被写入文件！", L"保存失败", MB_OK);
+				return;
+			}
+			else
+			{
+				std::wofstream outFile(outputPath + filename);
+				if (!outFile)
+				{
+					MessageBox(wnd.GetHandle(), L"保存失败，无法写入文件！", L"保存失败", MB_OK);
+					return;
+				}
+				else
+				{
+					outFile << lyricifyLinesString;
+					outFile.close();
+				}
+			}
+
+			// 更新按钮状态
+			ButtonRestart.Enable(false);
+			ButtonStart.SetText(L"开始制作");
+		}
+		IsMaking = !IsMaking;
 	}
 
 #pragma endregion
+
+#pragma region Sizing (Init & Resize)
 
 	/// <summary>
 	/// 添加主窗体的控件
@@ -169,7 +277,6 @@ namespace WindowMain
 		TextBoxChooseAudio.Create(hwnd, left, MARGIN_VERTICAL, width, CONTROL_HEIGHT);
 		TextBoxChooseRawLyrics.Create(hwnd, left, MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, width, CONTROL_HEIGHT);
 		TextBoxOutputPath.Create(hwnd, left, MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, width, CONTROL_HEIGHT);
-
 
 		left = w - MARGIN_HORIZONTAL - BUTTON_WIDTH;
 		ButtonChooseAudio.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT, L"导入音频");
@@ -192,6 +299,7 @@ namespace WindowMain
 		ButtonViewOutput.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 4 - CONTROL_PADDING_HORIZONTAL * 5, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"查看输出");
 		ButtonPreview.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 3 - CONTROL_PADDING_HORIZONTAL * 4, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"预览效果");
 		ButtonRestart.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"重新制作");
+		ButtonRestart.Enable(false);
 		ButtonStart.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"开始制作");
 
 #pragma endregion
@@ -278,7 +386,24 @@ namespace WindowMain
 
 #pragma endregion
 
+#pragma endregion
+
 #pragma region Canvas Drawing
+
+	/// <summary>
+	/// 更新 UI
+	/// </summary>
+	void RefreshUI()
+	{
+		if (IsInDrawAtWndProcPaint || IsInRefreshUI) return;
+		IsInRefreshUI = true;
+
+		CanvasMain.Clear(true, BACKGROUND_COLOR);
+		DrawAtWndProcPaint(true);
+		wnd.Redraw();
+
+		IsInRefreshUI = false;
+	}
 
 	/// <summary>
 	/// 在 Canvas 中绘制文本 (实现 Label 控件效果)
@@ -332,6 +457,24 @@ namespace WindowMain
 
 		// 绘制歌词文本
 		// 可通过剩余高度 判断绘制多行歌词
+		left = MARGIN_HORIZONTAL + 66;
+		auto currentIndex = GetCurrentLineIndex();
+		auto currentLine = GetCurrentLine(currentIndex);
+		auto isCurrentLineHasEndTime = false;
+		if (currentLine != nullptr && currentLine->EndTime != -1)
+		{
+			CanvasMain.SetTextColor(RGB(0x7F, 0x7F, 0x7F));
+		}
+		CanvasMain.OutTextXY(left, top + LYRICS_PADDING_VERTICAL, GetCurrentLineString(currentIndex).c_str());
+		auto lyricsHeight = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12 - 76 - top;
+		auto linesAvailable = lyricsHeight / LYRICS_PADDING_VERTICAL - 1;
+		linesAvailable = linesAvailable < 1 ? 1 : linesAvailable;
+		auto comingLines = GetComingLinesString(currentIndex, linesAvailable);
+		CanvasMain.SetTextColor(RGB(0x7F, 0x7F, 0x7F));
+		for (size_t i = 0; i < comingLines.size(); i++)
+		{
+			CanvasMain.OutTextXY(left, top + LYRICS_PADDING_VERTICAL * (i + 2), comingLines[i].c_str());
+		}
 
 #pragma endregion
 
@@ -339,6 +482,7 @@ namespace WindowMain
 
 		top = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12 - 36;
 		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
+		CanvasMain.SetTextColor(FOREGROUND_COLOR);
 		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top, L"按键提示：");
 		setfont(DEFAULT_CANVAS_FONTSIZE - 1, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 90, top + 1, L"行起始: ↑      行结束: →      回到上一行: ↓      回退 3s: B      前进 3s: N      前进 10s: M      播放/暂停: Space");
@@ -350,8 +494,11 @@ namespace WindowMain
 	/// <summary>
 	/// 回调时调用的重绘方法
 	/// </summary>
-	void DrawAtWndProcPaint()
+	void DrawAtWndProcPaint(bool ignoreInRefreshUI = false)
 	{
+		if (IsInDrawAtWndProcPaint || IsInRefreshUI && !ignoreInRefreshUI) return;
+		IsInDrawAtWndProcPaint = true;
+
 		const auto LINE_COLOR = RGB(0xAF, 0xAF, 0xAF);
 		const auto SUBLINE_COLOR = RGB(0xCF, 0xCF, 0xCF);
 		int top;
@@ -374,9 +521,165 @@ namespace WindowMain
 		top = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12;
 		CanvasMain.Line(10, top, w - 10, top, true, LINE_COLOR);
 		CanvasMain.Line(w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL * 2.5, top + 10, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL * 2.5, top + 40, true, SUBLINE_COLOR);
+
+		IsInDrawAtWndProcPaint = false;
 	}
 
 #pragma endregion
+
+#pragma region Lyrics
+
+	/// <summary>
+	/// 获取当前行的序号 (以 0 为起点)
+	/// </summary>
+	/// <returns>当前行的序号</returns>
+	int GetCurrentLineIndex()
+	{
+		for (int i = 0; i < LyricsList.size(); i++)
+		{
+			if (LyricsList[i].StartTime == -1)
+			{
+				return i - 1;
+			}
+		}
+		return (int)LyricsList.size() - 1;
+	}
+
+	/// <summary>
+	/// 获取当前行的歌词对象
+	/// </summary>
+	/// <param name="index">指定当前行的序号，若不指定则自动查找当前行</param>
+	/// <returns>当前行的歌词对象</returns>
+	Lyricify::Lyrics* GetCurrentLine(int index)
+	{
+		if (index == -1)
+			index = GetCurrentLineIndex();
+
+		if (index >= 0 && index < LyricsList.size())
+			return &LyricsList[index];
+
+		return nullptr;
+	}
+
+	/// <summary>
+	/// 获取当前行的歌词文本
+	/// </summary>
+	/// <param name="index">指定当前行的序号，若不指定则自动查找当前行</param>
+	/// <returns>当前行的歌词文本</returns>
+	std::wstring GetCurrentLineString(int index)
+	{
+		if (index == -2)
+			index = GetCurrentLineIndex();
+
+		if (index >= 0 && index < LyricsList.size())
+			return LyricsList[index].Text;
+
+		return L"";
+	}
+
+	/// <summary>
+	/// 获取后续行的歌词文本列表
+	/// </summary>
+	/// <param name="index">指定当前行的序号，若不指定则自动查找当前行</param>
+	/// <param name="maxSize">歌词文本列表的最大容量</param>
+	/// <returns>后续行的歌词文本列表</returns>
+	std::vector<std::wstring> GetComingLinesString(int index, size_t maxSize)
+	{
+		if (index == -2)
+			index = GetCurrentLineIndex();
+
+		std::vector<std::wstring> strings;
+		for (int i = index + 1; i < LyricsList.size() && (maxSize == -1 || strings.size() < maxSize); i++)
+		{
+			strings.push_back(LyricsList[i].Text);
+		}
+		return strings;
+	}
+
+#pragma endregion
+
+	void KeyboardEvents(WPARAM wParam)
+	{
+		switch (wParam)
+		{
+		case VK_SPACE:
+			ButtonPlayPause_Click();
+			break;
+
+		case 'B':
+			MusicPlayer::SeekBack(3000);
+			if (!MusicPlayer::IsPlaying()) RefreshUI();
+			break;
+
+		case 'N':
+			MusicPlayer::SeekForward(3000);
+			if (!MusicPlayer::IsPlaying()) RefreshUI();
+			break;
+
+		case 'M':
+			MusicPlayer::SeekForward(10000);
+			if (!MusicPlayer::IsPlaying()) RefreshUI();
+			break;
+
+		case VK_UP: // 为当前行 (下一行) 标记起始时间
+		{
+			if (!IsMaking) break;
+			auto index = GetCurrentLineIndex();
+			if (index < (int)LyricsList.size() - 1)
+			{
+				auto line = GetCurrentLine(index + 1);
+				if (line != nullptr)
+				{
+					line->StartTime = MusicPlayer::GetCurrentPositionMs();
+				}
+			}
+			else if (index == (int)LyricsList.size() - 1)
+			{
+				auto line = GetCurrentLine(index);
+				if (line != nullptr && line->EndTime == -1)
+				{
+					line->EndTime = MusicPlayer::GetCurrentPositionMs();
+				}
+			}
+			break;
+		}
+
+		case VK_RIGHT: // 为当前行标记结束时间
+		{
+			if (!IsMaking) break;
+			auto line = GetCurrentLine();
+			if (line != nullptr && line->EndTime == -1)
+			{
+				line->EndTime = MusicPlayer::GetCurrentPositionMs();
+			}
+			break;
+		}
+
+		case VK_DOWN: // 删去当前行的其实时间，如果有结束时间，则优先删除
+		{
+			if (!IsMaking) break;
+			auto index = GetCurrentLineIndex();
+			auto line = GetCurrentLine(index);
+			if (line != nullptr)
+			{
+				if (line->EndTime != -1)
+				{
+					MusicPlayer::SeekTo(line->EndTime);
+					line->EndTime = -1;
+				}
+				else
+				{
+					MusicPlayer::SeekTo(line->StartTime);
+					line->StartTime = -1;
+				}
+			}
+			break;
+		}
+
+		default:
+			break;
+		}
+	}
 
 	/// <summary>
 	/// 获取窗口区域矩形
@@ -422,27 +725,7 @@ namespace WindowMain
 
 		case WM_KEYDOWN:
 		case WM_IME_KEYDOWN:
-			switch (wParam)
-			{
-			case VK_SPACE:
-				ButtonPlayPause_Click();
-				break;
-
-			case 'B':
-				MusicPlayer::SeekBack(3000);
-				break;
-
-			case 'N':
-				MusicPlayer::SeekForward(3000);
-				break;
-
-			case 'M':
-				MusicPlayer::SeekForward(10000);
-				break;
-
-			default:
-				break;
-			}
+			KeyboardEvents(wParam);
 			break;
 
 		default:
@@ -465,7 +748,7 @@ namespace WindowMain
 		hiex::AutoExit();
 
 		setaspectratio(DPI_Scale, DPI_Scale);
-		CanvasMain.SetTextColor(BLACK);
+		CanvasMain.SetTextColor(FOREGROUND_COLOR);
 
 		// 设置 Canvas 字体，参考文档: https://docs.easyx.cn/zh-cn/LOGFONT
 		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);

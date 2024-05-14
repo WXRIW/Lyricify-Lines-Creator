@@ -24,31 +24,15 @@ namespace Lyricify
 		int EndTime;
 
 		Lyrics()
-		{
-			Text = L"";
-			StartTime = -1;
-			EndTime = -1;
-		}
+			: Text(L""), StartTime(-1), EndTime(-1) {}
 
 		Lyrics(std::wstring text)
-		{
-			Text = text;
-			StartTime = -1;
-			EndTime = -1;
-		}
+			: Text(text), StartTime(-1), EndTime(-1) {}
 
 		Lyrics(std::wstring text, int start)
-		{
-			Text = text;
-			StartTime = start;
-			EndTime = -1;
-		}
+			: Text(text), StartTime(start), EndTime(-1) {}
 
 		Lyrics(std::wstring text, int start, int end)
-		{
-			Text = text;
-			StartTime = start;
-			EndTime = end;
-		}
+			: Text(text), StartTime(start), EndTime(end) {}
 	};
 }

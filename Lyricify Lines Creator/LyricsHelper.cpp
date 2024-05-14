@@ -86,10 +86,17 @@ namespace Lyricify
 		if (lyrics.size() < 1) return L"";
 
 		std::wstring result = L"[type:LyricifyLines]\n";
-		for (const auto& lyric : lyrics)
+		for (size_t i = 0; i < lyrics.size(); i++)
 		{
-			result += L"[" + std::to_wstring(lyric.StartTime) + L"," + (lyric.EndTime != -1 ? std::to_wstring(lyric.EndTime) : L"-1") + L"]" + lyric.Text + L"\n";
+			if (lyrics[i].StartTime == -1)
+				break; // 遇到没有起始时间的歌词，直接结束字符串生成
+
+			int startTime = lyrics[i].StartTime;
+			int endTime = (lyrics[i].EndTime != -1) ? lyrics[i].EndTime : ((i + 1 < lyrics.size() && lyrics[i + 1].StartTime != -1) ? lyrics[i + 1].StartTime : 0);
+
+			result += L"[" + std::to_wstring(startTime) + L"," + std::to_wstring(endTime) + L"]" + lyrics[i].Text + L"\n";
 		}
-		return result;
+
+		return result == L"[type:LyricifyLines]\n" ? L"" : StringHelper::TrimEnd(result);
 	}
 }

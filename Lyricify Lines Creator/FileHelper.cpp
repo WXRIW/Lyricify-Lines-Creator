@@ -41,3 +41,15 @@ std::wstring FileHelper::SelectFolder(LPCWSTR title)
 	}
 	return L"";
 }
+
+bool FileHelper::EnsureDirectoryExists(const std::wstring& path)
+{
+	if (!std::filesystem::exists(path))
+	{
+		if (!std::filesystem::create_directory(path))
+		{
+			return false;
+		}
+	}
+	return true;
+}

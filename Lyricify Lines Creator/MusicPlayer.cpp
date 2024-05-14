@@ -110,7 +110,15 @@ int MusicPlayer::GetTotalDurationMs()
 bool MusicPlayer::SeekTo(int ms)
 {
 	if (currentAudio != nullptr)
+	{
+		if (ms < 0)
+			ms = 0;
+		auto length = currentAudio->getPlayLength();
+		if (length != -1 && ms > length)
+			ms = currentAudio->getPlayLength();
+
 		return currentAudio->setPlayPosition(ms);
+	}
 	return false;
 }
 
