@@ -1,75 +1,236 @@
 #include "WindowAbout.h"
 
-void WindowAbout::Show(double DPI_Scale, RECT rect)
+namespace WindowAbout
 {
-	static bool IsOpened = false;
-
-	if (!IsOpened)
+	enum WA_URL_INDEX
 	{
-		std::thread(OpenWindow, &IsOpened, DPI_Scale, rect).detach();
-	}
-}
+		WA_URL_INDEX_NONE,
+		WA_URL_INDEX_WXRIW,
+		WA_URL_INDEX_EASYX,
+		WA_URL_INDEX_HIEASYX,
+		WA_URL_INDEX_IRRKLANG,
+	};
 
-void WindowAbout::OpenWindow(bool* isOpened, double DPI_Scale, RECT rect)
-{
-	*isOpened = true;
-	const int WIDTH = 360;
-	const int HEIGHT = 355;
+	constexpr auto URL_COLOR = RGB(68, 147, 248);
 
-	hiex::Window wnd;
-	if (rect.left != -1 && rect.right != -1 && rect.top != -1 && rect.bottom != -1)
+	hiex::Window* Window;
+	hiex::Canvas* CanvasMain;
+	std::vector<RECT> UrlAreas;
+	std::vector<std::wstring> Urls;
+	double DPI_Scale = 1;
+	POINT lastMouseLDownPos;
+
+	static void AddUrl(RECT rect, std::wstring url)
 	{
-		int left = (rect.left + rect.right) / 2 - WIDTH * DPI_Scale / 2;
-		int top = (rect.top + rect.bottom) / 2 - HEIGHT * DPI_Scale / 2;
-		wnd.PreSetPos(left, top);
+		rect.left *= DPI_Scale;
+		rect.right *= DPI_Scale;
+		rect.top *= DPI_Scale;
+		rect.bottom *= DPI_Scale;
+		UrlAreas.push_back(rect);
+		Urls.push_back(url);
 	}
-	wnd.InitWindow(WIDTH * DPI_Scale, HEIGHT * DPI_Scale, EW_NORMAL, L"关于");
-	DisableResizing(wnd.GetHandle(), true);
-	SetWindowPos(wnd.GetHandle(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE); // Topmost
 
-	hiex::Canvas canvas;
-	wnd.BindCanvas(&canvas);
-	setfont(20, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
-	setaspectratio(DPI_Scale, DPI_Scale);
-	int w = canvas.GetWidth() / DPI_Scale;
-	int top = 0;
+	static void DrawCanvas(bool init = true, WA_URL_INDEX highlight = WA_URL_INDEX_NONE)
+	{
+		// 防止反复绘制相同内容造成性能损失
+		static WA_URL_INDEX lastIndex = WA_URL_INDEX_NONE;
+		if (!init && lastIndex == highlight) return;
+		lastIndex = highlight;
 
-	canvas.SetTextColor(BLACK);
-	setfont(24, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
-	canvas.CenterText(L"Lyricify Lines Creator", { 0, 20, w, 45 });
-	canvas.SetTextColor(GRAY);
-	setfont(16, 0, L"Consolas", 0, 0, FW_DONTCARE, false, false, false);
-	canvas.CenterText((std::wstring(L"Version ") + std::wstring(VERSION)).c_str(), {0, 50, w, 70});
+		if (!init) CanvasMain->Clear();
+		int w = CanvasMain->GetWidth() / DPI_Scale;
+		int top = 0;
+		std::wstring url;
 
-	top += 85;
-	canvas.SetTextColor(BLACK);
-	setfont(18, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-	canvas.CenterText(L"开发者", { 0, top, w, top + 20 }); top += 26;
-	canvas.SetTextColor(GRAY);
-	setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-	canvas.CenterText(L"Xiaoyang Wang", { 0, top, w, top + 20 }); top += 20;
-	canvas.CenterText(L"Tianle Chen", { 0, top, w, top + 20 }); top += 20;
-	canvas.CenterText(L"Runze Zhang", { 0, top, w, top + 20 }); top += 20;
+		CanvasMain->SetTextColor(BLACK);
+		setfont(24, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
+		CanvasMain->CenterText(L"Lyricify Lines Creator", { 0, 20, w, 45 });
+		CanvasMain->SetTextColor(GRAY);
+		setfont(16, 0, L"Consolas", 0, 0, FW_DONTCARE, false, false, false);
+		CanvasMain->CenterText((std::wstring(L"Version ") + std::wstring(VERSION)).c_str(), { 0, 50, w, 70 });
 
-	top += 20;
-	canvas.SetTextColor(BLACK);
-	setfont(18, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-	canvas.CenterText(L"第三方协议", { 0, top, w, top + 20 }); top += 26;
-	canvas.SetTextColor(GRAY);
-	setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-	canvas.CenterText(L"HiEasyX (MIT 协议)", { 0, top, w, top + 20 }); top += 20;
-	setfont(12, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
-	canvas.CenterText(L"https://github.com/zouhuidong/HiEasyX/blob/main/LICENSE", { 0, top, w, top + 15 }); top += 22;
-	setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-	canvas.CenterText(L"EasyX", { 0, top, w, top + 20 }); top += 20;
-	setfont(12, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
-	canvas.CenterText(L"https://easyx.cn/copyright", { 0, top, w, top + 15 }); top += 22;
-	setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-	canvas.CenterText(L"irrKlang", { 0, top, w, top + 20 }); top += 20;
-	setfont(12, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
-	canvas.CenterText(L"https://www.ambiera.com/irrklang/license.html", { 0, top, w, top + 15 }); top += 22;
+		top += 85;
+		CanvasMain->SetTextColor(BLACK);
+		setfont(18, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		CanvasMain->CenterText(L"开发者", { 0, top, w, top + 20 }); top += 26;
+		CanvasMain->SetTextColor(GRAY);
 
-	wnd.Redraw();
-	hiex::init_end(wnd.GetHandle());
-	*isOpened = false;
+		setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		if (init) AddUrl({ 0, top, w, top + 20 }, L"https://github.com/WXRIW");
+		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(URL_COLOR); setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false); }
+		CanvasMain->CenterText(L"Xiaoyang Wang", { 0, top, w, top + 20 }); top += 20;
+		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(GRAY); setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false); }
+		CanvasMain->CenterText(L"Tianle Chen", { 0, top, w, top + 20 }); top += 20;
+		CanvasMain->CenterText(L"Runze Zhang", { 0, top, w, top + 20 }); top += 20;
+
+		top += 20;
+		CanvasMain->SetTextColor(BLACK);
+		setfont(18, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		CanvasMain->CenterText(L"第三方协议", { 0, top, w, top + 20 }); top += 26;
+		CanvasMain->SetTextColor(GRAY);
+
+		setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		CanvasMain->CenterText(L"HiEasyX (MIT 协议)", { 0, top, w, top + 20 }); top += 20;
+		setfont(12, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
+		url = L"https://github.com/zouhuidong/HiEasyX/blob/main/LICENSE";
+		if (init) AddUrl({ 0, top, w, top + 15 }, url);
+		if (highlight == WA_URL_INDEX_EASYX) CanvasMain->SetTextColor(URL_COLOR);
+		CanvasMain->CenterText(url.c_str(), { 0, top, w, top + 15 }); top += 22;
+		if (highlight == WA_URL_INDEX_EASYX) CanvasMain->SetTextColor(GRAY);
+
+		setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		CanvasMain->CenterText(L"EasyX", { 0, top, w, top + 20 }); top += 20;
+		setfont(12, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
+		url = L"https://easyx.cn/copyright";
+		if (init) AddUrl({ 0, top, w, top + 15 }, url);
+		if (highlight == WA_URL_INDEX_HIEASYX) CanvasMain->SetTextColor(URL_COLOR);
+		CanvasMain->CenterText(url.c_str(), { 0, top, w, top + 15 }); top += 22;
+		if (highlight == WA_URL_INDEX_HIEASYX) CanvasMain->SetTextColor(GRAY);
+
+		setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		CanvasMain->CenterText(L"irrKlang", { 0, top, w, top + 20 }); top += 20;
+		setfont(12, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
+		url = L"https://www.ambiera.com/irrklang/license.html";
+		if (init) AddUrl({ 0, top, w, top + 15 }, url);
+		if (highlight == WA_URL_INDEX_IRRKLANG) CanvasMain->SetTextColor(URL_COLOR);
+		CanvasMain->CenterText(url.c_str(), { 0, top, w, top + 15 }); top += 22;
+		if (highlight == WA_URL_INDEX_IRRKLANG) CanvasMain->SetTextColor(GRAY);
+
+		Window->Redraw();
+	}
+
+	static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		switch (msg)
+		{
+		case WM_SETCURSOR:
+		{
+			POINT pt;
+			GetCursorPos(&pt);
+			ScreenToClient(hWnd, &pt);
+
+			if (PtInRect(&UrlAreas[0], pt))
+			{
+				SetCursor(LoadCursor(NULL, IDC_HAND));
+				DrawCanvas(false, WA_URL_INDEX_WXRIW);
+				return TRUE;
+			}
+			else if (PtInRect(&UrlAreas[1], pt))
+			{
+				SetCursor(LoadCursor(NULL, IDC_HAND));
+				DrawCanvas(false, WA_URL_INDEX_EASYX);
+				return TRUE;
+			}
+			else if (PtInRect(&UrlAreas[2], pt))
+			{
+				SetCursor(LoadCursor(NULL, IDC_HAND));
+				DrawCanvas(false, WA_URL_INDEX_HIEASYX);
+				return TRUE;
+			}
+			else if (PtInRect(&UrlAreas[3], pt))
+			{
+				SetCursor(LoadCursor(NULL, IDC_HAND));
+				DrawCanvas(false, WA_URL_INDEX_IRRKLANG);
+				return TRUE;
+			}
+			else
+			{
+				SetCursor(LoadCursor(NULL, IDC_ARROW));
+				DrawCanvas(false);
+				return TRUE;
+			}
+			break;
+		}
+
+		case WM_LBUTTONDOWN:
+		{
+			int xPos = GET_X_LPARAM(lParam);
+			int yPos = GET_Y_LPARAM(lParam);
+
+			lastMouseLDownPos = { xPos, yPos };
+
+			break;
+		}
+
+		case WM_LBUTTONUP:
+		{
+			int xPos = GET_X_LPARAM(lParam);
+			int yPos = GET_Y_LPARAM(lParam);
+
+			if (xPos == lastMouseLDownPos.x && yPos == lastMouseLDownPos.y)
+			{
+				POINT pt;
+				GetCursorPos(&pt);
+				ScreenToClient(hWnd, &pt);
+
+				if (PtInRect(&UrlAreas[0], pt))
+				{
+					ShellExecute(NULL, L"open", Urls[0].c_str(), NULL, NULL, SW_SHOWNORMAL);
+				}
+				else if (PtInRect(&UrlAreas[1], pt))
+				{
+					ShellExecute(NULL, L"open", Urls[1].c_str(), NULL, NULL, SW_SHOWNORMAL);
+				}
+				else if (PtInRect(&UrlAreas[2], pt))
+				{
+					ShellExecute(NULL, L"open", Urls[2].c_str(), NULL, NULL, SW_SHOWNORMAL);
+				}
+				else if (PtInRect(&UrlAreas[3], pt))
+				{
+					ShellExecute(NULL, L"open", Urls[3].c_str(), NULL, NULL, SW_SHOWNORMAL);
+				}
+			}
+
+			break;
+		}
+
+		default:
+			return HIWINDOW_DEFAULT_PROC;
+			break;
+		}
+
+		return 0;
+	}
+
+	static void OpenWindow(bool* isOpened, double scale, RECT rect)
+	{
+		*isOpened = true;
+		const int WIDTH = 360;
+		const int HEIGHT = 355;
+		DPI_Scale = scale;
+
+		hiex::Window wnd;
+		hiex::Canvas canvas;
+		Window = &wnd;
+		CanvasMain = &canvas;
+		if (rect.left != -1 && rect.right != -1 && rect.top != -1 && rect.bottom != -1)
+		{
+			int left = (rect.left + rect.right - WIDTH * DPI_Scale) / 2;
+			int top = (rect.top + rect.bottom - HEIGHT * DPI_Scale) / 2;
+			wnd.PreSetPos(left, top);
+		}
+		wnd.InitWindow(WIDTH * DPI_Scale, HEIGHT * DPI_Scale, EW_NORMAL, L"关于");
+		DisableResizing(wnd.GetHandle(), true);
+		SetWindowPos(wnd.GetHandle(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE); // Topmost
+
+		wnd.BindCanvas(&canvas);
+		wnd.SetProcFunc(WndProc);
+		setfont(20, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
+		setaspectratio(DPI_Scale, DPI_Scale);
+
+		DrawCanvas();
+
+		hiex::init_end(wnd.GetHandle());
+		*isOpened = false;
+	}
+
+	void Show(double DPI_Scale, RECT rect)
+	{
+		static bool IsOpened = false;
+
+		if (!IsOpened)
+		{
+			std::thread(OpenWindow, &IsOpened, DPI_Scale, rect).detach();
+		}
+	}
 }
