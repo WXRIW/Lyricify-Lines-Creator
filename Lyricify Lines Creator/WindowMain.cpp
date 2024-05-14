@@ -2,6 +2,8 @@
 
 namespace WindowMain
 {
+#pragma region Variable Definations
+
 	double DPI_Scale = 1;
 
 	// 顶部区域左侧 Label 的宽度，后期本地化时在这里更改尺寸
@@ -12,7 +14,7 @@ namespace WindowMain
 	bool IsMaking = false;
 	std::vector<Lyricify::Lyrics> LyricsList;
 
-#pragma region Controls
+#pragma endregion
 
 #pragma region Control Definations
 
@@ -44,7 +46,7 @@ namespace WindowMain
 
 #pragma endregion
 
-#pragma region Button Clicks
+#pragma region Button Clicks & Keyboard Events
 
 	void ButtonChooseAudio_Click()
 	{
@@ -254,9 +256,92 @@ namespace WindowMain
 		IsMaking = !IsMaking;
 	}
 
+	void KeyboardEvents(WPARAM wParam)
+	{
+		switch (wParam)
+		{
+		case VK_SPACE:
+			ButtonPlayPause_Click();
+			break;
+
+		case 'B':
+			MusicPlayer::SeekBack(3000);
+			if (!MusicPlayer::IsPlaying()) RefreshUI();
+			break;
+
+		case 'N':
+			MusicPlayer::SeekForward(3000);
+			if (!MusicPlayer::IsPlaying()) RefreshUI();
+			break;
+
+		case 'M':
+			MusicPlayer::SeekForward(10000);
+			if (!MusicPlayer::IsPlaying()) RefreshUI();
+			break;
+
+		case VK_UP: // 为当前行 (下一行) 标记起始时间
+		{
+			if (!IsMaking) break;
+			auto index = GetCurrentLineIndex();
+			if (index < (int)LyricsList.size() - 1)
+			{
+				auto line = GetCurrentLine(index + 1);
+				if (line != nullptr)
+				{
+					line->StartTime = MusicPlayer::GetCurrentPositionMs();
+				}
+			}
+			else if (index == (int)LyricsList.size() - 1)
+			{
+				auto line = GetCurrentLine(index);
+				if (line != nullptr && line->EndTime == -1)
+				{
+					line->EndTime = MusicPlayer::GetCurrentPositionMs();
+				}
+			}
+			break;
+		}
+
+		case VK_RIGHT: // 为当前行标记结束时间
+		{
+			if (!IsMaking) break;
+			auto line = GetCurrentLine();
+			if (line != nullptr && line->EndTime == -1)
+			{
+				line->EndTime = MusicPlayer::GetCurrentPositionMs();
+			}
+			break;
+		}
+
+		case VK_DOWN: // 删去当前行的其实时间，如果有结束时间，则优先删除
+		{
+			if (!IsMaking) break;
+			auto index = GetCurrentLineIndex();
+			auto line = GetCurrentLine(index);
+			if (line != nullptr)
+			{
+				if (line->EndTime != -1)
+				{
+					MusicPlayer::SeekTo(line->EndTime);
+					line->EndTime = -1;
+				}
+				else
+				{
+					MusicPlayer::SeekTo(line->StartTime);
+					line->StartTime = -1;
+				}
+			}
+			break;
+		}
+
+		default:
+			break;
+		}
+	}
+
 #pragma endregion
 
-#pragma region Sizing (Init & Resize)
+#pragma region Sizes (Init & Resize)
 
 	/// <summary>
 	/// 添加主窗体的控件
@@ -383,8 +468,6 @@ namespace WindowMain
 
 #pragma endregion
 	}
-
-#pragma endregion
 
 #pragma endregion
 
@@ -598,88 +681,7 @@ namespace WindowMain
 
 #pragma endregion
 
-	void KeyboardEvents(WPARAM wParam)
-	{
-		switch (wParam)
-		{
-		case VK_SPACE:
-			ButtonPlayPause_Click();
-			break;
-
-		case 'B':
-			MusicPlayer::SeekBack(3000);
-			if (!MusicPlayer::IsPlaying()) RefreshUI();
-			break;
-
-		case 'N':
-			MusicPlayer::SeekForward(3000);
-			if (!MusicPlayer::IsPlaying()) RefreshUI();
-			break;
-
-		case 'M':
-			MusicPlayer::SeekForward(10000);
-			if (!MusicPlayer::IsPlaying()) RefreshUI();
-			break;
-
-		case VK_UP: // 为当前行 (下一行) 标记起始时间
-		{
-			if (!IsMaking) break;
-			auto index = GetCurrentLineIndex();
-			if (index < (int)LyricsList.size() - 1)
-			{
-				auto line = GetCurrentLine(index + 1);
-				if (line != nullptr)
-				{
-					line->StartTime = MusicPlayer::GetCurrentPositionMs();
-				}
-			}
-			else if (index == (int)LyricsList.size() - 1)
-			{
-				auto line = GetCurrentLine(index);
-				if (line != nullptr && line->EndTime == -1)
-				{
-					line->EndTime = MusicPlayer::GetCurrentPositionMs();
-				}
-			}
-			break;
-		}
-
-		case VK_RIGHT: // 为当前行标记结束时间
-		{
-			if (!IsMaking) break;
-			auto line = GetCurrentLine();
-			if (line != nullptr && line->EndTime == -1)
-			{
-				line->EndTime = MusicPlayer::GetCurrentPositionMs();
-			}
-			break;
-		}
-
-		case VK_DOWN: // 删去当前行的其实时间，如果有结束时间，则优先删除
-		{
-			if (!IsMaking) break;
-			auto index = GetCurrentLineIndex();
-			auto line = GetCurrentLine(index);
-			if (line != nullptr)
-			{
-				if (line->EndTime != -1)
-				{
-					MusicPlayer::SeekTo(line->EndTime);
-					line->EndTime = -1;
-				}
-				else
-				{
-					MusicPlayer::SeekTo(line->StartTime);
-					line->StartTime = -1;
-				}
-			}
-			break;
-		}
-
-		default:
-			break;
-		}
-	}
+#pragma region Window
 
 	/// <summary>
 	/// 获取窗口区域矩形
@@ -760,4 +762,6 @@ namespace WindowMain
 		// 关闭窗口，结束程序
 		hiex::init_end(wnd.GetHandle());
 	}
+
+#pragma endregion
 }
