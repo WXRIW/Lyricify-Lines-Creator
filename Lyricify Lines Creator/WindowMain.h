@@ -8,6 +8,9 @@
 #include "WindowAbout.h"
 #include "MusicPlayer.h"
 #include "TaskHelper.h"
+#include "ProcedureHelper.h"
+
+#pragma comment(lib, "imm32.lib")
 
 namespace WindowMain
 {

@@ -165,6 +165,7 @@
     <ClCompile Include="LyricsHelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MusicPlayer.cpp" />
+    <ClCompile Include="ProcedureHelper.cpp" />
     <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="TaskHelper.cpp" />
     <ClCompile Include="WindowAbout.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="Lyrics.h" />
     <ClInclude Include="LyricsHelper.h" />
     <ClInclude Include="MusicPlayer.h" />
+    <ClInclude Include="ProcedureHelper.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="TaskHelper.h" />

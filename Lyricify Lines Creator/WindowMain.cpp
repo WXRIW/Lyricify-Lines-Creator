@@ -97,6 +97,10 @@ namespace WindowMain
 
 			std::thread([]()
 				{
+					static bool IsRefreshThreadRunning = false;
+					if (IsRefreshThreadRunning) return;
+					IsRefreshThreadRunning = true;
+
 					std::wstring audio = MusicPlayer::CurrentAudioPath;
 					while (audio == MusicPlayer::CurrentAudioPath && MusicPlayer::IsPlaying())
 					{
@@ -113,6 +117,8 @@ namespace WindowMain
 					{
 						ButtonPlayPause.SetText(L"播放");
 					}
+
+					IsRefreshThreadRunning = false;
 				}).detach();
 		}
 	}
@@ -214,6 +220,17 @@ namespace WindowMain
 		ButtonPreview.RegisterMessage(ButtonPreview_Click);
 		ButtonRestart.RegisterMessage(ButtonRestart_Click);
 		ButtonStart.RegisterMessage(ButtonStart_Click);
+
+		// 控件回调穿透
+		ProcedureHelper::TransKeyMsgToParent(ButtonChooseAudio.GetHandle(), WndProc);
+		ProcedureHelper::TransKeyMsgToParent(ButtonChooseRawLyrics.GetHandle(), WndProc);
+		ProcedureHelper::TransKeyMsgToParent(ButtonOutputPath.GetHandle(), WndProc);
+		ProcedureHelper::TransKeyMsgToParent(ButtonPlayPause.GetHandle(), WndProc);
+		ProcedureHelper::TransKeyMsgToParent(ButtonAbout.GetHandle(), WndProc);
+		ProcedureHelper::TransKeyMsgToParent(ButtonViewOutput.GetHandle(), WndProc);
+		ProcedureHelper::TransKeyMsgToParent(ButtonPreview.GetHandle(), WndProc);
+		ProcedureHelper::TransKeyMsgToParent(ButtonRestart.GetHandle(), WndProc);
+		ProcedureHelper::TransKeyMsgToParent(ButtonStart.GetHandle(), WndProc);
 	}
 
 	/// <summary>
@@ -396,6 +413,7 @@ namespace WindowMain
 		}
 
 		case WM_KEYDOWN:
+		case WM_IME_KEYDOWN:
 			switch (wParam)
 			{
 			case VK_SPACE:
@@ -435,6 +453,7 @@ namespace WindowMain
 		wnd.InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, L"Lyricify Lyrics Creator");
 		wnd.BindCanvas(&CanvasMain);
 		wnd.SetProcFunc(WndProc);
+		ImmAssociateContext(wnd.GetHandle(), NULL); // 窗口中禁用 IME
 		hiex::AutoExit();
 
 		setaspectratio(DPI_Scale, DPI_Scale);
