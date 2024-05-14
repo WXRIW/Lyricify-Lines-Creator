@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <graphics.h>
+#include "../EasyX/include/graphics.h"
 
 namespace HiEasyX
 {

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <graphics.h>
+#include "../EasyX/include/graphics.h"
 
 // Õº±Í¥Û–°
 #define HIICON_WIDTH	64

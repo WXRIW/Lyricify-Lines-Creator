@@ -2,6 +2,8 @@
 
 #include "HiEasyX.h"
 
+#pragma warning(disable: 4244) // 禁用转换精度损失的 warning
+
 constexpr auto VERSION = L"0.1-alpha";
 
 constexpr auto ENABLE_HIGHDPI = true; // 启用高 DPI 支持

@@ -30,7 +30,7 @@ namespace Lyricify
 	{
         std::vector<Lyricify::Lyrics> list;
 
-        for (int i = 0; i < lines.size(); i++)
+        for (uint32_t i = 0; i < lines.size(); i++)
         {
             Lyricify::Lyrics line(lines[i]);
             list.push_back(line);

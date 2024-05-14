@@ -2,7 +2,7 @@
 #include "HiWindow.h"
 
 #include <windows.h>
-#include <graphics.h>
+#include "../EasyX/include/graphics.h"
 #include <time.h>
 
 // 定义全局变量

@@ -132,7 +132,7 @@ bool MusicPlayer::SeekForward(int ms)
 	{
 		int pos = currentAudio->getPlayPosition();
 		pos += ms;
-		if (pos > currentAudio->getPlayLength()) pos = currentAudio->getPlayLength();
+		if (pos > (int)currentAudio->getPlayLength()) pos = currentAudio->getPlayLength();
 		return currentAudio->setPlayPosition(pos);
 	}
 	return false;

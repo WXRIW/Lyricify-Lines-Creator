@@ -8,7 +8,7 @@
 
 #include <Windows.h>
 #include <WinUser.h>
-#include <graphics.h>
+#include "../EasyX/include/graphics.h"
 
 #ifdef _MSC_VER
 #pragma comment (lib, "Msimg32.lib")

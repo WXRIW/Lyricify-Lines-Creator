@@ -8,7 +8,7 @@
 
 #include "SysControlBase.h"
 
-#include <graphics.h>
+#include "../../EasyX/include/graphics.h"
 
 namespace HiEasyX
 {

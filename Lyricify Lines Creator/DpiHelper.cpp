@@ -26,7 +26,7 @@ int GetDpi()
 	/*HWND hwnd = GetDesktopWindow();
 	return GetDpiForWindow(hwnd);*/
 
-    return GetDpiScale() * 96;
+    return (int)(GetDpiScale() * 96);
 }
 
 double GetDpiScale()

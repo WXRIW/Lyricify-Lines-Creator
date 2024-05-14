@@ -71,10 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Platform)'=='Win32'">
-    <LibraryPath>irrKlang\lib\Win32-visualStudio;$(LibraryPath)</LibraryPath>
+    <LibraryPath>EasyX\lib\x86_32;irrKlang\lib\Win32-visualStudio;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)'=='x64'">
-    <LibraryPath>irrKlang\lib\Winx64-visualStudio;$(LibraryPath)</LibraryPath>
+    <LibraryPath>EasyX\lib\x86_64;irrKlang\lib\Winx64-visualStudio;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -173,6 +173,8 @@
   <ItemGroup>
     <ClInclude Include="CommonDefine.h" />
     <ClInclude Include="DpiHelper.h" />
+    <ClInclude Include="EasyX\include\easyx.h" />
+    <ClInclude Include="EasyX\include\graphics.h" />
     <ClInclude Include="FileHelper.h" />
     <ClInclude Include="HiEasyX.h" />
     <ClInclude Include="HiEasyX\HiCanvas.h" />

@@ -40,6 +40,9 @@
     <Filter Include="Header Files\Windows">
       <UniqueIdentifier>{460fb50f-f4c2-4d69-b3bb-bfb5f69d7ed9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\EasyX">
+      <UniqueIdentifier>{067447f0-d27b-4991-9b39-8a7ed322948f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -344,6 +347,12 @@
     <ClInclude Include="TaskHelper.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="EasyX\include\graphics.h">
+      <Filter>Header Files\EasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="EasyX\include\easyx.h">
+      <Filter>Header Files\EasyX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Lyricify Lines Creator.rc">
@@ -356,8 +365,23 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\ikpFlac.dll" />
-    <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\ikpMP3.dll" />
-    <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\irrKlang.dll" />
+    <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\ikpFlac.dll">
+      <Filter>Resource Files\Dlls</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\ikpMP3.dll">
+      <Filter>Resource Files\Dlls</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\irrKlang.dll">
+      <Filter>Resource Files\Dlls</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\ikpFlac.dll">
+      <Filter>Resource Files\Dlls</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\ikpMP3.dll">
+      <Filter>Resource Files\Dlls</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\irrKlang.dll">
+      <Filter>Resource Files\Dlls</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>
