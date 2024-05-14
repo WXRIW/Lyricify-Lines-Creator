@@ -19,6 +19,9 @@ constexpr auto BACKGROUND_COLOR = CLASSICGRAY;
 constexpr auto WINDOW_WIDTH = 800;
 constexpr auto WINDOW_HEIGHT = 500;
 
+constexpr auto MIN_WINDOW_WIDTH = 790;
+constexpr auto MIN_WINDOW_HEIGHT = 400;
+
 constexpr auto MARGIN_HORIZONTAL = 15;
 constexpr auto MARGIN_VERTICAL = 15;
 
