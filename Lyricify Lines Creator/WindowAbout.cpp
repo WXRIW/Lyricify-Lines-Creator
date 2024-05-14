@@ -13,6 +13,7 @@ namespace WindowAbout
 
 	constexpr auto URL_COLOR = RGB(68, 147, 248);
 
+	bool isOpened = false;
 	hiex::Window* Window;
 	hiex::Canvas* CanvasMain;
 	std::vector<RECT> UrlAreas;
@@ -192,9 +193,9 @@ namespace WindowAbout
 		return 0;
 	}
 
-	static void OpenWindow(bool* isOpened, double scale, RECT rect)
+	static void OpenWindow(double scale, RECT rect, HWND hParent = (HWND)nullptr)
 	{
-		*isOpened = true;
+		isOpened = true;
 		const int WIDTH = 360;
 		const int HEIGHT = 355;
 		DPI_Scale = scale;
@@ -209,9 +210,9 @@ namespace WindowAbout
 			int top = (rect.top + rect.bottom - HEIGHT * DPI_Scale) / 2;
 			wnd.PreSetPos(left, top);
 		}
-		wnd.InitWindow(WIDTH * DPI_Scale, HEIGHT * DPI_Scale, EW_NORMAL, L"关于");
+		wnd.InitWindow(WIDTH * DPI_Scale, HEIGHT * DPI_Scale, EW_NORMAL, L"关于", nullptr, hParent);
 		DisableResizing(wnd.GetHandle(), true);
-		SetWindowPos(wnd.GetHandle(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE); // Topmost
+		// SetWindowPos(wnd.GetHandle(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE); // Topmost
 
 		wnd.BindCanvas(&canvas);
 		wnd.SetProcFunc(WndProc);
@@ -221,16 +222,20 @@ namespace WindowAbout
 		DrawCanvas();
 
 		hiex::init_end(wnd.GetHandle());
-		*isOpened = false;
+		BringWindowToTop(hParent); // 让主窗体显示于最上方
+		isOpened = false;
 	}
 
-	void Show(double DPI_Scale, RECT rect)
+	void Show(double DPI_Scale, RECT rect, HWND hParent)
 	{
-		static bool IsOpened = false;
-
-		if (!IsOpened)
+		if (!isOpened)
 		{
-			std::thread(OpenWindow, &IsOpened, DPI_Scale, rect).detach();
+			std::thread(OpenWindow, DPI_Scale, rect, hParent).detach();
 		}
+	}
+
+	bool IsOpened()
+	{
+		return isOpened;
 	}
 }

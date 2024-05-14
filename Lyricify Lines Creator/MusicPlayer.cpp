@@ -76,47 +76,47 @@ bool MusicPlayer::Load(const std::wstring filePath, bool override)
 
 void MusicPlayer::Play()
 {
-	if (currentAudio != NULL)
+	if (currentAudio != nullptr)
 		currentAudio->setIsPaused(false);
 }
 
 void MusicPlayer::Pause()
 {
-	if (currentAudio != NULL)
+	if (currentAudio != nullptr)
 		currentAudio->setIsPaused(true);
 }
 
 bool MusicPlayer::IsPlaying()
 {
-	if (currentAudio != NULL)
+	if (currentAudio != nullptr)
 		return !(currentAudio->getIsPaused() || currentAudio->isFinished());
 	return false; // 空音频，则认为不在播放
 }
 
 int MusicPlayer::GetCurrentPositionMs()
 {
-	if (currentAudio != NULL)
+	if (currentAudio != nullptr)
 		return currentAudio->getPlayPosition();
 	return -1;
 }
 
 int MusicPlayer::GetTotalDurationMs()
 {
-	if (currentAudio != NULL)
+	if (currentAudio != nullptr)
 		return currentAudio->getPlayLength();
 	return -1;
 }
 
 bool MusicPlayer::SeekTo(int ms)
 {
-	if (currentAudio != NULL)
+	if (currentAudio != nullptr)
 		return currentAudio->setPlayPosition(ms);
 	return false;
 }
 
 bool MusicPlayer::SeekBack(int ms)
 {
-	if (currentAudio != NULL)
+	if (currentAudio != nullptr)
 	{
 		int pos = currentAudio->getPlayPosition();
 		pos -= ms;
@@ -128,7 +128,7 @@ bool MusicPlayer::SeekBack(int ms)
 
 bool MusicPlayer::SeekForward(int ms)
 {
-	if (currentAudio != NULL)
+	if (currentAudio != nullptr)
 	{
 		int pos = currentAudio->getPlayPosition();
 		pos += ms;
@@ -140,14 +140,14 @@ bool MusicPlayer::SeekForward(int ms)
 
 bool MusicPlayer::SetPlaybackSpeed(float speed)
 {
-	if (currentAudio != NULL)
+	if (currentAudio != nullptr)
 		return currentAudio->setPlaybackSpeed(speed);
 	return false;
 }
 
 float MusicPlayer::GetPlaybackSpeed()
 {
-	if (currentAudio != NULL)
+	if (currentAudio != nullptr)
 		return currentAudio->getPlaybackSpeed();
 	return 1.0f;
 }

@@ -100,9 +100,13 @@ namespace WindowMain
 					std::wstring audio = MusicPlayer::CurrentAudioPath;
 					while (audio == MusicPlayer::CurrentAudioPath && MusicPlayer::IsPlaying())
 					{
-						CanvasMain.Clear(true, BACKGROUND_COLOR);
-						DrawAtWndProcPaint();
-						wnd.Redraw();
+						if (!WindowAbout::IsOpened())
+						{
+							// 关于被打开时，不再刷新进度，防止渲染错乱
+							CanvasMain.Clear(true, BACKGROUND_COLOR);
+							DrawAtWndProcPaint();
+							wnd.Redraw();
+						}
 						TaskHelper::Delay(25).wait();
 					}
 					if (!MusicPlayer::IsPlaying())
@@ -115,7 +119,7 @@ namespace WindowMain
 
 	void ButtonAbout_Click()
 	{
-		WindowAbout::Show(DPI_Scale, GetWindowRect());
+		WindowAbout::Show(DPI_Scale, GetWindowRect(), wnd.GetHandle());
 	}
 
 	void ButtonViewOutput_Click()
