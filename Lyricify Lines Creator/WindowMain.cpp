@@ -158,11 +158,13 @@ namespace WindowMain
 	void ButtonRestart_Click()
 	{
 		// 清空歌词的时间信息，并返回头部
-		for (auto& line : LyricsList)
+		auto stringLines = Lyricify::LyricsHelper::ReadTextToLines(TextBoxChooseRawLyrics.GetText());
+		if (stringLines.size() == 0)
 		{
-			line.StartTime = -1;
-			line.EndTime = -1;
+			MessageBox(wnd.GetHandle(), L"文本为空，或出现读取错误！", L"预处理错误", MB_OK);
+			return;
 		}
+		LyricsList = Lyricify::LyricsHelper::GetLyricsFromLines(stringLines);
 		MusicPlayer::SeekTo(0);
 	}
 
@@ -299,6 +301,7 @@ namespace WindowMain
 					line->EndTime = MusicPlayer::GetCurrentPositionMs();
 				}
 			}
+			if (!MusicPlayer::IsPlaying()) RefreshUI();
 			break;
 		}
 
@@ -310,6 +313,7 @@ namespace WindowMain
 			{
 				line->EndTime = MusicPlayer::GetCurrentPositionMs();
 			}
+			if (!MusicPlayer::IsPlaying()) RefreshUI();
 			break;
 		}
 
@@ -331,6 +335,7 @@ namespace WindowMain
 					line->StartTime = -1;
 				}
 			}
+			if (!MusicPlayer::IsPlaying()) RefreshUI();
 			break;
 		}
 
@@ -743,7 +748,7 @@ namespace WindowMain
 		DPI_Scale = scale;
 
 		// 初始化窗口
-		wnd.InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, L"Lyricify Lyrics Creator");
+		wnd.InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, L"Lyricify Lines Creator");
 		wnd.BindCanvas(&CanvasMain);
 		wnd.SetProcFunc(WndProc);
 		ImmAssociateContext(wnd.GetHandle(), NULL); // 窗口中禁用 IME
