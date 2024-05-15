@@ -641,7 +641,7 @@ namespace WindowMain
 	/// <returns>当前行的序号</returns>
 	int GetCurrentLineIndex()
 	{
-		for (int i = 0; i < LyricsList.size(); i++)
+		for (int i = 0; i < (int)LyricsList.size(); i++)
 		{
 			if (LyricsList[i].StartTime == -1)
 			{
@@ -661,7 +661,7 @@ namespace WindowMain
 		if (index == -1)
 			index = GetCurrentLineIndex();
 
-		if (index >= 0 && index < LyricsList.size())
+		if (index >= 0 && index < (int)LyricsList.size())
 			return &LyricsList[index];
 
 		return nullptr;
@@ -677,7 +677,7 @@ namespace WindowMain
 		if (index == -2)
 			index = GetCurrentLineIndex();
 
-		if (index >= 0 && index < LyricsList.size())
+		if (index >= 0 && index < (int)LyricsList.size())
 			return LyricsList[index].Text;
 
 		return L"";
@@ -695,7 +695,7 @@ namespace WindowMain
 			index = GetCurrentLineIndex();
 
 		std::vector<std::wstring> strings;
-		for (int i = index + 1; i < LyricsList.size() && (maxSize == -1 || strings.size() < maxSize); i++)
+		for (int i = index + 1; i < (int)LyricsList.size() && (maxSize == -1 || strings.size() < maxSize); i++)
 		{
 			strings.push_back(LyricsList[i].Text);
 		}

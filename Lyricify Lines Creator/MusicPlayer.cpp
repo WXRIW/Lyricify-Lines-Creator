@@ -114,7 +114,7 @@ bool MusicPlayer::SeekTo(int ms)
 		if (ms < 0)
 			ms = 0;
 		auto length = currentAudio->getPlayLength();
-		if (length != -1 && ms > length)
+		if (length != -1 && ms > (int)length)
 			ms = currentAudio->getPlayLength();
 
 		return currentAudio->setPlayPosition(ms);
