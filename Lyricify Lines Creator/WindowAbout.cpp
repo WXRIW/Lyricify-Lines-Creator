@@ -46,11 +46,13 @@ namespace WindowAbout
 		CanvasMain->SetTextColor(BLACK);
 		setfont(24, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
 		CanvasMain->CenterText(L"Lyricify Lines Creator", { 0, 20, w, 45 });
+		setfont(18, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
+		CanvasMain->CenterText(L"Lyricify Lines 逐行歌词打轴工具", { 0, 47, w, 67 });
 		CanvasMain->SetTextColor(GRAY);
 		setfont(16, 0, L"Consolas", 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain->CenterText((std::wstring(L"Version ") + std::wstring(VERSION)).c_str(), { 0, 50, w, 70 });
+		CanvasMain->CenterText((std::wstring(L"Version ") + std::wstring(VERSION)).c_str(), { 0, 73, w, 93 });
 
-		top += 85;
+		top += 110;
 		CanvasMain->SetTextColor(BLACK);
 		setfont(18, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText(L"开发者", { 0, top, w, top + 20 }); top += 26;
@@ -67,7 +69,7 @@ namespace WindowAbout
 		top += 20;
 		CanvasMain->SetTextColor(BLACK);
 		setfont(18, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain->CenterText(L"第三方协议", { 0, top, w, top + 20 }); top += 26;
+		CanvasMain->CenterText(L"第三方通知", { 0, top, w, top + 20 }); top += 26;
 		CanvasMain->SetTextColor(GRAY);
 
 		setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
@@ -197,7 +199,7 @@ namespace WindowAbout
 	{
 		isOpened = true;
 		const int WIDTH = 360;
-		const int HEIGHT = 355;
+		const int HEIGHT = 380;
 		DPI_Scale = scale;
 
 		hiex::Window wnd;
