@@ -38,31 +38,38 @@ namespace WindowAbout
 		if (!init && lastIndex == highlight) return;
 		lastIndex = highlight;
 
+		int TITLE_FONTSIZE = 24;
+		int SUBTITLE_FONTSIZE = 20 - (DPI_Scale - 1) * 2;
+		int ITEM_FONTSIZE = 18 - (DPI_Scale - 1) * 2;
+		int URL_FONTSIZE = 14 - (DPI_Scale - 1) * 2;
+
 		if (!init) CanvasMain->Clear();
 		int w = CanvasMain->GetWidth() / DPI_Scale;
 		int top = 0;
 		std::wstring url;
+		SIZE size;
 
 		CanvasMain->SetTextColor(BLACK);
-		setfont(24, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
+		setfont(TITLE_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
 		CanvasMain->CenterText(L"Lyricify Lines Creator", { 0, 20, w, 45 });
-		setfont(18, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
+		setfont(SUBTITLE_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText(L"Lyricify Lines 逐行歌词打轴工具", { 0, 47, w, 67 });
 		CanvasMain->SetTextColor(GRAY);
-		setfont(16, 0, L"Consolas", 0, 0, FW_DONTCARE, false, false, false);
+		setfont(16 + (DPI_Scale - 1) * 1, 0, L"Consolas", 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText((std::wstring(L"Version ") + std::wstring(VERSION)).c_str(), { 0, 73, w, 93 });
 
 		top += 110;
 		CanvasMain->SetTextColor(BLACK);
-		setfont(18, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(SUBTITLE_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText(L"开发者", { 0, top, w, top + 20 }); top += 26;
 		CanvasMain->SetTextColor(GRAY);
 
-		setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		if (init) AddUrl({ 0, top, w, top + 20 }, L"https://github.com/WXRIW");
-		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(URL_COLOR); setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false); }
+		setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		size = FontHelper::CalculateTextSize(L"Xiaoyang Wang", DEFAULT_FONT, 16, DPI_Scale, FW_DONTCARE, false, false, false);
+		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 20 }, L"https://github.com/WXRIW");
+		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(URL_COLOR); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false); }
 		CanvasMain->CenterText(L"Xiaoyang Wang", { 0, top, w, top + 20 }); top += 20;
-		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(GRAY); setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false); }
+		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false); }
 		CanvasMain->CenterText(L"Tianle Chen", { 0, top, w, top + 20 }); top += 20;
 		CanvasMain->CenterText(L"Runze Zhang", { 0, top, w, top + 20 }); top += 20;
 
@@ -72,29 +79,32 @@ namespace WindowAbout
 		CanvasMain->CenterText(L"第三方通知", { 0, top, w, top + 20 }); top += 26;
 		CanvasMain->SetTextColor(GRAY);
 
-		setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText(L"HiEasyX (MIT 协议)", { 0, top, w, top + 20 }); top += 20;
-		setfont(12, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
+		setfont(URL_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
 		url = L"https://github.com/zouhuidong/HiEasyX/blob/main/LICENSE";
-		if (init) AddUrl({ 0, top, w, top + 15 }, url);
+		size = FontHelper::CalculateTextSize(url.c_str(), DEFAULT_FONT, URL_FONTSIZE, DPI_Scale, FW_DONTCARE, false, false, false);
+		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 15 }, url);
 		if (highlight == WA_URL_INDEX_EASYX) CanvasMain->SetTextColor(URL_COLOR);
 		CanvasMain->CenterText(url.c_str(), { 0, top, w, top + 15 }); top += 22;
 		if (highlight == WA_URL_INDEX_EASYX) CanvasMain->SetTextColor(GRAY);
 
-		setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText(L"EasyX", { 0, top, w, top + 20 }); top += 20;
-		setfont(12, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
+		setfont(URL_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
 		url = L"https://easyx.cn/copyright";
-		if (init) AddUrl({ 0, top, w, top + 15 }, url);
+		size = FontHelper::CalculateTextSize(url.c_str(), DEFAULT_FONT, URL_FONTSIZE, DPI_Scale, FW_DONTCARE, false, false, false);
+		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 15 }, url);
 		if (highlight == WA_URL_INDEX_HIEASYX) CanvasMain->SetTextColor(URL_COLOR);
 		CanvasMain->CenterText(url.c_str(), { 0, top, w, top + 15 }); top += 22;
 		if (highlight == WA_URL_INDEX_HIEASYX) CanvasMain->SetTextColor(GRAY);
 
-		setfont(16, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText(L"irrKlang", { 0, top, w, top + 20 }); top += 20;
-		setfont(12, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
+		setfont(URL_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
 		url = L"https://www.ambiera.com/irrklang/license.html";
-		if (init) AddUrl({ 0, top, w, top + 15 }, url);
+		size = FontHelper::CalculateTextSize(url.c_str(), DEFAULT_FONT, URL_FONTSIZE, DPI_Scale, FW_DONTCARE, false, false, false);
+		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 15 }, url);
 		if (highlight == WA_URL_INDEX_IRRKLANG) CanvasMain->SetTextColor(URL_COLOR);
 		CanvasMain->CenterText(url.c_str(), { 0, top, w, top + 15 }); top += 22;
 		if (highlight == WA_URL_INDEX_IRRKLANG) CanvasMain->SetTextColor(GRAY);

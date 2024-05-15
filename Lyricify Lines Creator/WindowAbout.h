@@ -3,6 +3,7 @@
 #include <thread>
 #include <Windows.h>
 #include "CommonDefine.h"
+#include "FontHelper.h"
 #include "StringHelper.h"
 #include "TaskHelper.h"
 #include "WindowHelper.h"

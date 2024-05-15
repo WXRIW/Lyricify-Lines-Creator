@@ -385,7 +385,6 @@ namespace WindowMain
 		ButtonViewOutput.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 4 - CONTROL_PADDING_HORIZONTAL * 5, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"查看输出");
 		ButtonPreview.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 3 - CONTROL_PADDING_HORIZONTAL * 4, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"预览效果");
 		ButtonRestart.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"重新制作");
-		ButtonRestart.Enable(false);
 		ButtonStart.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"开始制作");
 
 #pragma endregion
@@ -425,6 +424,9 @@ namespace WindowMain
 		ProcedureHelper::TransKeyMsgToParent(ButtonPreview.GetHandle(), WndProc);
 		ProcedureHelper::TransKeyMsgToParent(ButtonRestart.GetHandle(), WndProc);
 		ProcedureHelper::TransKeyMsgToParent(ButtonStart.GetHandle(), WndProc);
+
+		// 禁用部分按钮
+		ButtonRestart.Enable(false);
 	}
 
 	/// <summary>

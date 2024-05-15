@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="DpiHelper.cpp" />
     <ClCompile Include="FileHelper.cpp" />
+    <ClCompile Include="FontHelper.cpp" />
     <ClCompile Include="HiEasyX\HiCanvas.cpp" />
     <ClCompile Include="HiEasyX\HiContainer.cpp" />
     <ClCompile Include="HiEasyX\HiDrawingProperty.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="EasyX\include\easyx.h" />
     <ClInclude Include="EasyX\include\graphics.h" />
     <ClInclude Include="FileHelper.h" />
+    <ClInclude Include="FontHelper.h" />
     <ClInclude Include="HiEasyX.h" />
     <ClInclude Include="HiEasyX\HiCanvas.h" />
     <ClInclude Include="HiEasyX\HiContainer.h" />
