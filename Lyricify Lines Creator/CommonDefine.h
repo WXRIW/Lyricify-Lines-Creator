@@ -1,6 +1,6 @@
 #pragma once
 
-#include "HiEasyX.h"
+#include "HiEasyX/HiEasyX.h"
 
 #pragma warning(disable: 4244 4267) // 禁用转换精度损失的 warning
 
