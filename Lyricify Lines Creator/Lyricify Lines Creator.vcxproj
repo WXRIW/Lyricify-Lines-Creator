@@ -173,7 +173,9 @@
     <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="TaskHelper.cpp" />
     <ClCompile Include="WindowAbout.cpp" />
+    <ClCompile Include="WindowHelper.cpp" />
     <ClCompile Include="WindowMain.cpp" />
+    <ClCompile Include="WindowPreviewOutput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonDefine.h" />
@@ -242,7 +244,9 @@
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="TaskHelper.h" />
     <ClInclude Include="WindowAbout.h" />
+    <ClInclude Include="WindowHelper.h" />
     <ClInclude Include="WindowMain.h" />
+    <ClInclude Include="WindowPreviewOutput.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Lyricify Lines Creator.rc" />

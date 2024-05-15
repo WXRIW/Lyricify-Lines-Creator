@@ -214,7 +214,7 @@ namespace WindowAbout
 		}
 		wnd.InitWindow(WIDTH * DPI_Scale, HEIGHT * DPI_Scale, EW_NORMAL, L"¹ØÓÚ", nullptr, hParent);
 		DisableResizing(wnd.GetHandle(), true);
-		// SetWindowPos(wnd.GetHandle(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE); // Topmost
+		WindowHelper::EnableMinimizeButton(wnd.GetHandle(), false);
 
 		wnd.BindCanvas(&canvas);
 		wnd.SetProcFunc(WndProc);

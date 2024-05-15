@@ -72,6 +72,30 @@ std::wstring StringHelper::TrimEnd(const std::wstring& str)
 	return str.substr(0, last + 1);
 }
 
+std::string StringHelper::Replace(const std::string& str, const std::string& search, const std::string& replace)
+{
+	std::string result = str;
+	size_t pos = 0;
+	while ((pos = result.find(search, pos)) != std::string::npos)
+	{
+		result.replace(pos, search.length(), replace);
+		pos += replace.length();
+	}
+	return result;
+}
+
+std::wstring StringHelper::Replace(const std::wstring& str, const std::wstring& search, const std::wstring& replace)
+{
+	std::wstring result = str;
+	size_t pos = 0;
+	while ((pos = result.find(search, pos)) != std::wstring::npos)
+	{
+		result.replace(pos, search.length(), replace);
+		pos += replace.length();
+	}
+	return result;
+}
+
 bool StringHelper::IsEmptyOrWhiteSpace(const std::string& str)
 {
 	if (str.empty()) return true;

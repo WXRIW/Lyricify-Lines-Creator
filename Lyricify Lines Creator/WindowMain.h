@@ -6,6 +6,7 @@
 #include "FileHelper.h"
 #include "resource.h"
 #include "WindowAbout.h"
+#include "WindowPreviewOutput.h"
 #include "MusicPlayer.h"
 #include "TaskHelper.h"
 #include "ProcedureHelper.h"
@@ -31,6 +32,7 @@ namespace WindowMain
 	void ButtonRestart_Click();
 	void ButtonStart_Click();
 
+	std::wstring GetOutputFullpath();
 	int GetCurrentLineIndex();
 	Lyricify::Lyrics* GetCurrentLine(int index = -1);
 	std::wstring GetCurrentLineString(int index = -2);

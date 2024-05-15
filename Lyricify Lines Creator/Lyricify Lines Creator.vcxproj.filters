@@ -156,6 +156,12 @@
     <ClCompile Include="ProcedureHelper.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="WindowPreviewOutput.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowHelper.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HiEasyX\HiGUI\Button.h">
@@ -358,6 +364,12 @@
     </ClInclude>
     <ClInclude Include="EasyX\include\easyx.h">
       <Filter>Header Files\EasyX</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowPreviewOutput.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowHelper.h">
+      <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

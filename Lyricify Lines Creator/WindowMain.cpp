@@ -57,7 +57,7 @@ namespace WindowMain
 
 			if (!MusicPlayer::Load(path))
 			{
-				MessageBox(wnd.GetHandle(), L"音频加载失败！", L"加载失败", MB_OK);
+				MessageBox(wnd.GetHandle(), L"音频加载失败！", L"加载失败", MB_OK | MB_ICONWARNING);
 			}
 		}
 	}
@@ -72,7 +72,7 @@ namespace WindowMain
 			auto stringLines = Lyricify::LyricsHelper::ReadTextToLines(TextBoxChooseRawLyrics.GetText());
 			if (stringLines.size() == 0)
 			{
-				MessageBox(wnd.GetHandle(), L"文本为空，或出现读取错误！", L"预处理错误", MB_OK);
+				MessageBox(wnd.GetHandle(), L"文本为空，或出现读取错误！", L"预处理错误", MB_OK | MB_ICONWARNING);
 				return;
 			}
 
@@ -108,7 +108,7 @@ namespace WindowMain
 				// 没有加载音频，或音频变更时，需要重新加载
 				if (!MusicPlayer::Load(TextBoxChooseAudio.GetText()))
 				{
-					MessageBox(wnd.GetHandle(), L"音频加载失败！", L"加载失败", MB_OK);
+					MessageBox(wnd.GetHandle(), L"音频加载失败！", L"加载失败", MB_OK | MB_ICONWARNING);
 				}
 			}
 
@@ -124,7 +124,7 @@ namespace WindowMain
 					std::wstring audio = MusicPlayer::CurrentAudioPath;
 					while (audio == MusicPlayer::CurrentAudioPath && MusicPlayer::IsPlaying())
 					{
-						if (!WindowAbout::IsOpened()) // 关于被打开时，不再刷新进度，防止渲染错乱
+						if (!WindowAbout::IsOpened() && !WindowPreviewOutput::IsOpened()) // 关于被打开时，不再刷新进度，防止渲染错乱
 						{
 							RefreshUI();
 						}
@@ -147,7 +147,14 @@ namespace WindowMain
 
 	void ButtonViewOutput_Click()
 	{
-
+		auto filePath = GetOutputFullpath();
+		auto fileContent = Lyricify::LyricsHelper::GenerateLyricifyLinesFromLyricsList(LyricsList);
+		if (fileContent.empty())
+		{
+			MessageBox(wnd.GetHandle(), L"没有可查看的输出！", L"错误", MB_OK | MB_ICONINFORMATION);
+			return;
+		}
+		WindowPreviewOutput::Show(filePath, fileContent, DPI_Scale, GetWindowRect(), wnd.GetHandle());
 	}
 
 	void ButtonPreview_Click()
@@ -161,7 +168,7 @@ namespace WindowMain
 		auto stringLines = Lyricify::LyricsHelper::ReadTextToLines(TextBoxChooseRawLyrics.GetText());
 		if (stringLines.size() == 0)
 		{
-			MessageBox(wnd.GetHandle(), L"文本为空，或出现读取错误！", L"预处理错误", MB_OK);
+			MessageBox(wnd.GetHandle(), L"文本为空，或出现读取错误！", L"预处理错误", MB_OK | MB_ICONWARNING);
 			return;
 		}
 		LyricsList = Lyricify::LyricsHelper::GetLyricsFromLines(stringLines);
@@ -176,23 +183,23 @@ namespace WindowMain
 			// 检查配置状态
 			if (TextBoxChooseAudio.GetTextLength() == 0)
 			{
-				MessageBox(wnd.GetHandle(), L"未选择音频！", L"预处理错误", MB_OK);
+				MessageBox(wnd.GetHandle(), L"未选择音频！", L"预处理错误", MB_OK | MB_ICONWARNING);
 				return;
 			}
 			if (MusicPlayer::CurrentAudioPath != TextBoxChooseAudio.GetText() && !MusicPlayer::Load(TextBoxChooseAudio.GetText()))
 			{
-				MessageBox(wnd.GetHandle(), L"音频加载失败！", L"预处理错误", MB_OK);
+				MessageBox(wnd.GetHandle(), L"音频加载失败！", L"预处理错误", MB_OK | MB_ICONWARNING);
 				return;
 			}
 			if (TextBoxChooseRawLyrics.GetTextLength() == 0)
 			{
-				MessageBox(wnd.GetHandle(), L"未选择歌词文本！", L"预处理错误", MB_OK);
+				MessageBox(wnd.GetHandle(), L"未选择歌词文本！", L"预处理错误", MB_OK | MB_ICONWARNING);
 				return;
 			}
 			auto stringLines = Lyricify::LyricsHelper::ReadTextToLines(TextBoxChooseRawLyrics.GetText());
 			if (stringLines.size() == 0)
 			{
-				MessageBox(wnd.GetHandle(), L"文本为空，或出现读取错误！", L"预处理错误", MB_OK);
+				MessageBox(wnd.GetHandle(), L"文本为空，或出现读取错误！", L"预处理错误", MB_OK | MB_ICONWARNING);
 				return;
 			}
 
@@ -219,29 +226,18 @@ namespace WindowMain
 			}
 
 			// 保存至文件
-			auto outputPath = TextBoxOutputPath.GetText();
-			if (outputPath.empty())
-			{
-				TCHAR exePath[MAX_PATH];
-				GetModuleFileName(NULL, exePath, MAX_PATH);
-				outputPath = StringHelper::GetDirectoryFromPath(exePath) + L"\\output\\";
-			}
-			if (outputPath.back() != L'/' && outputPath.back() != '\\') outputPath += L'\\';
-			FileHelper::EnsureDirectoryExists(outputPath);
-			auto filename = StringHelper::GetFileNameFromPath(TextBoxChooseAudio.GetText());
-			filename = StringHelper::ReplaceFileNameExtension(filename, L"lyl");
 			auto lyricifyLinesString = Lyricify::LyricsHelper::GenerateLyricifyLinesFromLyricsList(LyricsList);
 			if (lyricifyLinesString.empty())
 			{
-				MessageBox(wnd.GetHandle(), L"保存失败，没有歌词被写入文件！", L"保存失败", MB_OK);
+				MessageBox(wnd.GetHandle(), L"保存失败，没有歌词被写入文件！", L"保存失败", MB_OK | MB_ICONWARNING);
 				return;
 			}
 			else
 			{
-				std::wofstream outFile(outputPath + filename);
+				std::wofstream outFile(GetOutputFullpath());
 				if (!outFile)
 				{
-					MessageBox(wnd.GetHandle(), L"保存失败，无法写入文件！", L"保存失败", MB_OK);
+					MessageBox(wnd.GetHandle(), L"保存失败，无法写入文件！", L"保存失败", MB_OK | MB_ICONWARNING);
 					return;
 				}
 				else
@@ -616,6 +612,26 @@ namespace WindowMain
 #pragma endregion
 
 #pragma region Lyrics
+
+	/// <summary>
+	/// 获取输出文件完整路径 (含文件名)
+	/// </summary>
+	/// <returns>输出文件完整路径 (含文件名)</returns>
+	std::wstring GetOutputFullpath()
+	{
+		auto outputPath = TextBoxOutputPath.GetText();
+		if (outputPath.empty())
+		{
+			TCHAR exePath[MAX_PATH];
+			GetModuleFileName(NULL, exePath, MAX_PATH);
+			outputPath = StringHelper::GetDirectoryFromPath(exePath) + L"\\output\\";
+		}
+		if (outputPath.back() != L'/' && outputPath.back() != '\\') outputPath += L'\\';
+		FileHelper::EnsureDirectoryExists(outputPath);
+		auto filename = StringHelper::GetFileNameFromPath(TextBoxChooseAudio.GetText());
+		filename = StringHelper::ReplaceFileNameExtension(filename, L"lyl");
+		return outputPath + filename;
+	}
 
 	/// <summary>
 	/// 获取当前行的序号 (以 0 为起点)

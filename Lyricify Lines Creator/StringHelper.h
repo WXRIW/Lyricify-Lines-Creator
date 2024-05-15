@@ -56,6 +56,24 @@ public:
 	static std::wstring TrimEnd(const std::wstring&);
 
 	/// <summary>
+	/// Ìæ»»×Ö·û´®ÖÐµÄ×Ó×Ö·û´®
+	/// </summary>
+	/// <param name="str">Ô­Ê¼×Ö·û´®</param>
+	/// <param name="search">ÒªÌæ»»µÄ×Ó×Ö·û´®</param>
+	/// <param name="replace">ÒªÌæ»»³ÉµÄ×Ö·û´®</param>
+	/// <returns>Ìæ»»ºóµÄ×Ö·û´®</returns>
+	static std::string Replace(const std::string& str, const std::string& search, const std::string& replace);
+
+	/// <summary>
+	/// Ìæ»»×Ö·û´®ÖÐµÄ×Ó×Ö·û´®
+	/// </summary>
+	/// <param name="str">Ô­Ê¼×Ö·û´®</param>
+	/// <param name="search">ÒªÌæ»»µÄ×Ó×Ö·û´®</param>
+	/// <param name="replace">ÒªÌæ»»³ÉµÄ×Ö·û´®</param>
+	/// <returns>Ìæ»»ºóµÄ×Ö·û´®</returns>
+	static std::wstring Replace(const std::wstring& str, const std::wstring& search, const std::wstring& replace);
+
+	/// <summary>
 	/// ÊÇ·ñÎª¿Õ°××Ö·û´®»ò½ö°üº¬¿Õ¸ñµÄ×Ö·û´®
 	/// </summary>
 	static bool IsEmptyOrWhiteSpace(const std::string&);
