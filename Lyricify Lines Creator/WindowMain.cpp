@@ -173,6 +173,8 @@ namespace WindowMain
 		}
 		LyricsList = Lyricify::LyricsHelper::GetLyricsFromLines(stringLines);
 		MusicPlayer::SeekTo(0);
+
+		if (!MusicPlayer::IsPlaying()) RefreshUI();
 	}
 
 	void ButtonStart_Click()
