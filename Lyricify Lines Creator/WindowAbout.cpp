@@ -71,7 +71,7 @@ namespace WindowAbout
 		CanvasMain->CenterText(L"Xiaoyang Wang", { 0, top, w, top + 20 }); top += 20;
 		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false); }
 		CanvasMain->CenterText(L"Tianle Chen", { 0, top, w, top + 20 }); top += 20;
-		CanvasMain->CenterText(L"Runze Zhang", { 0, top, w, top + 20 }); top += 20;
+		CanvasMain->CenterText(L"Junze Zhang", { 0, top, w, top + 20 }); top += 20;
 
 		top += 20;
 		CanvasMain->SetTextColor(BLACK);
