@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <fstream>
 #include <string>
 #include <ShlObj.h>
 
@@ -28,4 +29,11 @@ public:
 	/// <param name="path">要确保存在的路径</param>
 	/// <returns>路径是否存在</returns>
 	static bool EnsureDirectoryExists(const std::wstring& path);
+
+	/// <summary>
+	/// 读取文件内容并返回字符串
+	/// </summary>
+	/// <param name="filePath">文件路径</param>
+	/// <returns>文件内容字符串</returns>
+	static std::string ReadAllText(const std::wstring& filePath);
 };

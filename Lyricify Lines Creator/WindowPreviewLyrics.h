@@ -4,8 +4,10 @@
 #include <string>
 #include <Windows.h>
 #include "CommonDefine.h"
+#include "FileHelper.h"
 #include "FontHelper.h"
 #include "Lyrics.h"
+#include "LyricsHelper.h"
 #include "MusicPlayer.h"
 #include "StringHelper.h"
 #include "WindowHelper.h"

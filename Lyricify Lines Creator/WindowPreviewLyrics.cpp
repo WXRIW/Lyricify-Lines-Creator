@@ -94,6 +94,21 @@ namespace WindowPreviewLyrics
 		DPI_Scale = scale;
 		LyricsList = lyricsList;
 
+		/* 这一段是临时内容，用于测试 */
+		
+		// 加载一段歌词 用于测试
+		TCHAR exePath[MAX_PATH];
+		GetModuleFileName(NULL, exePath, MAX_PATH);
+		auto filePath = StringHelper::GetDirectoryFromPath(exePath) + L"\\Lyrics.txt";
+		auto lyricsRaw = StringHelper::StringToWstring(FileHelper::ReadAllText(filePath));
+		auto lyrics = Lyricify::LyricsHelper::ParseLyricsFromLyricifyLinesString(lyricsRaw);
+		LyricsList = lyrics;
+
+		// 加载对应歌曲
+		MusicPlayer::Load(StringHelper::GetDirectoryFromPath(exePath) + L"\\Audio.mp3");
+
+		/* 临时内容结束 */
+
 		hiex::Window wnd;
 		hiex::Canvas canvas;
 		hiex::SysButton buttonPlayPause;
@@ -107,7 +122,7 @@ namespace WindowPreviewLyrics
 			wnd.PreSetPos(left, top);
 		}
 		wnd.InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, L"输出预览", nullptr, hParent);
-		WindowHelper::EnableMinimizeButton(wnd.GetHandle(), false);
+		if (hParent != (HWND)nullptr) WindowHelper::EnableMinimizeButton(wnd.GetHandle(), false);
 
 		wnd.BindCanvas(&canvas);
 		wnd.SetProcFunc(WndProc);
