@@ -165,6 +165,22 @@ namespace WindowMain
 	void ButtonRestart_Click()
 	{
 		// 清空歌词的时间信息，并返回头部
+
+		// 如果音频变化，需要重新加载
+		if (MusicPlayer::CurrentAudioPath != TextBoxChooseAudio.GetText())
+		{
+			if (!MusicPlayer::Load(TextBoxChooseAudio.GetText()))
+			{
+				MessageBox(wnd.GetHandle(), L"音频加载失败！", L"加载失败", MB_OK | MB_ICONWARNING);
+				return;
+			}
+		}
+		else
+		{
+			MusicPlayer::SeekTo(0);
+		}
+
+		// 清空歌词信息 (直接重新加载)
 		auto stringLines = Lyricify::LyricsHelper::ReadTextToLines(TextBoxChooseRawLyrics.GetText());
 		if (stringLines.size() == 0)
 		{
@@ -172,7 +188,6 @@ namespace WindowMain
 			return;
 		}
 		LyricsList = Lyricify::LyricsHelper::GetLyricsFromLines(stringLines);
-		MusicPlayer::SeekTo(0);
 
 		if (!MusicPlayer::IsPlaying()) RefreshUI();
 	}
