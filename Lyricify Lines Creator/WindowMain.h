@@ -6,6 +6,7 @@
 #include "FileHelper.h"
 #include "resource.h"
 #include "WindowAbout.h"
+#include "WindowPreviewLyrics.h"
 #include "WindowPreviewOutput.h"
 #include "MusicPlayer.h"
 #include "TaskHelper.h"

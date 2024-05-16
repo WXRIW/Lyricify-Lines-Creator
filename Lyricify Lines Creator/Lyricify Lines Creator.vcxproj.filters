@@ -165,6 +165,9 @@
     <ClCompile Include="FontHelper.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="WindowPreviewLyrics.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HiEasyX\HiGUI\Button.h">
@@ -376,6 +379,9 @@
     </ClInclude>
     <ClInclude Include="FontHelper.h">
       <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowPreviewLyrics.h">
+      <Filter>Header Files\Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -176,6 +176,7 @@
     <ClCompile Include="WindowAbout.cpp" />
     <ClCompile Include="WindowHelper.cpp" />
     <ClCompile Include="WindowMain.cpp" />
+    <ClCompile Include="WindowPreviewLyrics.cpp" />
     <ClCompile Include="WindowPreviewOutput.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -248,6 +249,7 @@
     <ClInclude Include="WindowAbout.h" />
     <ClInclude Include="WindowHelper.h" />
     <ClInclude Include="WindowMain.h" />
+    <ClInclude Include="WindowPreviewLyrics.h" />
     <ClInclude Include="WindowPreviewOutput.h" />
   </ItemGroup>
   <ItemGroup>

@@ -159,7 +159,7 @@ namespace WindowMain
 
 	void ButtonPreview_Click()
 	{
-
+		WindowPreviewLyrics::Show(LyricsList, DPI_Scale, GetWindowRect(), wnd.GetHandle());
 	}
 
 	void ButtonRestart_Click()
