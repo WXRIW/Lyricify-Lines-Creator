@@ -34,6 +34,8 @@ namespace WindowPreviewLyrics
 		// CanvasMain->OutTextXY();
 
 		// 计算文字尺寸可以用 FontHelper::CalculateTextSize();
+
+		IsInDrawAtWndProcPaint = false;
 	}
 
 	/// <summary>
@@ -139,7 +141,9 @@ namespace WindowPreviewLyrics
 		// TODO: 按钮的创建
 		// ButtonPlayPause->Create();
 
+		wnd.Redraw();
 		hiex::init_end(wnd.GetHandle());
+		MusicPlayer::Pause();
 		if (hParent != (HWND)nullptr) BringWindowToTop(hParent); // 让主窗体显示于最上方
 		isOpened = false;
 	}
