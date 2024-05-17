@@ -94,18 +94,25 @@ namespace WindowPreviewLyrics
 		DPI_Scale = scale;
 		LyricsList = lyricsList;
 
-		/* 这一段是临时内容，用于测试 */
-		
-		// 加载一段歌词 用于测试
-		TCHAR exePath[MAX_PATH];
-		GetModuleFileName(NULL, exePath, MAX_PATH);
-		auto filePath = StringHelper::GetDirectoryFromPath(exePath) + L"\\Lyrics.txt";
-		auto lyricsRaw = StringHelper::StringToWstring(FileHelper::ReadAllText(filePath));
-		auto lyrics = Lyricify::LyricsHelper::ParseLyricsFromLyricifyLinesString(lyricsRaw);
-		LyricsList = lyrics;
+		/* 这一段是临时内容，用于方便开发 */
 
-		// 加载对应歌曲
-		MusicPlayer::Load(StringHelper::GetDirectoryFromPath(exePath) + L"\\Audio.mp3");
+		try
+		{
+			// 加载一段歌词 用于测试
+			TCHAR exePath[MAX_PATH];
+			GetModuleFileName(NULL, exePath, MAX_PATH);
+			auto filePath = StringHelper::GetDirectoryFromPath(exePath) + L"\\Lyrics.txt";
+			auto lyricsRaw = StringHelper::StringToWstring(FileHelper::ReadAllText(filePath));
+			auto lyrics = Lyricify::LyricsHelper::ParseLyricsFromLyricifyLinesString(lyricsRaw);
+			LyricsList = lyrics;
+
+			// 加载对应歌曲
+			MusicPlayer::Load(StringHelper::GetDirectoryFromPath(exePath) + L"\\Audio.mp3");
+		}
+		catch (...)
+		{
+			MessageBox(NULL, L"加载歌词或歌曲失败！\n请确保 Audio.mp3 和 Lyrics.txt 存在且可用。", L"加载失败", MB_OK);
+		}
 
 		/* 临时内容结束 */
 
@@ -133,7 +140,7 @@ namespace WindowPreviewLyrics
 		// ButtonPlayPause->Create();
 
 		hiex::init_end(wnd.GetHandle());
-		BringWindowToTop(hParent); // 让主窗体显示于最上方
+		if (hParent != (HWND)nullptr) BringWindowToTop(hParent); // 让主窗体显示于最上方
 		isOpened = false;
 	}
 

@@ -234,7 +234,7 @@ namespace WindowAbout
 		DrawCanvas();
 
 		hiex::init_end(wnd.GetHandle());
-		BringWindowToTop(hParent); // 让主窗体显示于最上方
+		if (hParent != (HWND)nullptr) BringWindowToTop(hParent); // 让主窗体显示于最上方
 		isOpened = false;
 	}
 
