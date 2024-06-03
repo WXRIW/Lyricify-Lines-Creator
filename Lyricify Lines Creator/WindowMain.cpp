@@ -316,6 +316,16 @@ namespace WindowMain
 			if (!MusicPlayer::IsPlaying()) RefreshUI();
 			break;
 
+		case 'C':
+			MusicPlayer::SeekForward(30000);
+			if (!MusicPlayer::IsPlaying()) RefreshUI();
+			break;
+
+		case 'R':
+			MusicPlayer::SeekTo(0);
+			if (!MusicPlayer::IsPlaying()) RefreshUI();
+			break;
+
 		case VK_UP: // 为当前行 (下一行) 标记起始时间
 		{
 			if (!IsMaking) break;
@@ -349,6 +359,22 @@ namespace WindowMain
 				line->EndTime = MusicPlayer::GetCurrentPositionMs() - SettingsHelper::Settings.TotalLatencyMs();
 			}
 			if (!MusicPlayer::IsPlaying()) RefreshUI();
+			break;
+		}
+
+		case VK_LEFT: // 为上一行标记结束时间
+		{
+			if (!IsMaking) break;
+			auto index = GetCurrentLineIndex();
+			if (index - 1 >= 0)
+			{
+				auto line = GetCurrentLine(index - 1);
+				if (line != nullptr && line->EndTime == -1)
+				{
+					line->EndTime = MusicPlayer::GetCurrentPositionMs() - SettingsHelper::Settings.TotalLatencyMs();
+				}
+				if (!MusicPlayer::IsPlaying()) RefreshUI();
+			}
 			break;
 		}
 
@@ -579,8 +605,9 @@ namespace WindowMain
 #pragma region 歌词区域
 
 		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL, L"当前行：");
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL * 2, L"下一行：");
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL, L"上一行：");
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL * 2, L"当前行：");
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL * 3, L"下一行：");
 
 		// 还原字体设置
 		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
@@ -591,31 +618,73 @@ namespace WindowMain
 		auto currentIndex = GetCurrentLineIndex();
 		auto currentLine = GetCurrentLine(currentIndex);
 		auto isCurrentLineHasEndTime = false;
+
+		// 画上一行
+		if (currentIndex - 1 >= 0)
+		{
+			auto previousLine = GetCurrentLine(currentIndex - 1);
+			if (previousLine != nullptr)
+			{
+				CanvasMain.SetTextColor(previousLine->EndTime == -1 ? FOREGROUND_COLOR : RGB(0x7F, 0x7F, 0x7F));
+				CanvasMain.OutTextXY(left, top + LYRICS_PADDING_VERTICAL, previousLine->Text.c_str());
+			}
+		}
+
+		// 画当前行
 		if (currentLine != nullptr && currentLine->EndTime != -1)
 		{
 			CanvasMain.SetTextColor(RGB(0x7F, 0x7F, 0x7F));
 		}
-		CanvasMain.OutTextXY(left, top + LYRICS_PADDING_VERTICAL, GetCurrentLineString(currentIndex).c_str());
-		auto lyricsHeight = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12 - 76 - top;
+		else
+		{
+			CanvasMain.SetTextColor(FOREGROUND_COLOR);
+		}
+		CanvasMain.OutTextXY(left, top + LYRICS_PADDING_VERTICAL * 2, GetCurrentLineString(currentIndex).c_str());
+
+		// 画后续行
+		auto lyricsHeight = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 10 - LYRICS_PADDING_VERTICAL * 4 - top;
 		auto linesAvailable = lyricsHeight / LYRICS_PADDING_VERTICAL - 1;
 		linesAvailable = linesAvailable < 1 ? 1 : linesAvailable;
 		auto comingLines = GetComingLinesString(currentIndex, linesAvailable);
 		CanvasMain.SetTextColor(RGB(0x7F, 0x7F, 0x7F));
 		for (size_t i = 0; i < comingLines.size(); i++)
 		{
-			CanvasMain.OutTextXY(left, top + LYRICS_PADDING_VERTICAL * (i + 2), comingLines[i].c_str());
+			CanvasMain.OutTextXY(left, top + LYRICS_PADDING_VERTICAL * (i + 3), comingLines[i].c_str());
 		}
 
 #pragma endregion
 
 #pragma region 提示区域
 
-		top = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12 - 36;
+		const std::vector<std::wstring> Notices =
+		{
+			L"行起始: ↑",
+			L"行结束: →",
+			L"上一行结束: ←",
+			L"回到上一行: ↓",
+			L"播放/暂停: Space",
+			L"回退 3s: B",
+			L"前进 3s: N",
+			L"前进 10s: M",
+			L"前进 30s: C",
+			L"回到 0s: R",
+		};
+
+		top = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12 - 36 - 24;
 		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
 		CanvasMain.SetTextColor(FOREGROUND_COLOR);
 		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top, L"按键提示：");
 		setfont(DEFAULT_CANVAS_FONTSIZE - 1, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 90, top + 1, L"行起始: ↑      行结束: →      回到上一行: ↓      回退 3s: B      前进 3s: N      前进 10s: M      播放/暂停: Space");
+		auto fullWidth = w - MARGIN_HORIZONTAL * 2 - 90 - 10;
+		fullWidth /= Notices.size() / 2;
+		for (int i = 0; i < Notices.size() / 2; i++)
+		{
+			CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 90 + fullWidth * i, top + 1, Notices[i].c_str());
+		}
+		for (int i = Notices.size() / 2; i < Notices.size(); i++)
+		{
+			CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 90 + fullWidth * (i - (int)Notices.size() / 2), top + 1 + 28, Notices[i].c_str());
+		}
 
 #pragma endregion
 
@@ -644,7 +713,7 @@ namespace WindowMain
 		CanvasMain.Line(10, top, w - 10, top, true, LINE_COLOR);
 
 		// 提示区域分割线
-		top = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12 - 50;
+		top = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12 - 50 - 20;
 		CanvasMain.Line(10, top, w - 10, top, true, LINE_COLOR);
 
 		// 底部区域分割线
