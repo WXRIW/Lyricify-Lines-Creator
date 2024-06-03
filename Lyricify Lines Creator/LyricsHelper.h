@@ -37,6 +37,13 @@ namespace Lyricify
 		/// </summary>
 		/// <param name="lyrics">歌词列表</param>
 		/// <returns>生成的字符串</returns>
-		static std::wstring GenerateLyricifyLinesFromLyricsList(std::vector<Lyricify::Lyrics> lyrics);
+		static std::wstring GenerateLyricifyLinesFromLyricsList(const std::vector<Lyricify::Lyrics>& lyrics);
+
+		/// <summary>
+		/// 生成 LRC 歌词字符串
+		/// </summary>
+		/// <param name="lyrics">歌词列表</param>
+		/// <returns>生成的字符串</returns>
+		static std::wstring GenerateLrcFromLyricsList(const std::vector<Lyricify::Lyrics>& lyrics);
 	};
 }

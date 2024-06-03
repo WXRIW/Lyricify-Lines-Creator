@@ -81,7 +81,7 @@ namespace Lyricify
 		return list;
 	}
 
-	std::wstring LyricsHelper::GenerateLyricifyLinesFromLyricsList(std::vector<Lyricify::Lyrics> lyrics)
+	std::wstring LyricsHelper::GenerateLyricifyLinesFromLyricsList(const std::vector<Lyricify::Lyrics>& lyrics)
 	{
 		if (lyrics.size() < 1) return L"";
 
@@ -98,5 +98,39 @@ namespace Lyricify
 		}
 
 		return result == L"[type:LyricifyLines]\n" ? L"" : StringHelper::TrimEnd(result);
+	}
+
+	/// <summary>
+	/// 格式化时间为字符串，用于 LRC 歌词
+	/// </summary>
+	/// <param name="timeMs">时间毫秒数</param>
+	/// <returns>时间字符串</returns>
+	static std::wstring FormatTime(int timeMs)
+	{
+		int minutes = timeMs / 60000;
+		int seconds = (timeMs % 60000) / 1000;
+		int hundredths = (timeMs % 1000) / 10;
+
+		std::wostringstream oss;
+		oss << L"[" << std::setfill(L'0') << std::setw(2) << minutes << L":"
+			<< std::setfill(L'0') << std::setw(2) << seconds << L"."
+			<< std::setfill(L'0') << std::setw(2) << hundredths << L"]";
+		return oss.str();
+	}
+
+	std::wstring LyricsHelper::GenerateLrcFromLyricsList(const std::vector<Lyricify::Lyrics>& lyrics)
+	{
+		if (lyrics.empty()) return L"";
+
+		std::wstring result;
+		for (const auto& lyric : lyrics)
+		{
+			if (lyric.StartTime == -1)
+				break; // 遇到没有起始时间的歌词，直接结束字符串生成
+
+			result += FormatTime(lyric.StartTime) + lyric.Text + L"\n";
+		}
+
+		return result.empty() ? L"" : StringHelper::TrimEnd(result);
 	}
 }
