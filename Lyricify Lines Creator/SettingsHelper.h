@@ -15,9 +15,21 @@
 #include <nlohmann/json.hpp>
 #include "StringHelper.h"
 
+enum class Languages
+{
+    EN,
+    ZH_HANS,
+    ZH_HANT,
+};
+
 class MainSettings
 {
 public:
+    /// <summary>
+    /// 显示语言
+    /// </summary>
+    Languages Language = Languages::ZH_HANS;
+
     /// <summary>
     /// 是否默认输出为 LRC
     /// </summary>
@@ -48,7 +60,7 @@ public:
     }
 
     // 接入 nlohmann::json 的序列化和反序列化
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE(MainSettings, IsOutputLrc, DeviceLatencyMs, KeyboardLatencyMs)
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(MainSettings, Language, IsOutputLrc, DeviceLatencyMs, KeyboardLatencyMs, IsPreviewLyricsOpenMaximize)
 };
 
 class SettingsHelper

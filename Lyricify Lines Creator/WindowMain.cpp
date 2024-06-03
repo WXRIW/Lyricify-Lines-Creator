@@ -11,7 +11,8 @@
 
 namespace WindowMain
 {
-#pragma region Variable Definations
+
+#pragma region Variable Definitions
 
 	double DPI_Scale = 1;
 
@@ -25,7 +26,7 @@ namespace WindowMain
 
 #pragma endregion
 
-#pragma region Control Definations
+#pragma region Control Definitions
 
 	hiex::Window wnd;
 
@@ -60,21 +61,21 @@ namespace WindowMain
 
 	void ButtonChooseAudio_Click()
 	{
-		auto path = FileHelper::SelectFile(L"选择音频", L"音频 (*.mp3;*.wav;*.flac;*.ogg)\0*.mp3;*.wav;*.flac;*.ogg");
+		auto path = FileHelper::SelectFile(GetStringFromKey("String.Window.Main.SelectAudioDialogTitle").c_str(), GetStringFromKey("String.Window.Main.SelectAudioDialogFilter").c_str());
 		if (!path.empty())
 		{
 			TextBoxChooseAudio.SetText(path);
 
 			if (!MusicPlayer::Load(path))
 			{
-				MessageBox(wnd.GetHandle(), L"音频加载失败！", L"加载失败", MB_OK | MB_ICONWARNING);
+				MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.AudioLoadFailed").c_str(), GetStringFromKey("String.Window.Main.AudioLoadFailed").c_str(), MB_OK | MB_ICONWARNING);
 			}
 		}
 	}
 
 	void ButtonChooseRawLyrics_Click()
 	{
-		auto path = FileHelper::SelectFile(L"选择歌词", L"文本文档 (*.txt)\0*.txt");
+		auto path = FileHelper::SelectFile(GetStringFromKey("String.Window.Main.SelectLyricsDialogTitle").c_str(), GetStringFromKey("String.Window.Main.SelectLyricsDialogFilter").c_str());
 		if (!path.empty())
 		{
 			TextBoxChooseRawLyrics.SetText(path);
@@ -82,7 +83,7 @@ namespace WindowMain
 			auto stringLines = Lyricify::LyricsHelper::ReadTextToLines(TextBoxChooseRawLyrics.GetText());
 			if (stringLines.size() == 0)
 			{
-				MessageBox(wnd.GetHandle(), L"文本为空，或出现读取错误！", L"预处理错误", MB_OK | MB_ICONWARNING);
+				MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.EmptyOrErrorText").c_str(), GetStringFromKey("String.Window.Main.EmptyOrErrorText").c_str(), MB_OK | MB_ICONWARNING);
 				return;
 			}
 
@@ -96,7 +97,7 @@ namespace WindowMain
 
 	void ButtonOutputPath_Click()
 	{
-		auto path = FileHelper::SelectFolder(L"选择导出路径");
+		auto path = FileHelper::SelectFolder(GetStringFromKey("String.Window.Main.OutputPathDialogTitle").c_str());
 		if (!path.empty())
 		{
 			TextBoxOutputPath.SetText(path);
@@ -108,7 +109,7 @@ namespace WindowMain
 		if (MusicPlayer::IsPlaying())
 		{
 			MusicPlayer::Pause();
-			ButtonPlayPause.SetText(L"播放");
+			ButtonPlayPause.SetText(GetStringFromKey("String.Window.Main.Play").c_str());
 		}
 		else
 		{
@@ -118,12 +119,12 @@ namespace WindowMain
 				// 没有加载音频，或音频变更时，需要重新加载
 				if (!MusicPlayer::Load(TextBoxChooseAudio.GetText()))
 				{
-					MessageBox(wnd.GetHandle(), L"音频加载失败！", L"加载失败", MB_OK | MB_ICONWARNING);
+					MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.AudioLoadFailed").c_str(), GetStringFromKey("String.Window.Main.AudioLoadFailed").c_str(), MB_OK | MB_ICONWARNING);
 				}
 			}
 
 			MusicPlayer::Play();
-			ButtonPlayPause.SetText(L"暂停");
+			ButtonPlayPause.SetText(GetStringFromKey("String.Window.Main.Pause").c_str());
 
 			std::thread([]()
 				{
@@ -146,7 +147,7 @@ namespace WindowMain
 					}
 					if (!MusicPlayer::IsPlaying())
 					{
-						ButtonPlayPause.SetText(L"播放");
+						ButtonPlayPause.SetText(GetStringFromKey("String.Window.Main.Play").c_str());
 					}
 
 					IsRefreshThreadRunning = false;
@@ -171,7 +172,7 @@ namespace WindowMain
 			: Lyricify::LyricsHelper::GenerateLyricifyLinesFromLyricsList(LyricsList);
 		if (fileContent.empty())
 		{
-			MessageBox(wnd.GetHandle(), L"没有可查看的输出！", L"错误", MB_OK | MB_ICONINFORMATION);
+			MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.NoOutputToView").c_str(), GetStringFromKey("String.Window.Main.NoOutputToView").c_str(), MB_OK | MB_ICONINFORMATION);
 			return;
 		}
 		auto filePath = GetOutputFullpath();
@@ -183,7 +184,7 @@ namespace WindowMain
 		auto fileContent = Lyricify::LyricsHelper::GenerateLyricifyLinesFromLyricsList(LyricsList);
 		if (fileContent.empty())
 		{
-			MessageBox(wnd.GetHandle(), L"没有可查看的预览！", L"错误", MB_OK | MB_ICONINFORMATION);
+			MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.NoPreviewToView").c_str(), GetStringFromKey("String.Window.Main.NoPreviewToView").c_str(), MB_OK | MB_ICONINFORMATION);
 			return;
 		}
 		MusicPlayer::SeekTo(0); // 进度归零
@@ -199,7 +200,7 @@ namespace WindowMain
 		{
 			if (!MusicPlayer::Load(TextBoxChooseAudio.GetText()))
 			{
-				MessageBox(wnd.GetHandle(), L"音频加载失败！", L"加载失败", MB_OK | MB_ICONWARNING);
+				MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.AudioLoadFailed").c_str(), GetStringFromKey("String.Window.Main.AudioLoadFailed").c_str(), MB_OK | MB_ICONWARNING);
 				return;
 			}
 		}
@@ -212,7 +213,7 @@ namespace WindowMain
 		auto stringLines = Lyricify::LyricsHelper::ReadTextToLines(TextBoxChooseRawLyrics.GetText());
 		if (stringLines.size() == 0)
 		{
-			MessageBox(wnd.GetHandle(), L"文本为空，或出现读取错误！", L"预处理错误", MB_OK | MB_ICONWARNING);
+			MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.EmptyOrErrorText").c_str(), GetStringFromKey("String.Window.Main.EmptyOrErrorText").c_str(), MB_OK | MB_ICONWARNING);
 			return;
 		}
 		LyricsList = Lyricify::LyricsHelper::GetLyricsFromLines(stringLines);
@@ -228,23 +229,23 @@ namespace WindowMain
 			// 检查配置状态
 			if (TextBoxChooseAudio.GetTextLength() == 0)
 			{
-				MessageBox(wnd.GetHandle(), L"未选择音频！", L"预处理错误", MB_OK | MB_ICONWARNING);
+				MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.NoAudioSelected").c_str(), GetStringFromKey("String.Window.Main.NoAudioSelected").c_str(), MB_OK | MB_ICONWARNING);
 				return;
 			}
 			if (MusicPlayer::CurrentAudioPath != TextBoxChooseAudio.GetText() && !MusicPlayer::Load(TextBoxChooseAudio.GetText()))
 			{
-				MessageBox(wnd.GetHandle(), L"音频加载失败！", L"预处理错误", MB_OK | MB_ICONWARNING);
+				MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.AudioLoadFailed").c_str(), GetStringFromKey("String.Window.Main.AudioLoadFailed").c_str(), MB_OK | MB_ICONWARNING);
 				return;
 			}
 			if (TextBoxChooseRawLyrics.GetTextLength() == 0)
 			{
-				MessageBox(wnd.GetHandle(), L"未选择歌词文本！", L"预处理错误", MB_OK | MB_ICONWARNING);
+				MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.NoLyricsSelected").c_str(), GetStringFromKey("String.Window.Main.NoLyricsSelected").c_str(), MB_OK | MB_ICONWARNING);
 				return;
 			}
 			auto stringLines = Lyricify::LyricsHelper::ReadTextToLines(TextBoxChooseRawLyrics.GetText());
 			if (stringLines.size() == 0)
 			{
-				MessageBox(wnd.GetHandle(), L"文本为空，或出现读取错误！", L"预处理错误", MB_OK | MB_ICONWARNING);
+				MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.EmptyOrErrorText").c_str(), GetStringFromKey("String.Window.Main.EmptyOrErrorText").c_str(), MB_OK | MB_ICONWARNING);
 				return;
 			}
 
@@ -259,7 +260,7 @@ namespace WindowMain
 
 			// 更新按钮状态
 			ButtonRestart.Enable(true);
-			ButtonStart.SetText(L"保存歌词");
+			ButtonStart.SetText(GetStringFromKey("String.Window.Main.SaveLyrics").c_str());
 		}
 		else
 		{
@@ -276,7 +277,7 @@ namespace WindowMain
 				: Lyricify::LyricsHelper::GenerateLyricifyLinesFromLyricsList(LyricsList);
 			if (lyricifyLinesString.empty())
 			{
-				MessageBox(wnd.GetHandle(), L"保存失败，没有歌词被写入文件！", L"保存失败", MB_OK | MB_ICONWARNING);
+				MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.NoLyricsToSave").c_str(), GetStringFromKey("String.Window.Main.NoLyricsToSave").c_str(), MB_OK | MB_ICONWARNING);
 				return;
 			}
 			else
@@ -284,7 +285,7 @@ namespace WindowMain
 				std::wofstream outFile(GetOutputFullpath());
 				if (!outFile)
 				{
-					MessageBox(wnd.GetHandle(), L"保存失败，无法写入文件！", L"保存失败", MB_OK | MB_ICONWARNING);
+					MessageBox(wnd.GetHandle(), GetStringFromKey("String.Window.Main.OutputSaveFailed").c_str(), GetStringFromKey("String.Window.Main.SaveFailedTitle").c_str(), MB_OK | MB_ICONWARNING);
 					return;
 				}
 				else
@@ -296,7 +297,7 @@ namespace WindowMain
 
 			// 更新按钮状态
 			ButtonRestart.Enable(false);
-			ButtonStart.SetText(L"开始制作");
+			ButtonStart.SetText(GetStringFromKey("String.Window.Main.Start").c_str());
 		}
 		IsMaking = !IsMaking;
 	}
@@ -438,28 +439,28 @@ namespace WindowMain
 		TextBoxOutputPath.Create(hwnd, left, MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, width, CONTROL_HEIGHT);
 
 		left = w - MARGIN_HORIZONTAL - BUTTON_WIDTH;
-		ButtonChooseAudio.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT, L"导入音频");
-		ButtonChooseRawLyrics.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT, L"导入歌词");
-		ButtonOutputPath.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, BUTTON_WIDTH, BUTTON_HEIGHT, L"选择路径");
+		ButtonChooseAudio.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.ImportAudio").c_str());
+		ButtonChooseRawLyrics.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.ImportLyrics").c_str());
+		ButtonOutputPath.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.SelectPath").c_str());
 
 #pragma endregion
 
 #pragma region 播放区域
 
 		top = MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 3 + 25;
-		ButtonPlayPause.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + top, BUTTON_WIDTH, BUTTON_HEIGHT, L"播放");
+		ButtonPlayPause.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Play").c_str());
 
 #pragma endregion
 
 #pragma region 底部区域
 
 		top = h - MARGIN_VERTICAL - BUTTON_HEIGHT;
-		ButtonAbout.Create(hwnd, MARGIN_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"关于");
-		ButtonSettings.Create(hwnd, MARGIN_HORIZONTAL + BUTTON_WIDTH + CONTROL_PADDING_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"设置");
-		ButtonViewOutput.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 4 - CONTROL_PADDING_HORIZONTAL * 5, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"查看输出");
-		ButtonPreview.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 3 - CONTROL_PADDING_HORIZONTAL * 4, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"预览效果");
-		ButtonRestart.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"重新制作");
-		ButtonStart.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"开始制作");
+		ButtonAbout.Create(hwnd, MARGIN_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.About").c_str());
+		ButtonSettings.Create(hwnd, MARGIN_HORIZONTAL + BUTTON_WIDTH + CONTROL_PADDING_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Settings").c_str());
+		ButtonViewOutput.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 4 - CONTROL_PADDING_HORIZONTAL * 5, top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.ViewOutput").c_str());
+		ButtonPreview.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 3 - CONTROL_PADDING_HORIZONTAL * 4, top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Preview").c_str());
+		ButtonRestart.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Restart").c_str());
+		ButtonStart.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH, top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Start").c_str());
 
 #pragma endregion
 
@@ -574,9 +575,9 @@ namespace WindowMain
 	/// </summary>
 	void DrawLabelControls()
 	{
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, 1 + MARGIN_VERTICAL, L"选择音频：");
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, 1 + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, L"选择歌词：");
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, 1 + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, L"输出路径：");
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, 1 + MARGIN_VERTICAL, GetStringFromKey("String.Window.Main.SelectAudio").c_str());
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, 1 + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, GetStringFromKey("String.Window.Main.SelectLyrics").c_str());
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, 1 + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, GetStringFromKey("String.Window.Main.OutputPath").c_str());
 	}
 
 	/// <summary>
@@ -613,9 +614,9 @@ namespace WindowMain
 #pragma region 歌词区域
 
 		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL, L"上一行：");
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL * 2, L"当前行：");
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL * 3, L"下一行：");
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL, GetStringFromKey("String.Window.Main.PreviousLine").c_str());
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL * 2, GetStringFromKey("String.Window.Main.CurrentLine").c_str());
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top + LYRICS_PADDING_VERTICAL * 3, GetStringFromKey("String.Window.Main.NextLine").c_str());
 
 		// 还原字体设置
 		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
@@ -666,22 +667,22 @@ namespace WindowMain
 
 		const std::vector<std::wstring> Notices =
 		{
-			L"行起始: ↑",
-			L"当前行结束: →",
-			L"上一行结束: ←",
-			L"回到上一行: ↓",
-			L"播放/暂停: Space",
-			L"回退 3s: B",
-			L"前进 3s: N",
-			L"前进 10s: M",
-			L"前进 30s: C",
-			L"回到 0s: R",
+			GetStringFromKey("String.Window.Main.NoticeLineStart"),
+			GetStringFromKey("String.Window.Main.NoticeCurrentLineEnd"),
+			GetStringFromKey("String.Window.Main.NoticePreviousLineEnd"),
+			GetStringFromKey("String.Window.Main.NoticeReturnToPreviousLine"),
+			GetStringFromKey("String.Window.Main.NoticePlayPause"),
+			GetStringFromKey("String.Window.Main.NoticeSeekBack3s"),
+			GetStringFromKey("String.Window.Main.NoticeSeekForward3s"),
+			GetStringFromKey("String.Window.Main.NoticeSeekForward10s"),
+			GetStringFromKey("String.Window.Main.NoticeSeekForward30s"),
+			GetStringFromKey("String.Window.Main.NoticeSeekTo0s"),
 		};
 
 		top = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12 - 36 - 24;
 		setfont(DEFAULT_CANVAS_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
 		CanvasMain.SetTextColor(FOREGROUND_COLOR);
-		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top, L"按键提示：");
+		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top, GetStringFromKey("String.Window.Main.KeyTips").c_str());
 		setfont(DEFAULT_CANVAS_FONTSIZE - 1, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
 		auto fullWidth = w - MARGIN_HORIZONTAL * 2 - 90 - 10;
 		fullWidth /= Notices.size() / 2;

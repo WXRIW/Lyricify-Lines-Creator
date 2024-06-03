@@ -332,7 +332,7 @@ namespace WindowPreviewLyrics
 			int top = (rect.top + rect.bottom - WINDOW_HEIGHT * DPI_Scale) / 2;
 			wnd.PreSetPos(left, top);
 		}
-		wnd.InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, L" ‰≥ˆ‘§¿¿", nullptr, hParent);
+		wnd.InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, GetStringFromKey("String.Window.PreviewLyrics").c_str(), nullptr, hParent);
 		if (hParent != (HWND)nullptr) WindowHelper::EnableMinimizeButton(wnd.GetHandle(), false);
 
 		wnd.BindCanvas(&canvas);

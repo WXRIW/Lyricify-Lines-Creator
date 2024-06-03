@@ -50,7 +50,6 @@ namespace WindowPreviewOutput
 			}
 			break;
 
-
 		case WM_GETMINMAXINFO:
 		{
 			MINMAXINFO* pmmi = (MINMAXINFO*)lParam;
@@ -88,7 +87,7 @@ namespace WindowPreviewOutput
 			int top = (rect.top + rect.bottom - WINDOW_HEIGHT * DPI_Scale) / 2;
 			wnd.PreSetPos(left, top);
 		}
-		wnd.InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, L"输出预览", nullptr, hParent);
+		wnd.InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, GetStringFromKey("String.Window.PreviewOutput.OutputPreview").c_str(), nullptr, hParent);
 		WindowHelper::EnableMinimizeButton(wnd.GetHandle(), false);
 
 		wnd.BindCanvas(&canvas);
@@ -103,7 +102,7 @@ namespace WindowPreviewOutput
 		TextBoxOutput->Create(wnd.GetHandle(), MARGIN_HORIZONTAL, MARGIN_VERTICAL, w - MARGIN_HORIZONTAL * 2, h - MARGIN_VERTICAL * 2 - BUTTON_HEIGHT - 10, StringHelper::Replace(FileContent, L"\n", L"\r\n"));
 		TextBoxOutput->SetFont(18, 0, DEFAULT_FONT);
 
-		ButtonSave->Create(wnd.GetHandle(), w - MARGIN_HORIZONTAL - BUTTON_WIDTH, h - MARGIN_VERTICAL - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, L"保存");
+		ButtonSave->Create(wnd.GetHandle(), w - MARGIN_HORIZONTAL - BUTTON_WIDTH, h - MARGIN_VERTICAL - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.PreviewOutput.Save").c_str());
 		ButtonSave->Enable(false);
 		ButtonSave->SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
 		ButtonSave->RegisterMessage([]()
@@ -111,7 +110,7 @@ namespace WindowPreviewOutput
 				std::wofstream outFile(FilePath);
 				if (!outFile)
 				{
-					MessageBox(Window->GetHandle(), L"保存失败，无法写入文件！", L"保存失败", MB_OK | MB_ICONWARNING);
+					MessageBox(Window->GetHandle(), GetStringFromKey("String.Window.PreviewOutput.SaveFailed").c_str(), GetStringFromKey("String.Window.PreviewOutput.SaveFailedTitle").c_str(), MB_OK | MB_ICONWARNING);
 					return;
 				}
 				else
@@ -120,7 +119,7 @@ namespace WindowPreviewOutput
 					text = StringHelper::Replace(text, L"\r\n", L"\n");
 					outFile << text;
 					outFile.close();
-					MessageBox(Window->GetHandle(), L"保存成功！", L"保存成功", MB_OK);
+					MessageBox(Window->GetHandle(), GetStringFromKey("String.Window.PreviewOutput.SaveSuccess").c_str(), GetStringFromKey("String.Window.PreviewOutput.SaveSuccessTitle").c_str(), MB_OK);
 					ButtonSave->Enable(false);
 					FileContent = text;
 				}

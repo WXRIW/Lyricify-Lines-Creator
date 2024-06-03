@@ -36,21 +36,47 @@ namespace WindowSettings
 	hiex::SysCheckBox* CheckBoxPreviewLyricsMaximize;
 	hiex::SysButton* ButtonSave;
 	hiex::SysButton* ButtonCancel;
-	
+
 	static std::wstring LyricsFormats[] =
 	{
 		L"Lyricify Lines",
 		L"LRC",
 	};
-	
-	static std::wstring Languages[] =
+
+	static std::wstring LanguageList[] =
 	{
+		L"English (English)",
 		L"简体中文 (Simplified Chinese)",
+		L"繁體中文 (Traditional Chinese)",
 	};
+
+	static const size_t LanguageCount = sizeof(LanguageList) / sizeof(LanguageList[0]);
+
+	static int GetLanguageIndex(const std::wstring& language)
+	{
+		for (size_t i = 0; i < LanguageCount; ++i)
+		{
+			if (LanguageList[i] == language)
+			{
+				return static_cast<int>(i);
+			}
+		}
+		return -1;
+	}
+
+	static Languages GetLanguageEnum(int index)
+	{
+		if (index >= 0 && index < static_cast<int>(LanguageCount))
+		{
+			return static_cast<Languages>(index);
+		}
+		return Languages::ZH_HANS;
+	}
 
 	static void SettingsValueChange()
 	{
-		if (SettingsHelper::Settings.IsOutputLrc != (ComboBoxLyricsOutputFormat->GetText() == L"LRC")
+		if (LanguageList[(int)SettingsHelper::Settings.Language] != ComboBoxLanguage->GetText()
+			|| SettingsHelper::Settings.IsOutputLrc != (ComboBoxLyricsOutputFormat->GetText() == L"LRC")
 			|| std::to_wstring(SettingsHelper::Settings.DeviceLatencyMs) != (TextBoxDeviceLatency->GetText())
 			|| std::to_wstring(SettingsHelper::Settings.KeyboardLatencyMs) != (TextBoxKeyboardLatency->GetText())
 			|| SettingsHelper::Settings.IsPreviewLyricsOpenMaximize != CheckBoxPreviewLyricsMaximize->IsChecked())
@@ -84,7 +110,7 @@ namespace WindowSettings
 			else
 			{
 				TextBoxDeviceLatency->SetText(std::to_wstring(SettingsHelper::Settings.DeviceLatencyMs));
-				MessageBox(Window->GetHandle(), L"延迟值应为整数，一般为自然数。", L"错误输入", MB_ICONINFORMATION | MB_OK);
+				MessageBox(Window->GetHandle(), GetStringFromKey("String.Window.Settings.InvalidLatencyValue").c_str(), GetStringFromKey("String.Window.Settings.ErrorInput").c_str(), MB_ICONINFORMATION | MB_OK);
 			}
 		}
 		SettingsValueChange();
@@ -101,7 +127,7 @@ namespace WindowSettings
 			else
 			{
 				TextBoxKeyboardLatency->SetText(std::to_wstring(SettingsHelper::Settings.KeyboardLatencyMs));
-				MessageBox(Window->GetHandle(), L"延迟值应为整数，一般为自然数。", L"错误输入", MB_ICONINFORMATION | MB_OK);
+				MessageBox(Window->GetHandle(), GetStringFromKey("String.Window.Settings.InvalidLatencyValue").c_str(), GetStringFromKey("String.Window.Settings.ErrorInput").c_str(), MB_ICONINFORMATION | MB_OK);
 			}
 		}
 		SettingsValueChange();
@@ -114,6 +140,7 @@ namespace WindowSettings
 
 	static void ButtonSave_Click()
 	{
+		SettingsHelper::Settings.Language = GetLanguageEnum(GetLanguageIndex(ComboBoxLanguage->GetText()));
 		SettingsHelper::Settings.IsOutputLrc = ComboBoxLyricsOutputFormat->GetText() == L"LRC";
 		SettingsHelper::Settings.DeviceLatencyMs = std::stoi(TextBoxDeviceLatency->GetText());
 		SettingsHelper::Settings.KeyboardLatencyMs = std::stoi(TextBoxKeyboardLatency->GetText());
@@ -162,14 +189,14 @@ namespace WindowSettings
 		CheckBoxPreviewLyricsMaximize = &checkBoxPreviewLyricsMaximize;
 		ButtonSave = &buttonSave;
 		ButtonCancel = &buttonCancel;
-		
+
 		if (rect.left != -1 && rect.right != -1 && rect.top != -1 && rect.bottom != -1)
 		{
 			int left = (rect.left + rect.right - WINDOW_WIDTH * DPI_Scale) / 2;
 			int top = (rect.top + rect.bottom - WINDOW_HEIGHT * DPI_Scale) / 2;
 			Window->PreSetPos(left, top);
 		}
-		Window->InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, L"设置", nullptr, hParent);
+		Window->InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, GetStringFromKey("String.Window.Settings").c_str(), nullptr, hParent);
 		DisableResizing(Window->GetHandle(), true);
 		WindowHelper::EnableMinimizeButton(Window->GetHandle(), false);
 		Window->BindCanvas(CanvasMain);
@@ -181,15 +208,15 @@ namespace WindowSettings
 		int h = CanvasMain->GetHeight() / DPI_Scale;
 		int top = MARGIN_VERTICAL;
 
-		LabelLanguage->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, L"语言");
+		LabelLanguage->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, GetStringFromKey("String.Window.Settings.Language").c_str());
 		ComboBoxLanguage->PreSetStyle({ false, false, false });
 		ComboBoxLanguage->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH + CONTROL_PADDING_HORIZONTAL, top, w - MARGIN_HORIZONTAL * 2 - CONTROL_PADDING_HORIZONTAL - LEFT_LABEL_WIDTH, CONTROL_HEIGHT);
-		for (auto& item : Languages) ComboBoxLanguage->AddString(item);
-		ComboBoxLanguage->SelectString(Languages[0]);
+		for (auto& item : LanguageList) ComboBoxLanguage->AddString(item);
+		ComboBoxLanguage->SelectString(LanguageList[(int)SettingsHelper::Settings.Language]);
 		ComboBoxLanguage->RegisterSelMessage(ComboBoxLanguage_Selected);
 		top += LINE_HEIGHT;
 
-		LabelLyricsOutputFormat->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, L"歌词输出格式");
+		LabelLyricsOutputFormat->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, GetStringFromKey("String.Window.Settings.LyricsOutputFormat").c_str());
 		ComboBoxLyricsOutputFormat->PreSetStyle({ false, false, false });
 		ComboBoxLyricsOutputFormat->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH + CONTROL_PADDING_HORIZONTAL, top, w - MARGIN_HORIZONTAL * 2 - CONTROL_PADDING_HORIZONTAL - LEFT_LABEL_WIDTH, CONTROL_HEIGHT);
 		for (auto& item : LyricsFormats) ComboBoxLyricsOutputFormat->AddString(item);
@@ -197,26 +224,26 @@ namespace WindowSettings
 		ComboBoxLyricsOutputFormat->RegisterSelMessage(ComboBoxLyricsOutputFormat_Selected);
 		top += LINE_HEIGHT;
 
-		LabelDeviceLatency->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, L"设备延迟");
+		LabelDeviceLatency->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, GetStringFromKey("String.Window.Settings.DeviceLatency").c_str());
 		TextBoxDeviceLatency->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH + CONTROL_PADDING_HORIZONTAL, top, w - MARGIN_HORIZONTAL * 2 - CONTROL_PADDING_HORIZONTAL - LEFT_LABEL_WIDTH, CONTROL_HEIGHT, std::to_wstring(SettingsHelper::Settings.DeviceLatencyMs));
 		TextBoxDeviceLatency->RegisterMessage(TextBoxDeviceLatency_TextChanged);
 		top += LINE_HEIGHT;
 
-		LabelKeyboardLatency->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, L"按键延迟");
+		LabelKeyboardLatency->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, GetStringFromKey("String.Window.Settings.KeyboardLatency").c_str());
 		TextBoxKeyboardLatency->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH + CONTROL_PADDING_HORIZONTAL, top, w - MARGIN_HORIZONTAL * 2 - CONTROL_PADDING_HORIZONTAL - LEFT_LABEL_WIDTH, CONTROL_HEIGHT, std::to_wstring(SettingsHelper::Settings.KeyboardLatencyMs));
 		TextBoxKeyboardLatency->RegisterMessage(TextBoxKeyboardLatency_TextChanged);
 		top += LINE_HEIGHT;
 
-		LabelPreviewLyricsMaximize->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, L"歌词预览最大化");
+		LabelPreviewLyricsMaximize->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, GetStringFromKey("String.Window.Settings.PreviewLyricsMaximize").c_str());
 		CheckBoxPreviewLyricsMaximize->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH + CONTROL_PADDING_HORIZONTAL, top, w - MARGIN_HORIZONTAL * 2 - CONTROL_PADDING_HORIZONTAL - LEFT_LABEL_WIDTH, CONTROL_HEIGHT);
 		CheckBoxPreviewLyricsMaximize->Check(SettingsHelper::Settings.IsPreviewLyricsOpenMaximize);
 		CheckBoxPreviewLyricsMaximize->RegisterMessage(CheckBoxPreviewLyricsMaximize_Checked);
 		top += LINE_HEIGHT;
 
-		ButtonSave->Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL, h - MARGIN_VERTICAL - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, L"确定");
+		ButtonSave->Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL, h - MARGIN_VERTICAL - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Settings.Save").c_str());
 		ButtonSave->Enable(false);
 		ButtonSave->RegisterMessage(ButtonSave_Click);
-		ButtonCancel->Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH, h - MARGIN_VERTICAL - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, L"取消");
+		ButtonCancel->Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH, h - MARGIN_VERTICAL - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Settings.Cancel").c_str());
 		ButtonCancel->RegisterMessage(ButtonCancel_Click);
 
 		int FONTSIZE = 18 - 2 * (DPI_Scale - 1);

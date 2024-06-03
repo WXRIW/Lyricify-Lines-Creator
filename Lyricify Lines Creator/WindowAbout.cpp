@@ -72,7 +72,7 @@ namespace WindowAbout
 		top += 110;
 		CanvasMain->SetTextColor(BLACK);
 		setfont(SUBTITLE_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain->CenterText(L"开发者", { 0, top, w, top + 20 }); top += 26;
+		CanvasMain->CenterText(GetStringFromKey("String.Window.About.Developer").c_str(), {0, top, w, top + 20}); top += 26;
 		CanvasMain->SetTextColor(GRAY);
 
 		setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
@@ -95,7 +95,7 @@ namespace WindowAbout
 		top += 20;
 		CanvasMain->SetTextColor(BLACK);
 		setfont(18, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain->CenterText(L"第三方通知", { 0, top, w, top + 20 }); top += 26;
+		CanvasMain->CenterText(GetStringFromKey("String.Window.About.ThirdParty").c_str(), { 0, top, w, top + 20 }); top += 26;
 		CanvasMain->SetTextColor(GRAY);
 
 		setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);

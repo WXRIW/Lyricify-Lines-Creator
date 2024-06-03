@@ -167,6 +167,7 @@
     <ClCompile Include="HiEasyX\HiSysGUI\SysRadioButton.cpp" />
     <ClCompile Include="HiEasyX\HiSysGUI\SysStatic.cpp" />
     <ClCompile Include="HiEasyX\HiWindow.cpp" />
+    <ClCompile Include="InternationalizationHelper.cpp" />
     <ClCompile Include="LyricsHelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MusicPlayer.cpp" />
@@ -249,6 +250,7 @@
     <ClInclude Include="SettingsHelper.h" />
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="TaskHelper.h" />
+    <ClInclude Include="InternationalizationHelper.h" />
     <ClInclude Include="WindowAbout.h" />
     <ClInclude Include="WindowHelper.h" />
     <ClInclude Include="WindowMain.h" />
