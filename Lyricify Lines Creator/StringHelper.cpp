@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    StringHelper.cpp
+ * Description: ×Ö·û´®°ïÖúÀàÊµÏÖ
+ * Author:      XY Wang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #include "StringHelper.h"
 
 std::wstring StringHelper::StringToWstring(const std::string& str)

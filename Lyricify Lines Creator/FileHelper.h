@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    FileHelper.h
+ * Description: 文件帮助类定义
+ * Author:      XY Wang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #pragma once
 
 #include <filesystem>

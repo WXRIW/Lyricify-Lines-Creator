@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    WindowAbout.cpp
+ * Description: 关于窗体实现
+ * Author:      XY Wang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #include "WindowAbout.h"
 
 namespace WindowAbout
@@ -6,6 +15,8 @@ namespace WindowAbout
 	{
 		WA_URL_INDEX_NONE,
 		WA_URL_INDEX_WXRIW,
+		WA_URL_INDEX_CODEV1,
+		WA_URL_INDEX_CODEV2,
 		WA_URL_INDEX_EASYX,
 		WA_URL_INDEX_HIEASYX,
 		WA_URL_INDEX_IRRKLANG,
@@ -70,8 +81,16 @@ namespace WindowAbout
 		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(URL_COLOR); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false); }
 		CanvasMain->CenterText(L"Xiaoyang Wang", { 0, top, w, top + 20 }); top += 20;
 		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false); }
+		size = FontHelper::CalculateTextSize(L"Tianle Chen", DEFAULT_FONT, 16, DPI_Scale, FW_DONTCARE, false, false, false);
+		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 20 }, L"https://github.com/777yuu");
+		if (highlight == WA_URL_INDEX_CODEV1) { CanvasMain->SetTextColor(URL_COLOR); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false); }
 		CanvasMain->CenterText(L"Tianle Chen", { 0, top, w, top + 20 }); top += 20;
+		if (highlight == WA_URL_INDEX_CODEV1) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false); }
+		size = FontHelper::CalculateTextSize(L"Junze Zhang", DEFAULT_FONT, 16, DPI_Scale, FW_DONTCARE, false, false, false);
+		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 20 }, L"https://github.com/NathenCroft");
+		if (highlight == WA_URL_INDEX_CODEV2) { CanvasMain->SetTextColor(URL_COLOR); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false); }
 		CanvasMain->CenterText(L"Junze Zhang", { 0, top, w, top + 20 }); top += 20;
+		if (highlight == WA_URL_INDEX_CODEV2) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false); }
 
 		top += 20;
 		CanvasMain->SetTextColor(BLACK);
@@ -131,16 +150,28 @@ namespace WindowAbout
 			else if (PtInRect(&UrlAreas[1], pt))
 			{
 				SetCursor(LoadCursor(NULL, IDC_HAND));
-				DrawCanvas(false, WA_URL_INDEX_EASYX);
+				DrawCanvas(false, WA_URL_INDEX_CODEV1);
 				return TRUE;
 			}
 			else if (PtInRect(&UrlAreas[2], pt))
 			{
 				SetCursor(LoadCursor(NULL, IDC_HAND));
-				DrawCanvas(false, WA_URL_INDEX_HIEASYX);
+				DrawCanvas(false, WA_URL_INDEX_CODEV2);
 				return TRUE;
 			}
 			else if (PtInRect(&UrlAreas[3], pt))
+			{
+				SetCursor(LoadCursor(NULL, IDC_HAND));
+				DrawCanvas(false, WA_URL_INDEX_EASYX);
+				return TRUE;
+			}
+			else if (PtInRect(&UrlAreas[4], pt))
+			{
+				SetCursor(LoadCursor(NULL, IDC_HAND));
+				DrawCanvas(false, WA_URL_INDEX_HIEASYX);
+				return TRUE;
+			}
+			else if (PtInRect(&UrlAreas[5], pt))
 			{
 				SetCursor(LoadCursor(NULL, IDC_HAND));
 				DrawCanvas(false, WA_URL_INDEX_IRRKLANG);
@@ -176,21 +207,14 @@ namespace WindowAbout
 				GetCursorPos(&pt);
 				ScreenToClient(hWnd, &pt);
 
-				if (PtInRect(&UrlAreas[0], pt))
+				int index = -1;
+				while (++index < 6)
 				{
-					ShellExecute(NULL, L"open", Urls[0].c_str(), NULL, NULL, SW_SHOWNORMAL);
-				}
-				else if (PtInRect(&UrlAreas[1], pt))
-				{
-					ShellExecute(NULL, L"open", Urls[1].c_str(), NULL, NULL, SW_SHOWNORMAL);
-				}
-				else if (PtInRect(&UrlAreas[2], pt))
-				{
-					ShellExecute(NULL, L"open", Urls[2].c_str(), NULL, NULL, SW_SHOWNORMAL);
-				}
-				else if (PtInRect(&UrlAreas[3], pt))
-				{
-					ShellExecute(NULL, L"open", Urls[3].c_str(), NULL, NULL, SW_SHOWNORMAL);
+					if (PtInRect(&UrlAreas[index], pt))
+					{
+						ShellExecute(NULL, L"open", Urls[index].c_str(), NULL, NULL, SW_SHOWNORMAL);
+						break;
+					}
 				}
 			}
 

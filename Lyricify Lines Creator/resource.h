@@ -1,4 +1,13 @@
-//{{NO_DEPENDENCIES}}
+/************************************************************************
+ * Filename:    resource.h
+ * Description: 资源文件引入
+ * Author:      XY Wang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
+ //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by Lyricify Lines Creator.rc
 //

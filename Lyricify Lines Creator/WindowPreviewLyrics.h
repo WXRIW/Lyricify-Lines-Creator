@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    WindowPreviewLyrics.h
+ * Description: 预览歌词窗体方法定义
+ * Author:      XY Wang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #pragma once
 
 #include <cmath>

@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    ProcedureHelper.h
+ * Description: 回调帮助类定义
+ * Author:      XY Wang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #pragma once
 
 #include <map>

@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    DpiHelper.cpp
+ * Description: DPI 帮助方法实现
+ * Author:      XY Wang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #include "DpiHelper.h"
 #include <Windows.h>
 

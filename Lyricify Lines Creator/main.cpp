@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    main.cpp
+ * Description: 程序入口点
+ * Author:      XY Wang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #include <fstream>
 #include <vector>
 #include <string>

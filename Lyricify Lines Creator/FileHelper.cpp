@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    FileHelper.cpp
+ * Description: 文件帮助类实现
+ * Author:      XY Wang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #include "FileHelper.h"
 
 std::wstring FileHelper::SelectFile(LPCWSTR title, LPCWSTR fileFilter)

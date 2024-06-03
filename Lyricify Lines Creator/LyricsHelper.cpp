@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    LyricsHelper.cpp
+ * Description: ∏Ë¥ ∞Ô÷˙¿‡ µœ÷
+ * Author:      XY Wang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #include "LyricsHelper.h"
 
 namespace Lyricify

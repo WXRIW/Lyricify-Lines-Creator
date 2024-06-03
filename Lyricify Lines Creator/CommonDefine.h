@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    CommonDefine.h
+ * Description: 宏定义及常量定义
+ * Author:      XY Wang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #pragma once
 
 #include "HiEasyX/HiEasyX.h"

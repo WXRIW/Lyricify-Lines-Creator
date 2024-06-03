@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    FontHelper.cpp
+ * Description: 字体帮助类实现
+ * Author:      XY Wang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #include "FontHelper.h"
 
 SIZE FontHelper::CalculateTextSize(const wchar_t* text, const wchar_t* fontName, int fontSize, int dpiScale, int fontWeight, bool italic, bool underline, bool strikeout)

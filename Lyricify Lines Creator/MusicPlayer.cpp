@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    MusicPlayer.cpp
+ * Description: 音频播放类实现
+ * Author:      XY Wang, TL Chen, JZ Zhang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #include "MusicPlayer.h"
 
 /// <summary>

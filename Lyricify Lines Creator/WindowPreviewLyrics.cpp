@@ -1,3 +1,12 @@
+/************************************************************************
+ * Filename:    WindowPreviewLyrics.cpp
+ * Description: ‘§¿¿∏Ë¥ ¥∞ÃÂ µœ÷
+ * Author:      XY Wang, TL Chen, JZ Zhang
+ * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
+ * License:     LGPL-2.1 license
+ * Copyright:   Copyright 2024 WXRIW
+ ************************************************************************/
+
 #include "WindowPreviewLyrics.h"
 
 namespace WindowPreviewLyrics
