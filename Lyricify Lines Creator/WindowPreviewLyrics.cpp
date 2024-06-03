@@ -2,20 +2,24 @@
 
 namespace WindowPreviewLyrics
 {
-	const int WINDOW_WIDTH = 400;
+	const int WINDOW_WIDTH = 500;
 	const int WINDOW_HEIGHT = 500;
-	const int MIN_WINDOW_WIDTH = 300;
-	const int MIN_WINDOW_HEIGHT = 300;
+	const int MIN_WINDOW_WIDTH = 500;
+	const int MIN_WINDOW_HEIGHT = 400;
 
 	bool IsInRefreshUI = false;
 	bool IsInDrawAtWndProcPaint = false;
 	bool isOpened = false;
+	double DPI_Scale = 1;
+
 	hiex::Window* Window;
 	hiex::Canvas* CanvasMain;
 	hiex::SysButton* ButtonPlayPause;
 	std::vector<Lyricify::Lyrics> LyricsList;
-	double DPI_Scale = 1;
 
+	/// <summary>
+	/// 动画缓动函数，由 Lyricify 提供
+	/// </summary>
 	static double FuncEase(double x)
 	{
 		x = x * 0.9793195;
@@ -26,7 +30,6 @@ namespace WindowPreviewLyrics
 	/// <summary>
 	/// 绘制画布
 	/// </summary>
-	/// <param name="ignoreInRefreshUI"></param>
 	static void DrawAtWndProcPaint(bool ignoreInRefreshUI = false)
 	{
 		if (IsInDrawAtWndProcPaint || IsInRefreshUI && !ignoreInRefreshUI) return;
@@ -38,26 +41,13 @@ namespace WindowPreviewLyrics
 		CanvasMain->SetBkColor(BACKGROUND_COLOR);
 
 		// TODO: 这里写画板（歌词部分）应该怎么画
-		// CanvasMain->OutTextXY();
-
-		// 计算文字尺寸可以用 FontHelper::CalculateTextSize();
-		
-		// 设置画板字号
-		setfont(18, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-
-		// 设置画板颜色
-		//CanvasMain->SetTextColor(RGB(0, 0, 0));
-
-		//std::wstring lyrics = L"uk vbruk g wabk awbi biu nvw我我我我我 nvi n";
-		//auto index = lyrics.find_last_of(' ');
-		//auto newLyrics = lyrics.substr(0, index); // 左边的
-
-		//auto leftLyrics = lyrics.substr(newLyrics.size()); // 剩下的
 
 		int index = 0;
 		const int SCROLL_DURATION = 600;
-		const int LINE_HEIGHT = 50;
+		const int LINE_HEIGHT = 42;
 		int currentTime = MusicPlayer::GetCurrentPositionMs();
+
+		// 找到当前播放歌词的索引index
 		for (int i = LyricsList.size() - 1; i >= 0; i--)
 		{
 			if (currentTime >= LyricsList[i].StartTime - SCROLL_DURATION)
@@ -66,18 +56,138 @@ namespace WindowPreviewLyrics
 				break;
 			}
 		}
+
+		// 计算当前歌词播放百分比，并以此为标准进行相应滚动
+		// 分别绘制已播放歌词（两句）、正在播放歌词、即将播放歌词
+
 		auto current = LyricsList[index].StartTime - currentTime;
 		auto progress = (double)current / SCROLL_DURATION;
-		if (progress < 0) progress = 0;
-		if (progress > 1) progress = 1;
-		progress = 1 - FuncEase(1 - progress);
-		setfont(18 + 6 * (1 - progress), 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain->CenterText(LyricsList[index].Text.c_str(), { MARGIN_HORIZONTAL, 100 + (long)(LINE_HEIGHT * progress),w - MARGIN_HORIZONTAL,100 + (long)(LINE_HEIGHT * progress) + LINE_HEIGHT });
-		setfont(18, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		for (int i = 1; i < 8; i++)
+		if (progress < 0)
 		{
-			CanvasMain->CenterText(LyricsList[index + i].Text.c_str(), { MARGIN_HORIZONTAL, 100 + (long)(LINE_HEIGHT * progress) + LINE_HEIGHT * i,w - MARGIN_HORIZONTAL,100 + (long)(LINE_HEIGHT * progress) + LINE_HEIGHT + LINE_HEIGHT * i });
+			progress = 0;
 		}
+		if (progress > 1)
+		{
+			progress = 1;
+		}
+
+		auto realProgress = progress;
+		progress = 1 - FuncEase(1 - progress);
+
+		/* 已播放歌词 */
+		// 颜色设置为灰色
+		// 默认字体大小22
+		int fontSize = 22;
+		setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH), 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		CanvasMain->SetTextColor(GRAY);
+
+		// 默认顶部高度70
+		int HEAD = 70;
+		auto lineHeight = LINE_HEIGHT * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH);
+
+		// 总行数
+		int rownum = (h - HEAD) / lineHeight;
+		if (rownum % 2 == 0)
+		{
+			rownum -= 1;
+		}
+		int headSpace = HEAD;
+
+		// 行高
+		lineHeight = (double)(h - HEAD) / rownum;
+
+		for (int i = rownum / 2; i > 0; i--)
+		{
+			// 判断歌词是否存在
+			if (index - i >= 0)
+			{
+				// 设置字体颜色渐变，黑—>灰
+				// 设置字体大小随窗口大小变化而变化
+				if (i == 1)
+				{
+					// 当前播放歌词播放完字体由大到小变化
+					setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH) + 6 * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH) * progress, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+					// 当前播放歌词播放完颜色由黑变灰渐变
+					CanvasMain->SetTextColor(RGB(127 * (1 - realProgress), 127 * (1 - realProgress), 127 * (1 - realProgress)));
+				}
+				else
+				{
+					setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH), 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+					CanvasMain->SetTextColor(GRAY);
+				}
+				RECT rect = { MARGIN_HORIZONTAL,
+					(LONG)(headSpace + (lineHeight * progress) + lineHeight * (rownum / 2 - i)),
+					w - MARGIN_HORIZONTAL,
+					(LONG(headSpace + (lineHeight * progress) + lineHeight + lineHeight * (rownum / 2 - i))) };
+				CanvasMain->CenterText(LyricsList[static_cast<std::vector<Lyricify::Lyrics, std::allocator<Lyricify::Lyrics>>::size_type>(index) - i].Text.c_str(), rect);
+			}
+		}
+
+		/* 当前播放歌词 */
+		// 当前歌词开始播放颜色由灰变黑渐变
+		CanvasMain->SetTextColor(RGB(127 * realProgress, 127 * realProgress, 127 * realProgress));
+		// 当前歌词开始播放字体由小到大变化
+		setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH) + 6 * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH) * (1 - progress), 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		RECT r = { MARGIN_HORIZONTAL,
+			(LONG)(headSpace + (lineHeight * progress) + lineHeight * (rownum - 1) / 2),
+			w - MARGIN_HORIZONTAL ,
+			(LONG(headSpace + (lineHeight * progress) + lineHeight + lineHeight * (rownum - 1) / 2)) };
+		CanvasMain->CenterText(LyricsList[index].Text.c_str(), r);
+
+		// 即将播放歌词 字体颜色为灰色
+		// 依据窗口高度绘制相应数量歌词
+		setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH), 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+
+		for (int i = 1; i <= rownum / 2; i++)
+		{
+			CanvasMain->SetTextColor(GRAY);
+
+			if ((unsigned long long)index + i < LyricsList.size())
+			{
+				RECT rect = { MARGIN_HORIZONTAL,
+					(LONG)(headSpace + (lineHeight * progress) + lineHeight * (rownum / 2 + i)),
+					w - MARGIN_HORIZONTAL,
+					(LONG)(headSpace + (lineHeight * progress) + lineHeight + lineHeight * (rownum / 2 + i)) };
+
+				CanvasMain->CenterText(LyricsList[static_cast<std::vector<Lyricify::Lyrics, std::allocator<Lyricify::Lyrics>>::size_type>(index) + i].Text.c_str(), rect);
+			}
+		}
+
+		/* 绘制进度条 */
+		// 在进度条左标明已播放时长 
+		// 在进度条左标明总播放时长
+
+		// 顶部高度45
+		auto top = 45;
+
+		// 当前播放进度
+		auto progress1 = MusicPlayer::GetCurrentPositionMs();
+
+		// 获取时间
+		auto timeStr = StringHelper::TimeMsToString(progress1 == -1 ? 0 : progress1);
+		// 设置时间输出格式
+		auto timeStr1 = timeStr.substr(0, timeStr.length() - 1);
+		// 计算左右距离
+		auto left = MARGIN_HORIZONTAL + (timeStr.length() == 7 ? 76 : 86);
+		auto right = w - MARGIN_HORIZONTAL - BUTTON_WIDTH - CONTROL_PADDING_HORIZONTAL;
+		double percent = progress1 == -1 ? 0 : (double)progress1 / MusicPlayer::GetTotalDurationMs();
+		auto width = right - left;
+
+		// 总时长
+		auto progress2 = MusicPlayer::GetTotalDurationMs();
+		// 获取时间
+		auto timeTotalStr = StringHelper::TimeMsToString(progress2);
+		// 设置时间输出格式
+		auto timeTotalStr1 = timeTotalStr.substr(0, timeTotalStr.length() - 1);
+
+		setfont(DEFAULT_CANVAS_FONTSIZE, 0, L"Consolas");
+		CanvasMain->OutTextXY(MARGIN_HORIZONTAL, top, (StringHelper::StringToWstring(timeStr1)).c_str());
+		CanvasMain->OutTextXY(right + 20, top, (StringHelper::StringToWstring(timeTotalStr1).c_str()));
+
+		CanvasMain->GP_SetLineWidth(3);
+		CanvasMain->GP_Line(left, top + 11, right, top + 11, true, RGB(0xBF, 0xBF, 0xBF));
+		CanvasMain->GP_Line(left, top + 11, right - width * (1 - percent), top + 11, true, RGB(0x7F, 0x7F, 0x7F));
+		CanvasMain->GP_SetLineWidth(1);
 
 		IsInDrawAtWndProcPaint = false;
 	}
@@ -88,6 +198,7 @@ namespace WindowPreviewLyrics
 	static void RefreshUI()
 	{
 		if (IsInDrawAtWndProcPaint || IsInRefreshUI) return;
+
 		IsInRefreshUI = true;
 
 		CanvasMain->Clear(true, BACKGROUND_COLOR);
@@ -97,7 +208,7 @@ namespace WindowPreviewLyrics
 		IsInRefreshUI = false;
 	}
 
-	void ButtonPlayPause_Click()
+	static void ButtonPlayPause_Click()
 	{
 		if (MusicPlayer::IsPlaying())
 		{
@@ -113,6 +224,7 @@ namespace WindowPreviewLyrics
 				{
 					static bool IsRefreshThreadRunning = false;
 					if (IsRefreshThreadRunning) return;
+
 					IsRefreshThreadRunning = true;
 
 					std::wstring audio = MusicPlayer::CurrentAudioPath;
@@ -150,7 +262,7 @@ namespace WindowPreviewLyrics
 			int h = CanvasMain->GetHeight() / DPI_Scale;
 
 			// TODO: 这里写窗口大小改变后进行对控件（如按钮）调整位置和尺寸
-			// ButtonPlayPause->Move();
+			ButtonPlayPause->Move(w / 2 - BUTTON_WIDTH / 2, 10);
 
 			break;
 		}
@@ -179,23 +291,23 @@ namespace WindowPreviewLyrics
 
 		/* 这一段是临时内容，用于方便开发 */
 
-		try
-		{
-			// 加载一段歌词 用于测试
-			TCHAR exePath[MAX_PATH];
-			GetModuleFileName(NULL, exePath, MAX_PATH);
-			auto filePath = StringHelper::GetDirectoryFromPath(exePath) + L"\\Lyrics.txt";
-			auto lyricsRaw = StringHelper::StringToWstring(FileHelper::ReadAllText(filePath));
-			auto lyrics = Lyricify::LyricsHelper::ParseLyricsFromLyricifyLinesString(lyricsRaw);
-			LyricsList = lyrics;
+		//try
+		//{
+		//	// 加载一段歌词 用于测试
+		//	TCHAR exePath[MAX_PATH];
+		//	GetModuleFileName(NULL, exePath, MAX_PATH);
+		//	auto filePath = StringHelper::GetDirectoryFromPath(exePath) + L"\\Lyrics.txt";
+		//	auto lyricsRaw = StringHelper::StringToWstring(FileHelper::ReadAllText(filePath));
+		//	auto lyrics = Lyricify::LyricsHelper::ParseLyricsFromLyricifyLinesString(lyricsRaw);
+		//	LyricsList = lyrics;
 
-			// 加载对应歌曲
-			MusicPlayer::Load(StringHelper::GetDirectoryFromPath(exePath) + L"\\Audio.mp3");
-		}
-		catch (...)
-		{
-			MessageBox(NULL, L"加载歌词或歌曲失败！\n请确保 Audio.mp3 和 Lyrics.txt 存在且可用。", L"加载失败", MB_OK);
-		}
+		//	// 加载对应歌曲
+		//	MusicPlayer::Load(StringHelper::GetDirectoryFromPath(exePath) + L"\\Audio.mp3");
+		//}
+		//catch (...)
+		//{
+		//	MessageBox(NULL, L"加载歌词或歌曲失败！\n请确保 Audio.mp3 和 Lyrics.txt 存在且可用。", L"加载失败", MB_OK);
+		//}
 
 		/* 临时内容结束 */
 
@@ -220,10 +332,19 @@ namespace WindowPreviewLyrics
 		setaspectratio(DPI_Scale, DPI_Scale);
 
 		// TODO: 按钮的创建
-		ButtonPlayPause->Create(Window->GetHandle(), 20, 20, BUTTON_WIDTH, BUTTON_HEIGHT, L"播放");
+
+		int w = CanvasMain->GetWidth() / DPI_Scale;
+		int h = CanvasMain->GetHeight() / DPI_Scale;
+
+		ButtonPlayPause->Create(Window->GetHandle(), w / 2 - 40, 10, BUTTON_WIDTH, BUTTON_HEIGHT, L"播放");
 		ButtonPlayPause->RegisterMessage(ButtonPlayPause_Click);
+		ButtonPlayPause->SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
 
 		wnd.Redraw();
+		TaskHelper::Delay(10).wait();
+
+		PostMessage(wnd.GetHandle(), WM_SYSCOMMAND, SC_MAXIMIZE, 0); // 最大化窗口
+
 		hiex::init_end(wnd.GetHandle());
 		MusicPlayer::Pause();
 		if (hParent != (HWND)nullptr) BringWindowToTop(hParent); // 让主窗体显示于最上方

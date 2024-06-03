@@ -124,7 +124,7 @@ namespace WindowMain
 					std::wstring audio = MusicPlayer::CurrentAudioPath;
 					while (audio == MusicPlayer::CurrentAudioPath && MusicPlayer::IsPlaying())
 					{
-						if (!WindowAbout::IsOpened() && !WindowPreviewOutput::IsOpened()) // 关于被打开时，不再刷新进度，防止渲染错乱
+						if (!WindowAbout::IsOpened() && !WindowPreviewOutput::IsOpened() && !WindowPreviewLyrics::IsOpened()) // 关于被打开时，不再刷新进度，防止渲染错乱
 						{
 							RefreshUI();
 						}
@@ -159,7 +159,14 @@ namespace WindowMain
 
 	void ButtonPreview_Click()
 	{
-		WindowPreviewLyrics::Show(LyricsList, DPI_Scale, GetWindowRect());
+		auto fileContent = Lyricify::LyricsHelper::GenerateLyricifyLinesFromLyricsList(LyricsList);
+		if (fileContent.empty())
+		{
+			MessageBox(wnd.GetHandle(), L"没有可查看的预览！", L"错误", MB_OK | MB_ICONINFORMATION);
+			return;
+		}
+		MusicPlayer::SeekTo(0); // 进度归零
+		WindowPreviewLyrics::Show(Lyricify::LyricsHelper::ParseLyricsFromLyricifyLinesString(fileContent), DPI_Scale, GetWindowRect());
 	}
 
 	void ButtonRestart_Click()

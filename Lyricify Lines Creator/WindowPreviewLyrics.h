@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <fstream>
+#include <math.h>
 #include <string>
 #include <Windows.h>
 #include "CommonDefine.h"
