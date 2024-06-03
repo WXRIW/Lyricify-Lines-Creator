@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <fstream>
 #include <string>
 #include <Windows.h>
@@ -10,6 +11,7 @@
 #include "LyricsHelper.h"
 #include "MusicPlayer.h"
 #include "StringHelper.h"
+#include "TaskHelper.h"
 #include "WindowHelper.h"
 
 namespace WindowPreviewLyrics
