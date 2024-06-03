@@ -352,7 +352,11 @@ namespace WindowPreviewLyrics
 		wnd.Redraw();
 		TaskHelper::Delay(10).wait();
 
-		PostMessage(wnd.GetHandle(), WM_SYSCOMMAND, SC_MAXIMIZE, 0); // 最大化窗口
+		if (SettingsHelper::Settings.IsPreviewLyricsOpenMaximize)
+		{
+			// 最大化窗口
+			PostMessage(wnd.GetHandle(), WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+		}
 
 		hiex::init_end(wnd.GetHandle());
 		MusicPlayer::Pause();

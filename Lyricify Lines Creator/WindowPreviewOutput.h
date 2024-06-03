@@ -19,7 +19,7 @@
 namespace WindowPreviewOutput
 {
 	/// <summary>
-	/// 显示关于窗体
+	/// 显示预览输出窗体
 	/// </summary>
 	/// <param name="DPI_Scale">DPI 缩放比</param>
 	/// <param name="rect">父窗口区域，不传入则随机位置</param>
@@ -27,7 +27,7 @@ namespace WindowPreviewOutput
 	void Show(std::wstring filePath, std::wstring fileContent, double DPI_Scale = 1, RECT rect = { -1, -1, -1, -1 }, HWND hParent = (HWND)nullptr);
 
 	/// <summary>
-	/// 关于窗体是否正在显示
+	/// 预览输出窗体是否正在显示
 	/// </summary>
 	bool IsOpened();
 }

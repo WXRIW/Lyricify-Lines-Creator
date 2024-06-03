@@ -17,6 +17,7 @@
 #include "WindowAbout.h"
 #include "WindowPreviewLyrics.h"
 #include "WindowPreviewOutput.h"
+#include "WindowSettings.h"
 #include "MusicPlayer.h"
 #include "TaskHelper.h"
 #include "ProcedureHelper.h"

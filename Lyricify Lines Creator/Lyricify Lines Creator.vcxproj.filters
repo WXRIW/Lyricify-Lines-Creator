@@ -168,6 +168,12 @@
     <ClCompile Include="WindowPreviewLyrics.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="SettingsHelper.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowSettings.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HiEasyX\HiGUI\Button.h">
@@ -383,6 +389,12 @@
     <ClInclude Include="WindowPreviewLyrics.h">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="SettingsHelper.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowSettings.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Lyricify Lines Creator.rc">
@@ -413,5 +425,8 @@
     <CopyFileToFolders Include="irrKlang\dll\winx64-visualStudio\irrKlang.dll">
       <Filter>Resource Files\Dlls</Filter>
     </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

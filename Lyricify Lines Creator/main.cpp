@@ -30,7 +30,13 @@ int main()
 		hiex::SysControlBase::DPI_Scale = DPI_Scale;
 	}
 
+	// 加载设置项
+	SettingsHelper::LoadSettings();
+
+	// 设置程序图标
 	hiex::SetCustomIcon(MAKEINTRESOURCE(IDI_ICON1), MAKEINTRESOURCE(IDI_ICON1));
+
+	// 显示主窗体
 	WindowMain::Show(DPI_Scale);
 
 	closegraph();

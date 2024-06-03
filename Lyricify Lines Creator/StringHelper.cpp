@@ -207,3 +207,29 @@ std::wstring StringHelper::ReplaceFileNameExtension(const std::wstring& filename
 		return filename.substr(0, dotPos + 1) + newExtension;
 	}
 }
+
+bool StringHelper::IsNumeric(const std::wstring& str)
+{
+	if (str.empty())
+	{
+		return false;
+	}
+
+	// 检查每个字符是否是数字（或首位负号）
+	for (size_t i = 0; i < str.length(); ++i)
+	{
+		wchar_t c = str[i];
+		if (i == 0 && c == L'-')
+		{
+			// 第一个字符是负号，继续下一个字符的检查
+			continue;
+		}
+		if (!std::isdigit(c))
+		{
+			// 如果不是数字，返回 false
+			return false;
+		}
+	}
+	// 所有字符都是数字，返回 true
+	return true;
+}

@@ -48,6 +48,7 @@ namespace WindowMain
 	// 底部区域
 
 	hiex::SysButton ButtonAbout;
+	hiex::SysButton ButtonSettings;
 	hiex::SysButton ButtonViewOutput;
 	hiex::SysButton ButtonPreview;
 	hiex::SysButton ButtonRestart;
@@ -152,6 +153,11 @@ namespace WindowMain
 	void ButtonAbout_Click()
 	{
 		WindowAbout::Show(DPI_Scale, GetWindowRect(), wnd.GetHandle());
+	}
+
+	void ButtonSettings_Click()
+	{
+		WindowSettings::Show(DPI_Scale, GetWindowRect(), wnd.GetHandle());
 	}
 
 	void ButtonViewOutput_Click()
@@ -319,7 +325,7 @@ namespace WindowMain
 				auto line = GetCurrentLine(index + 1);
 				if (line != nullptr)
 				{
-					line->StartTime = MusicPlayer::GetCurrentPositionMs();
+					line->StartTime = MusicPlayer::GetCurrentPositionMs() - SettingsHelper::Settings.TotalLatencyMs();
 				}
 			}
 			else if (index == (int)LyricsList.size() - 1)
@@ -327,7 +333,7 @@ namespace WindowMain
 				auto line = GetCurrentLine(index);
 				if (line != nullptr && line->EndTime == -1)
 				{
-					line->EndTime = MusicPlayer::GetCurrentPositionMs();
+					line->EndTime = MusicPlayer::GetCurrentPositionMs() - SettingsHelper::Settings.TotalLatencyMs();
 				}
 			}
 			if (!MusicPlayer::IsPlaying()) RefreshUI();
@@ -340,7 +346,7 @@ namespace WindowMain
 			auto line = GetCurrentLine();
 			if (line != nullptr && line->EndTime == -1)
 			{
-				line->EndTime = MusicPlayer::GetCurrentPositionMs();
+				line->EndTime = MusicPlayer::GetCurrentPositionMs() - SettingsHelper::Settings.TotalLatencyMs();
 			}
 			if (!MusicPlayer::IsPlaying()) RefreshUI();
 			break;
@@ -415,6 +421,7 @@ namespace WindowMain
 
 		top = h - MARGIN_VERTICAL - BUTTON_HEIGHT;
 		ButtonAbout.Create(hwnd, MARGIN_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"关于");
+		ButtonSettings.Create(hwnd, MARGIN_HORIZONTAL + BUTTON_WIDTH + CONTROL_PADDING_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"设置");
 		ButtonViewOutput.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 4 - CONTROL_PADDING_HORIZONTAL * 5, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"查看输出");
 		ButtonPreview.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 3 - CONTROL_PADDING_HORIZONTAL * 4, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"预览效果");
 		ButtonRestart.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, L"重新制作");
@@ -431,6 +438,7 @@ namespace WindowMain
 		ButtonOutputPath.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
 		ButtonPlayPause.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
 		ButtonAbout.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+		ButtonSettings.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
 		ButtonViewOutput.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
 		ButtonPreview.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
 		ButtonRestart.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
@@ -442,6 +450,7 @@ namespace WindowMain
 		ButtonOutputPath.RegisterMessage(ButtonOutputPath_Click);
 		ButtonPlayPause.RegisterMessage(ButtonPlayPause_Click);
 		ButtonAbout.RegisterMessage(ButtonAbout_Click);
+		ButtonSettings.RegisterMessage(ButtonSettings_Click);
 		ButtonViewOutput.RegisterMessage(ButtonViewOutput_Click);
 		ButtonPreview.RegisterMessage(ButtonPreview_Click);
 		ButtonRestart.RegisterMessage(ButtonRestart_Click);
@@ -453,6 +462,7 @@ namespace WindowMain
 		ProcedureHelper::TransKeyMsgToParent(ButtonOutputPath.GetHandle(), WndProc);
 		ProcedureHelper::TransKeyMsgToParent(ButtonPlayPause.GetHandle(), WndProc);
 		ProcedureHelper::TransKeyMsgToParent(ButtonAbout.GetHandle(), WndProc);
+		ProcedureHelper::TransKeyMsgToParent(ButtonSettings.GetHandle(), WndProc);
 		ProcedureHelper::TransKeyMsgToParent(ButtonViewOutput.GetHandle(), WndProc);
 		ProcedureHelper::TransKeyMsgToParent(ButtonPreview.GetHandle(), WndProc);
 		ProcedureHelper::TransKeyMsgToParent(ButtonRestart.GetHandle(), WndProc);
@@ -497,6 +507,7 @@ namespace WindowMain
 
 		top = h - MARGIN_VERTICAL - BUTTON_HEIGHT;
 		ButtonAbout.Move(MARGIN_HORIZONTAL, top);
+		ButtonSettings.Move(MARGIN_HORIZONTAL + BUTTON_WIDTH + CONTROL_PADDING_HORIZONTAL, top);
 		ButtonViewOutput.Move(w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 4 - CONTROL_PADDING_HORIZONTAL * 5, top);
 		ButtonPreview.Move(w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 3 - CONTROL_PADDING_HORIZONTAL * 4, top);
 		ButtonRestart.Move(w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL, top);

@@ -142,4 +142,11 @@ public:
 	/// <param name="newExtension">要替换成的扩展名</param>
 	/// <returns>替换后的文件名，若原文件名没有扩展名，则会添加扩展名</returns>
 	static std::wstring ReplaceFileNameExtension(const std::wstring& filename, const std::wstring& newExtension);
+
+	/// <summary>
+	/// 是否为数字
+	/// </summary>
+	/// <param name="str">要判断的字符串</param>
+	/// <returns>是否位数字</returns>
+	static bool IsNumeric(const std::wstring& str);
 };
