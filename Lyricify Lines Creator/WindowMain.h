@@ -38,6 +38,7 @@ namespace WindowMain
 	void ButtonOutputPath_Click();
 	void ButtonPlayPause_Click();
 	void ButtonAbout_Click();
+	void ButtonSettings_Click();
 	void ButtonViewOutput_Click();
 	void ButtonPreview_Click();
 	void ButtonRestart_Click();

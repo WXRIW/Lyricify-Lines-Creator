@@ -134,7 +134,11 @@ namespace WindowMain
 					std::wstring audio = MusicPlayer::CurrentAudioPath;
 					while (audio == MusicPlayer::CurrentAudioPath && MusicPlayer::IsPlaying())
 					{
-						if (!WindowAbout::IsOpened() && !WindowPreviewOutput::IsOpened() && !WindowPreviewLyrics::IsOpened()) // 关于被打开时，不再刷新进度，防止渲染错乱
+						// 关于被打开时，不再刷新进度，防止渲染错乱
+						if (!WindowAbout::IsOpened()
+							&& !WindowSettings::IsOpened()
+							&& !WindowPreviewOutput::IsOpened()
+							&& !WindowPreviewLyrics::IsOpened())
 						{
 							RefreshUI();
 						}
@@ -162,13 +166,15 @@ namespace WindowMain
 
 	void ButtonViewOutput_Click()
 	{
-		auto filePath = GetOutputFullpath();
-		auto fileContent = Lyricify::LyricsHelper::GenerateLyricifyLinesFromLyricsList(LyricsList);
+		auto fileContent = SettingsHelper::Settings.IsOutputLrc
+			? Lyricify::LyricsHelper::GenerateLrcFromLyricsList(LyricsList)
+			: Lyricify::LyricsHelper::GenerateLyricifyLinesFromLyricsList(LyricsList);
 		if (fileContent.empty())
 		{
 			MessageBox(wnd.GetHandle(), L"没有可查看的输出！", L"错误", MB_OK | MB_ICONINFORMATION);
 			return;
 		}
+		auto filePath = GetOutputFullpath();
 		WindowPreviewOutput::Show(filePath, fileContent, DPI_Scale, GetWindowRect(), wnd.GetHandle());
 	}
 
@@ -265,7 +271,9 @@ namespace WindowMain
 			}
 
 			// 保存至文件
-			auto lyricifyLinesString = Lyricify::LyricsHelper::GenerateLyricifyLinesFromLyricsList(LyricsList);
+			auto lyricifyLinesString = SettingsHelper::Settings.IsOutputLrc
+				? Lyricify::LyricsHelper::GenerateLrcFromLyricsList(LyricsList)
+				: Lyricify::LyricsHelper::GenerateLyricifyLinesFromLyricsList(LyricsList);
 			if (lyricifyLinesString.empty())
 			{
 				MessageBox(wnd.GetHandle(), L"保存失败，没有歌词被写入文件！", L"保存失败", MB_OK | MB_ICONWARNING);
@@ -659,7 +667,7 @@ namespace WindowMain
 		const std::vector<std::wstring> Notices =
 		{
 			L"行起始: ↑",
-			L"行结束: →",
+			L"当前行结束: →",
 			L"上一行结束: ←",
 			L"回到上一行: ↓",
 			L"播放/暂停: Space",
