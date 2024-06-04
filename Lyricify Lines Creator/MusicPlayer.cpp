@@ -58,29 +58,35 @@ bool MusicPlayer::Load(const std::wstring filePath, bool override)
 {
 	CheckInitiation();
 
-	const int nBufferSize = 2048; // large enough, but best would be wcslen(yourFilename)*3.
-	char strBuffer[nBufferSize];
-	irrklang::makeUTF8fromUTF16string(filePath.c_str(), strBuffer, nBufferSize);
-
-	auto audio = engine->play2D(strBuffer, false, true);
-	SoundEndReceiver* myReceiver = new SoundEndReceiver();
-	audio->setSoundStopEventReceiver(myReceiver, nullptr);
-	
-	if (override || audio != nullptr)
+	try
 	{
-		if (currentAudio != nullptr)
+		const int nBufferSize = 2048; // large enough, but best would be wcslen(yourFilename)*3.
+		char strBuffer[nBufferSize];
+		irrklang::makeUTF8fromUTF16string(filePath.c_str(), strBuffer, nBufferSize);
+
+		auto audio = engine->play2D(strBuffer, false, true);
+		SoundEndReceiver* myReceiver = new SoundEndReceiver();
+		audio->setSoundStopEventReceiver(myReceiver, nullptr);
+
+		if (override || audio != nullptr)
 		{
-			currentAudio->stop();
-			currentAudio->drop();
+			if (currentAudio != nullptr)
+			{
+				currentAudio->stop();
+				currentAudio->drop();
+			}
+
+			currentAudio = audio;
+			CurrentAudioPath = (audio != nullptr) ? filePath : L"";
+
+			return (audio != nullptr);
 		}
-
-		currentAudio = audio;
-		CurrentAudioPath = (audio != nullptr) ? filePath : L"";
-
-		return (audio != nullptr);
+		return false;
 	}
-
-	return false;
+	catch (...)
+	{
+		return false;
+	}
 }
 
 void MusicPlayer::Play()

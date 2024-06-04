@@ -13,6 +13,7 @@
 #include <string>
 #include <Windows.h>
 #include "CommonDefine.h"
+#include "FontHelper.h"
 #include "StringHelper.h"
 #include "WindowHelper.h"
 

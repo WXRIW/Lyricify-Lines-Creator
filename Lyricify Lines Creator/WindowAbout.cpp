@@ -64,7 +64,7 @@ namespace WindowAbout
 		setfont(TITLE_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
 		CanvasMain->CenterText(L"Lyricify Lines Creator", { 0, 20, w, 45 });
 		setfont(SUBTITLE_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain->CenterText(L"Lyricify Lines 逐行歌词打轴工具", { 0, 47, w, 67 });
+		CanvasMain->CenterText(GetStringFromKey("String.Window.About.FullName").c_str(), {0, 47, w, 67});
 		CanvasMain->SetTextColor(GRAY);
 		setfont(16 + (DPI_Scale - 1) * 1, 0, L"Consolas", 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText((std::wstring(L"Version ") + std::wstring(VERSION)).c_str(), { 0, 73, w, 93 });
@@ -99,7 +99,7 @@ namespace WindowAbout
 		CanvasMain->SetTextColor(GRAY);
 
 		setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain->CenterText(L"HiEasyX (MIT 协议)", { 0, top, w, top + 20 }); top += 20;
+		CanvasMain->CenterText((L"HiEasyX (" + GetStringFromKey("String.Window.About.License.MIT") + L")").c_str(), {0, top, w, top + 20}); top += 20;
 		setfont(URL_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
 		url = L"https://github.com/zouhuidong/HiEasyX/blob/main/LICENSE";
 		size = FontHelper::CalculateTextSize(url.c_str(), DEFAULT_FONT, URL_FONTSIZE, DPI_Scale, FW_DONTCARE, false, false, false);
@@ -246,7 +246,7 @@ namespace WindowAbout
 			int top = (rect.top + rect.bottom - HEIGHT * DPI_Scale) / 2;
 			wnd.PreSetPos(left, top);
 		}
-		wnd.InitWindow(WIDTH * DPI_Scale, HEIGHT * DPI_Scale, EW_NORMAL, L"关于", nullptr, hParent);
+		wnd.InitWindow(WIDTH * DPI_Scale, HEIGHT * DPI_Scale, EW_NORMAL, GetStringFromKey("String.Window.About").c_str(), nullptr, hParent);
 		DisableResizing(wnd.GetHandle(), true);
 		WindowHelper::EnableMinimizeButton(wnd.GetHandle(), false);
 

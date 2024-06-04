@@ -427,26 +427,46 @@ namespace WindowMain
 		int left, top;
 		int w = CanvasMain.GetWidth() / DPI_Scale;
 		int h = CanvasMain.GetHeight() / DPI_Scale;
+		int tempBtnWidth = BUTTON_WIDTH;
+		int tempLabelWidth = TOP_LEFT_LABEL_MAX_WIDTH;
+
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.SelectAudio").c_str(), DEFAULT_FONT, DEFAULT_CANVAS_FONTSIZE).cx;
+			if (textSize + 5 > tempLabelWidth) tempLabelWidth = textSize + 5;
+			textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.SelectLyrics").c_str(), DEFAULT_FONT, DEFAULT_CANVAS_FONTSIZE).cx;
+			if (textSize + 5 > tempLabelWidth) tempLabelWidth = textSize + 5;
+			textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.OutputPath").c_str(), DEFAULT_FONT, DEFAULT_CANVAS_FONTSIZE).cx;
+			if (textSize + 5 > tempLabelWidth) tempLabelWidth = textSize + 5;
+
+			textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.ImportAudio").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+			textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.ImportLyrics").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+			textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.SelectPath").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
 
 #pragma region 顶部区域
 
 		DrawLabelControls();
 
-		left = MARGIN_HORIZONTAL + TOP_LEFT_LABEL_MAX_WIDTH + CONTROL_PADDING_HORIZONTAL;
-		auto width = w - (MARGIN_HORIZONTAL * 2 + TOP_LEFT_LABEL_MAX_WIDTH + BUTTON_WIDTH + CONTROL_PADDING_HORIZONTAL * 2);
+		left = MARGIN_HORIZONTAL + tempLabelWidth + CONTROL_PADDING_HORIZONTAL;
+		auto width = w - (MARGIN_HORIZONTAL * 2 + tempLabelWidth + tempBtnWidth + CONTROL_PADDING_HORIZONTAL * 2);
 		TextBoxChooseAudio.Create(hwnd, left, MARGIN_VERTICAL, width, CONTROL_HEIGHT);
 		TextBoxChooseRawLyrics.Create(hwnd, left, MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, width, CONTROL_HEIGHT);
 		TextBoxOutputPath.Create(hwnd, left, MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, width, CONTROL_HEIGHT);
 
-		left = w - MARGIN_HORIZONTAL - BUTTON_WIDTH;
-		ButtonChooseAudio.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.ImportAudio").c_str());
-		ButtonChooseRawLyrics.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.ImportLyrics").c_str());
-		ButtonOutputPath.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.SelectPath").c_str());
+		left = w - MARGIN_HORIZONTAL - tempBtnWidth;
+		ButtonChooseAudio.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL, tempBtnWidth, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.ImportAudio").c_str());
+		ButtonChooseRawLyrics.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL, tempBtnWidth, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.ImportLyrics").c_str());
+		ButtonOutputPath.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2, tempBtnWidth, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.SelectPath").c_str());
 
 #pragma endregion
 
 #pragma region 播放区域
 
+		left = w - MARGIN_HORIZONTAL - BUTTON_WIDTH;
 		top = MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 3 + 25;
 		ButtonPlayPause.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Play").c_str());
 
@@ -454,13 +474,62 @@ namespace WindowMain
 
 #pragma region 底部区域
 
+		auto widthAccu = 0;
 		top = h - MARGIN_VERTICAL - BUTTON_HEIGHT;
-		ButtonAbout.Create(hwnd, MARGIN_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.About").c_str());
-		ButtonSettings.Create(hwnd, MARGIN_HORIZONTAL + BUTTON_WIDTH + CONTROL_PADDING_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Settings").c_str());
-		ButtonViewOutput.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 4 - CONTROL_PADDING_HORIZONTAL * 5, top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.ViewOutput").c_str());
-		ButtonPreview.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 3 - CONTROL_PADDING_HORIZONTAL * 4, top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Preview").c_str());
-		ButtonRestart.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL, top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Restart").c_str());
-		ButtonStart.Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH, top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Start").c_str());
+		tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.About").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		ButtonAbout.Create(hwnd, MARGIN_HORIZONTAL, top, tempBtnWidth, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.About").c_str());
+		widthAccu += tempBtnWidth;
+
+		tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.Settings").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		ButtonSettings.Create(hwnd, MARGIN_HORIZONTAL + widthAccu + CONTROL_PADDING_HORIZONTAL, top, tempBtnWidth, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Settings").c_str());
+		widthAccu += tempBtnWidth;
+
+		widthAccu = 0;
+		tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.Start").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		widthAccu += tempBtnWidth;
+		ButtonStart.Create(hwnd, w - MARGIN_HORIZONTAL - widthAccu, top, tempBtnWidth, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Start").c_str());
+
+		tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.Restart").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		widthAccu += tempBtnWidth;
+		ButtonRestart.Create(hwnd, w - MARGIN_HORIZONTAL - widthAccu - CONTROL_PADDING_HORIZONTAL, top, tempBtnWidth, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Restart").c_str());
+
+		tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.Preview").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		widthAccu += tempBtnWidth;
+		ButtonPreview.Create(hwnd, w - MARGIN_HORIZONTAL - widthAccu - CONTROL_PADDING_HORIZONTAL * 4, top, tempBtnWidth, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Preview").c_str());
+
+		tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.ViewOutput").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		widthAccu += tempBtnWidth;
+		ButtonViewOutput.Create(hwnd, w - MARGIN_HORIZONTAL - widthAccu - CONTROL_PADDING_HORIZONTAL * 5, top, tempBtnWidth, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.ViewOutput").c_str());
 
 #pragma endregion
 
@@ -515,16 +584,35 @@ namespace WindowMain
 		int left, top;
 		int w = CanvasMain.GetWidth() / DPI_Scale;
 		int h = CanvasMain.GetHeight() / DPI_Scale;
+		int tempBtnWidth = BUTTON_WIDTH;
+		int tempLabelWidth = TOP_LEFT_LABEL_MAX_WIDTH;
+
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.SelectAudio").c_str(), DEFAULT_FONT, DEFAULT_CANVAS_FONTSIZE).cx;
+			if (textSize + 5 > tempLabelWidth) tempLabelWidth = textSize + 5;
+			textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.SelectLyrics").c_str(), DEFAULT_FONT, DEFAULT_CANVAS_FONTSIZE).cx;
+			if (textSize + 5 > tempLabelWidth) tempLabelWidth = textSize + 5;
+			textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.OutputPath").c_str(), DEFAULT_FONT, DEFAULT_CANVAS_FONTSIZE).cx;
+			if (textSize + 5 > tempLabelWidth) tempLabelWidth = textSize + 5;
+
+			textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.ImportAudio").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+			textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.ImportLyrics").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+			textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.SelectPath").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
 
 #pragma region 顶部区域
 
 		// 因 HiEasyX 的一些问题，Resize 后边框将变粗
-		auto width = w - (MARGIN_HORIZONTAL * 2 + TOP_LEFT_LABEL_MAX_WIDTH + BUTTON_WIDTH + CONTROL_PADDING_HORIZONTAL * 2);
+		auto width = w - (MARGIN_HORIZONTAL * 2 + tempLabelWidth + tempBtnWidth + CONTROL_PADDING_HORIZONTAL * 2);
 		TextBoxChooseAudio.Resize(width, CONTROL_HEIGHT);
 		TextBoxChooseRawLyrics.Resize(width, CONTROL_HEIGHT);
 		TextBoxOutputPath.Resize(width, CONTROL_HEIGHT);
 
-		left = w - MARGIN_HORIZONTAL - BUTTON_WIDTH;
+		left = w - MARGIN_HORIZONTAL - tempBtnWidth;
 		ButtonChooseAudio.Move(left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL);
 		ButtonChooseRawLyrics.Move(left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL);
 		ButtonOutputPath.Move(left, BUTTON_HEIGHT_OFFSET + MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 2);
@@ -533,6 +621,7 @@ namespace WindowMain
 
 #pragma region 播放区域
 
+		left = w - MARGIN_HORIZONTAL - BUTTON_WIDTH;
 		top = MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 3 + 25;
 		ButtonPlayPause.Move(left, BUTTON_HEIGHT_OFFSET + top);
 
@@ -540,13 +629,54 @@ namespace WindowMain
 
 #pragma region 底部区域
 
+		auto widthAccu = 0;
 		top = h - MARGIN_VERTICAL - BUTTON_HEIGHT;
+		tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.Start").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		widthAccu += tempBtnWidth;
 		ButtonAbout.Move(MARGIN_HORIZONTAL, top);
 		ButtonSettings.Move(MARGIN_HORIZONTAL + BUTTON_WIDTH + CONTROL_PADDING_HORIZONTAL, top);
-		ButtonViewOutput.Move(w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 4 - CONTROL_PADDING_HORIZONTAL * 5, top);
-		ButtonPreview.Move(w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 3 - CONTROL_PADDING_HORIZONTAL * 4, top);
-		ButtonRestart.Move(w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL, top);
-		ButtonStart.Move(w - MARGIN_HORIZONTAL - BUTTON_WIDTH, top);
+
+		widthAccu = 0;
+		tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.Start").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		widthAccu += tempBtnWidth;
+		ButtonStart.Move(w - MARGIN_HORIZONTAL - widthAccu, top);
+
+		tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.Restart").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		widthAccu += tempBtnWidth;
+		ButtonRestart.Move(w - MARGIN_HORIZONTAL - widthAccu - CONTROL_PADDING_HORIZONTAL, top);
+
+		tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.Preview").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		widthAccu += tempBtnWidth;
+		ButtonPreview.Move(w - MARGIN_HORIZONTAL - widthAccu - CONTROL_PADDING_HORIZONTAL * 4, top);
+
+		tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.ViewOutput").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		widthAccu += tempBtnWidth;
+		ButtonViewOutput.Move(w - MARGIN_HORIZONTAL - widthAccu - CONTROL_PADDING_HORIZONTAL * 5, top);
 
 #pragma endregion
 	}
@@ -623,7 +753,17 @@ namespace WindowMain
 
 		// 绘制歌词文本
 		// 可通过剩余高度 判断绘制多行歌词
-		left = MARGIN_HORIZONTAL + 66;
+		width = 66;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.PreviousLine").c_str(), DEFAULT_FONT, DEFAULT_CANVAS_FONTSIZE).cx;
+			if (textSize + 18 > width) width = textSize + 18;
+			textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.PreviousLine").c_str(), DEFAULT_FONT, DEFAULT_CANVAS_FONTSIZE).cx;
+			if (textSize + 18 > width) width = textSize + 18;
+			textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.NextLine").c_str(), DEFAULT_FONT, DEFAULT_CANVAS_FONTSIZE).cx;
+			if (textSize + 18 > width) width = textSize + 18;
+		}
+		left = MARGIN_HORIZONTAL + width;
 		auto currentIndex = GetCurrentLineIndex();
 		auto currentLine = GetCurrentLine(currentIndex);
 		auto isCurrentLineHasEndTime = false;
@@ -902,6 +1042,10 @@ namespace WindowMain
 
 		// 绘制窗体控件
 		AddWindowControls(wnd.GetHandle());
+
+		TaskHelper::Delay(10).wait();
+		CanvasMain.Clear(true, BACKGROUND_COLOR);
+		DrawAtWndProcPaint();
 		wnd.Redraw(); // 立即重绘窗口 才能使得绘制的文本显示出来
 
 		// 关闭窗口，结束程序

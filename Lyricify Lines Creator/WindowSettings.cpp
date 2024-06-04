@@ -14,7 +14,6 @@ namespace WindowSettings
 	const int WINDOW_WIDTH = 350;
 	const int WINDOW_HEIGHT = 215;
 
-	const int LEFT_LABEL_WIDTH = 100;
 	const int LABEL_ADDHEIGHT = 2;
 	const int LINE_HEIGHT = 32;
 	const int CONTROL_HEIGHT = 21;
@@ -207,10 +206,25 @@ namespace WindowSettings
 		int w = CanvasMain->GetWidth() / DPI_Scale;
 		int h = CanvasMain->GetHeight() / DPI_Scale;
 		int top = MARGIN_VERTICAL;
+		int FONTSIZE = 18 - 2 * (DPI_Scale - 1);
+
+		// 为语言优化 Label 宽度
+		auto LEFT_LABEL_WIDTH = 0;
+		auto padding = 35;
+		auto size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.Language").c_str(), DEFAULT_FONT, FONTSIZE).cx;
+		if (size + padding > LEFT_LABEL_WIDTH) LEFT_LABEL_WIDTH = size + padding;
+		size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.LyricsOutputFormat").c_str(), DEFAULT_FONT, FONTSIZE).cx;
+		if (size + padding > LEFT_LABEL_WIDTH) LEFT_LABEL_WIDTH = size + padding;
+		size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.DeviceLatency").c_str(), DEFAULT_FONT, FONTSIZE).cx;
+		if (size + padding > LEFT_LABEL_WIDTH) LEFT_LABEL_WIDTH = size + padding;
+		size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.KeyboardLatency").c_str(), DEFAULT_FONT, FONTSIZE).cx;
+		if (size + padding > LEFT_LABEL_WIDTH) LEFT_LABEL_WIDTH = size + padding;
+		size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.PreviewLyricsMaximize").c_str(), DEFAULT_FONT, FONTSIZE).cx;
+		if (size + padding > LEFT_LABEL_WIDTH) LEFT_LABEL_WIDTH = size + padding;
 
 		LabelLanguage->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, GetStringFromKey("String.Window.Settings.Language").c_str());
 		ComboBoxLanguage->PreSetStyle({ false, false, false });
-		ComboBoxLanguage->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH + CONTROL_PADDING_HORIZONTAL, top, w - MARGIN_HORIZONTAL * 2 - CONTROL_PADDING_HORIZONTAL - LEFT_LABEL_WIDTH, CONTROL_HEIGHT);
+		ComboBoxLanguage->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH, top, w - MARGIN_HORIZONTAL * 2 - LEFT_LABEL_WIDTH, CONTROL_HEIGHT);
 		for (auto& item : LanguageList) ComboBoxLanguage->AddString(item);
 		ComboBoxLanguage->SelectString(LanguageList[(int)SettingsHelper::Settings.Language]);
 		ComboBoxLanguage->RegisterSelMessage(ComboBoxLanguage_Selected);
@@ -218,24 +232,24 @@ namespace WindowSettings
 
 		LabelLyricsOutputFormat->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, GetStringFromKey("String.Window.Settings.LyricsOutputFormat").c_str());
 		ComboBoxLyricsOutputFormat->PreSetStyle({ false, false, false });
-		ComboBoxLyricsOutputFormat->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH + CONTROL_PADDING_HORIZONTAL, top, w - MARGIN_HORIZONTAL * 2 - CONTROL_PADDING_HORIZONTAL - LEFT_LABEL_WIDTH, CONTROL_HEIGHT);
+		ComboBoxLyricsOutputFormat->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH, top, w - MARGIN_HORIZONTAL * 2 - LEFT_LABEL_WIDTH, CONTROL_HEIGHT);
 		for (auto& item : LyricsFormats) ComboBoxLyricsOutputFormat->AddString(item);
 		ComboBoxLyricsOutputFormat->SelectString(LyricsFormats[SettingsHelper::Settings.IsOutputLrc ? 1 : 0]);
 		ComboBoxLyricsOutputFormat->RegisterSelMessage(ComboBoxLyricsOutputFormat_Selected);
 		top += LINE_HEIGHT;
 
 		LabelDeviceLatency->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, GetStringFromKey("String.Window.Settings.DeviceLatency").c_str());
-		TextBoxDeviceLatency->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH + CONTROL_PADDING_HORIZONTAL, top, w - MARGIN_HORIZONTAL * 2 - CONTROL_PADDING_HORIZONTAL - LEFT_LABEL_WIDTH, CONTROL_HEIGHT, std::to_wstring(SettingsHelper::Settings.DeviceLatencyMs));
+		TextBoxDeviceLatency->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH, top, w - MARGIN_HORIZONTAL * 2 - LEFT_LABEL_WIDTH, CONTROL_HEIGHT, std::to_wstring(SettingsHelper::Settings.DeviceLatencyMs));
 		TextBoxDeviceLatency->RegisterMessage(TextBoxDeviceLatency_TextChanged);
 		top += LINE_HEIGHT;
 
 		LabelKeyboardLatency->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, GetStringFromKey("String.Window.Settings.KeyboardLatency").c_str());
-		TextBoxKeyboardLatency->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH + CONTROL_PADDING_HORIZONTAL, top, w - MARGIN_HORIZONTAL * 2 - CONTROL_PADDING_HORIZONTAL - LEFT_LABEL_WIDTH, CONTROL_HEIGHT, std::to_wstring(SettingsHelper::Settings.KeyboardLatencyMs));
+		TextBoxKeyboardLatency->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH, top, w - MARGIN_HORIZONTAL * 2 - LEFT_LABEL_WIDTH, CONTROL_HEIGHT, std::to_wstring(SettingsHelper::Settings.KeyboardLatencyMs));
 		TextBoxKeyboardLatency->RegisterMessage(TextBoxKeyboardLatency_TextChanged);
 		top += LINE_HEIGHT;
 
 		LabelPreviewLyricsMaximize->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, GetStringFromKey("String.Window.Settings.PreviewLyricsMaximize").c_str());
-		CheckBoxPreviewLyricsMaximize->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH + CONTROL_PADDING_HORIZONTAL, top, w - MARGIN_HORIZONTAL * 2 - CONTROL_PADDING_HORIZONTAL - LEFT_LABEL_WIDTH, CONTROL_HEIGHT);
+		CheckBoxPreviewLyricsMaximize->Create(hwnd, MARGIN_HORIZONTAL + LEFT_LABEL_WIDTH, top, w - MARGIN_HORIZONTAL * 2 - LEFT_LABEL_WIDTH, CONTROL_HEIGHT);
 		CheckBoxPreviewLyricsMaximize->Check(SettingsHelper::Settings.IsPreviewLyricsOpenMaximize);
 		CheckBoxPreviewLyricsMaximize->RegisterMessage(CheckBoxPreviewLyricsMaximize_Checked);
 		top += LINE_HEIGHT;
@@ -245,8 +259,6 @@ namespace WindowSettings
 		ButtonSave->RegisterMessage(ButtonSave_Click);
 		ButtonCancel->Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH, h - MARGIN_VERTICAL - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Settings.Cancel").c_str());
 		ButtonCancel->RegisterMessage(ButtonCancel_Click);
-
-		int FONTSIZE = 18 - 2 * (DPI_Scale - 1);
 
 		LabelLanguage->SetFont(FONTSIZE, 0, DEFAULT_FONT);
 		ComboBoxLanguage->SetFont(FONTSIZE, 0, DEFAULT_FONT);

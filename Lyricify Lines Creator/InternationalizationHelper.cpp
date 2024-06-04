@@ -436,6 +436,22 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 		}
 	},
 	{
+		"String.Window.About",
+		{
+			{ Languages::EN, L"About" },
+			{ Languages::ZH_HANS, L"关于" },
+			{ Languages::ZH_HANT, L"關於" }
+		}
+	},
+	{
+		"String.Window.About.FullName",
+		{
+			{ Languages::EN, L"Lyricify Lines Line-Synced Lyrics Creator" },
+			{ Languages::ZH_HANS, L"Lyricify Lines 逐行歌词打轴工具" },
+			{ Languages::ZH_HANT, L"Lyricify Lines 逐行歌詞打軸工具" }
+		}
+	},
+	{
 		"String.Window.About.Developer",
 		{
 			{ Languages::EN, L"Developer" },
@@ -449,6 +465,22 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 			{ Languages::EN, L"Third Party Notices" },
 			{ Languages::ZH_HANS, L"第三方通知" },
 			{ Languages::ZH_HANT, L"第三方通知" }
+		}
+	},
+	{
+		"String.Window.About.License.MIT",
+		{
+			{ Languages::EN, L"MIT License" },
+			{ Languages::ZH_HANS, L"MIT 协议" },
+			{ Languages::ZH_HANT, L"MIT 協議" }
+		}
+	},
+	{
+		"String.Window.About.License.LGPL21",
+		{
+			{ Languages::EN, L"LGPL-2.1 License" },
+			{ Languages::ZH_HANS, L"LGPL-2.1 协议" },
+			{ Languages::ZH_HANT, L"LGPL-2.1 協議" }
 		}
 	},
 	{

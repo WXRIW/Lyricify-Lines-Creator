@@ -59,6 +59,11 @@ public:
         return DeviceLatencyMs + KeyboardLatencyMs;
     }
 
+    bool IsNeedTextCalc() const
+    {
+        return Language != Languages::ZH_HANS && Language != Languages::ZH_HANT;
+    }
+
     // 接入 nlohmann::json 的序列化和反序列化
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(MainSettings, Language, IsOutputLrc, DeviceLatencyMs, KeyboardLatencyMs, IsPreviewLyricsOpenMaximize)
 };
