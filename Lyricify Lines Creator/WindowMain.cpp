@@ -634,12 +634,12 @@ namespace WindowMain
 		tempBtnWidth = BUTTON_WIDTH;
 		if (SettingsHelper::Settings.IsNeedTextCalc())
 		{
-			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.Start").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.About").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
 			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
 		}
 		widthAccu += tempBtnWidth;
 		ButtonAbout.Move(MARGIN_HORIZONTAL, top);
-		ButtonSettings.Move(MARGIN_HORIZONTAL + BUTTON_WIDTH + CONTROL_PADDING_HORIZONTAL, top);
+		ButtonSettings.Move(MARGIN_HORIZONTAL + widthAccu + CONTROL_PADDING_HORIZONTAL, top);
 
 		widthAccu = 0;
 		tempBtnWidth = BUTTON_WIDTH;
@@ -824,15 +824,21 @@ namespace WindowMain
 		CanvasMain.SetTextColor(FOREGROUND_COLOR);
 		CanvasMain.OutTextXY(MARGIN_HORIZONTAL, top, GetStringFromKey("String.Window.Main.KeyTips").c_str());
 		setfont(DEFAULT_CANVAS_FONTSIZE - 1, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		auto fullWidth = w - MARGIN_HORIZONTAL * 2 - 90 - 10;
+		left = 90;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.KeyTips").c_str(), DEFAULT_FONT, DEFAULT_CANVAS_FONTSIZE - 1).cx;
+			if (textSize + 40 > left) left = textSize + 40;
+		}
+		auto fullWidth = w - MARGIN_HORIZONTAL * 2 - left - 10;
 		fullWidth /= Notices.size() / 2;
 		for (int i = 0; i < Notices.size() / 2; i++)
 		{
-			CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 90 + fullWidth * i, top + 1, Notices[i].c_str());
+			CanvasMain.OutTextXY(MARGIN_HORIZONTAL + left + fullWidth * i, top + 1, Notices[i].c_str());
 		}
 		for (int i = Notices.size() / 2; i < Notices.size(); i++)
 		{
-			CanvasMain.OutTextXY(MARGIN_HORIZONTAL + 90 + fullWidth * (i - (int)Notices.size() / 2), top + 1 + 28, Notices[i].c_str());
+			CanvasMain.OutTextXY(MARGIN_HORIZONTAL + left + fullWidth * (i - (int)Notices.size() / 2), top + 1 + 28, Notices[i].c_str());
 		}
 
 #pragma endregion
@@ -868,7 +874,24 @@ namespace WindowMain
 		// 底部区域分割线
 		top = h - BUTTON_HEIGHT - MARGIN_VERTICAL - 12;
 		CanvasMain.Line(10, top, w - 10, top, true, LINE_COLOR);
-		CanvasMain.Line(w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL * 2.5, top + 10, w - MARGIN_HORIZONTAL - BUTTON_WIDTH * 2 - CONTROL_PADDING_HORIZONTAL * 2.5, top + 40, true, SUBLINE_COLOR);
+
+		auto widthAccu = 0;
+		auto tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.Start").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		widthAccu += tempBtnWidth;
+
+		tempBtnWidth = BUTTON_WIDTH;
+		if (SettingsHelper::Settings.IsNeedTextCalc())
+		{
+			auto textSize = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Main.Restart").c_str(), DEFAULT_FONT, DEFAULT_BUTTON_FONTSIZE).cx;
+			if (textSize + 30 > tempBtnWidth) tempBtnWidth = textSize + 30;
+		}
+		widthAccu += tempBtnWidth;
+		CanvasMain.Line(w - MARGIN_HORIZONTAL - widthAccu - CONTROL_PADDING_HORIZONTAL * 2.5, top + 10, w - MARGIN_HORIZONTAL - widthAccu - CONTROL_PADDING_HORIZONTAL * 2.5, top + 40, true, SUBLINE_COLOR);
 
 		IsInDrawAtWndProcPaint = false;
 	}

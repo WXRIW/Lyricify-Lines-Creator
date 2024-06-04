@@ -1,6 +1,6 @@
-/************************************************************************
+ï»¿/************************************************************************
  * Filename:    WindowSettings.cpp
- * Description: ÉèÖÃ´°ÌåÊµÏÖ
+ * Description: è®¾ç½®çª—ä½“å®ç°
  * Author:      XY Wang
  * Repository:  https://github.com/WXRIW/Lyricify-Lines-Creator
  * License:     LGPL-2.1 license
@@ -45,8 +45,10 @@ namespace WindowSettings
 	static std::wstring LanguageList[] =
 	{
 		L"English (English)",
-		L"¼òÌåÖĞÎÄ (Simplified Chinese)",
-		L"·±ówÖĞÎÄ (Traditional Chinese)",
+		L"ç®€ä½“ä¸­æ–‡ (Simplified Chinese)",
+		L"ç¹é«”ä¸­æ–‡ (Traditional Chinese)",
+		L"FranÃ§ais (French)",
+		L"PÑƒÑÑĞºĞ¸Ğ¹ (Russian)",
 	};
 
 	static const size_t LanguageCount = sizeof(LanguageList) / sizeof(LanguageList[0]);
@@ -208,7 +210,7 @@ namespace WindowSettings
 		int top = MARGIN_VERTICAL;
 		int FONTSIZE = 18 - 2 * (DPI_Scale - 1);
 
-		// ÎªÓïÑÔÓÅ»¯ Label ¿í¶È
+		// ä¸ºè¯­è¨€ä¼˜åŒ– Label å®½åº¦
 		auto LEFT_LABEL_WIDTH = 0;
 		auto padding = 35;
 		auto size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.Language").c_str(), DEFAULT_FONT, FONTSIZE).cx;
@@ -274,7 +276,7 @@ namespace WindowSettings
 		ButtonCancel->SetFont(FONTSIZE, 0, DEFAULT_FONT);
 
 		hiex::init_end(Window->GetHandle());
-		if (hParent != (HWND)nullptr) BringWindowToTop(hParent); // ÈÃÖ÷´°ÌåÏÔÊ¾ÓÚ×îÉÏ·½
+		if (hParent != (HWND)nullptr) BringWindowToTop(hParent); // è®©ä¸»çª—ä½“æ˜¾ç¤ºäºæœ€ä¸Šæ–¹
 		isOpened = false;
 	}
 

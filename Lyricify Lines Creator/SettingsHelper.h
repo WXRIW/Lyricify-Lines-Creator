@@ -20,6 +20,8 @@ enum class Languages
     EN,
     ZH_HANS,
     ZH_HANT,
+    FR,
+    RU,
 };
 
 class MainSettings
