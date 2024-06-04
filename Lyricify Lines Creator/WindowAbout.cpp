@@ -17,6 +17,7 @@ namespace WindowAbout
 		WA_URL_INDEX_WXRIW,
 		WA_URL_INDEX_CODEV1,
 		WA_URL_INDEX_CODEV2,
+		WA_URL_INDEX_REPO,
 		WA_URL_INDEX_EASYX,
 		WA_URL_INDEX_HIEASYX,
 		WA_URL_INDEX_IRRKLANG,
@@ -61,9 +62,9 @@ namespace WindowAbout
 		SIZE size;
 
 		CanvasMain->SetTextColor(BLACK);
-		setfont(TITLE_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_BOLD, false, false, false);
+		setfont(TITLE_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_BOLD, false, false, false);
 		CanvasMain->CenterText(L"Lyricify Lines Creator", { 0, 20, w, 45 });
-		setfont(SUBTITLE_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(SUBTITLE_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText(GetStringFromKey("String.Window.About.FullName").c_str(), {0, 47, w, 67});
 		CanvasMain->SetTextColor(GRAY);
 		setfont(16 + (DPI_Scale - 1) * 1, 0, L"Consolas", 0, 0, FW_DONTCARE, false, false, false);
@@ -71,58 +72,73 @@ namespace WindowAbout
 
 		top += 110;
 		CanvasMain->SetTextColor(BLACK);
-		setfont(SUBTITLE_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(SUBTITLE_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText(GetStringFromKey("String.Window.About.Developer").c_str(), {0, top, w, top + 20}); top += 26;
 		CanvasMain->SetTextColor(GRAY);
 
-		setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
-		size = FontHelper::CalculateTextSize(L"Xiaoyang Wang", DEFAULT_FONT, 16, DPI_Scale, FW_DONTCARE, false, false, false);
+		setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
+		size = FontHelper::CalculateTextSize(L"Xiaoyang Wang", SettingsHelper::Settings.GetFont(), 16, DPI_Scale, FW_DONTCARE, false, false, false);
 		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 20 }, L"https://github.com/WXRIW");
-		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(URL_COLOR); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false); }
+		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(URL_COLOR); setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, true, false); }
 		CanvasMain->CenterText(L"Xiaoyang Wang", { 0, top, w, top + 20 }); top += 20;
-		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false); }
-		size = FontHelper::CalculateTextSize(L"Tianle Chen", DEFAULT_FONT, 16, DPI_Scale, FW_DONTCARE, false, false, false);
+		if (highlight == WA_URL_INDEX_WXRIW) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false); }
+		size = FontHelper::CalculateTextSize(L"Tianle Chen", SettingsHelper::Settings.GetFont(), 16, DPI_Scale, FW_DONTCARE, false, false, false);
 		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 20 }, L"https://github.com/777yuu");
-		if (highlight == WA_URL_INDEX_CODEV1) { CanvasMain->SetTextColor(URL_COLOR); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false); }
+		if (highlight == WA_URL_INDEX_CODEV1) { CanvasMain->SetTextColor(URL_COLOR); setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, true, false); }
 		CanvasMain->CenterText(L"Tianle Chen", { 0, top, w, top + 20 }); top += 20;
-		if (highlight == WA_URL_INDEX_CODEV1) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false); }
-		size = FontHelper::CalculateTextSize(L"Junze Zhang", DEFAULT_FONT, 16, DPI_Scale, FW_DONTCARE, false, false, false);
+		if (highlight == WA_URL_INDEX_CODEV1) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false); }
+		size = FontHelper::CalculateTextSize(L"Junze Zhang", SettingsHelper::Settings.GetFont(), 16, DPI_Scale, FW_DONTCARE, false, false, false);
 		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 20 }, L"https://github.com/NathenCroft");
-		if (highlight == WA_URL_INDEX_CODEV2) { CanvasMain->SetTextColor(URL_COLOR); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false); }
+		if (highlight == WA_URL_INDEX_CODEV2) { CanvasMain->SetTextColor(URL_COLOR); setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, true, false); }
 		CanvasMain->CenterText(L"Junze Zhang", { 0, top, w, top + 20 }); top += 20;
-		if (highlight == WA_URL_INDEX_CODEV2) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false); }
+		if (highlight == WA_URL_INDEX_CODEV2) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false); }
 
 		top += 20;
 		CanvasMain->SetTextColor(BLACK);
-		setfont(18, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(18, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
+		CanvasMain->CenterText(GetStringFromKey("String.Window.About.Repository").c_str(), { 0, top, w, top + 20 }); top += 26;
+		CanvasMain->SetTextColor(GRAY);
+
+		setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
+		size = FontHelper::CalculateTextSize(L"WXRIW/Lyricify-Lyrics-Creator", SettingsHelper::Settings.GetFont(), 16, DPI_Scale, FW_DONTCARE, false, false, false);
+		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 20 }, L"https://github.com/WXRIW/Lyricify-Lines-Creator");
+		if (highlight == WA_URL_INDEX_REPO) { CanvasMain->SetTextColor(URL_COLOR); setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, true, false); }
+		CanvasMain->CenterText(L"WXRIW/Lyricify-Lyrics-Creator", {0, top, w, top + 20}); top += 20;
+		if (highlight == WA_URL_INDEX_REPO) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false); }
+		setfont(URL_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
+		CanvasMain->CenterText(GetStringFromKey("String.Window.About.Repository.OpenSource").c_str(), { 0, top, w, top + 20 }); top += 20;
+
+		top += 20;
+		CanvasMain->SetTextColor(BLACK);
+		setfont(18, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText(GetStringFromKey("String.Window.About.ThirdParty").c_str(), { 0, top, w, top + 20 }); top += 26;
 		CanvasMain->SetTextColor(GRAY);
 
-		setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText((L"HiEasyX (" + GetStringFromKey("String.Window.About.License.MIT") + L")").c_str(), {0, top, w, top + 20}); top += 20;
-		setfont(URL_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
+		setfont(URL_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, true, false);
 		url = L"https://github.com/zouhuidong/HiEasyX/blob/main/LICENSE";
-		size = FontHelper::CalculateTextSize(url.c_str(), DEFAULT_FONT, URL_FONTSIZE, DPI_Scale, FW_DONTCARE, false, false, false);
+		size = FontHelper::CalculateTextSize(url.c_str(), SettingsHelper::Settings.GetFont(), URL_FONTSIZE, DPI_Scale, FW_DONTCARE, false, false, false);
 		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 15 }, url);
 		if (highlight == WA_URL_INDEX_EASYX) CanvasMain->SetTextColor(URL_COLOR);
 		CanvasMain->CenterText(url.c_str(), { 0, top, w, top + 15 }); top += 22;
 		if (highlight == WA_URL_INDEX_EASYX) CanvasMain->SetTextColor(GRAY);
 
-		setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText(L"EasyX", { 0, top, w, top + 20 }); top += 20;
-		setfont(URL_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
+		setfont(URL_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, true, false);
 		url = L"https://easyx.cn/copyright";
-		size = FontHelper::CalculateTextSize(url.c_str(), DEFAULT_FONT, URL_FONTSIZE, DPI_Scale, FW_DONTCARE, false, false, false);
+		size = FontHelper::CalculateTextSize(url.c_str(), SettingsHelper::Settings.GetFont(), URL_FONTSIZE, DPI_Scale, FW_DONTCARE, false, false, false);
 		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 15 }, url);
 		if (highlight == WA_URL_INDEX_HIEASYX) CanvasMain->SetTextColor(URL_COLOR);
 		CanvasMain->CenterText(url.c_str(), { 0, top, w, top + 15 }); top += 22;
 		if (highlight == WA_URL_INDEX_HIEASYX) CanvasMain->SetTextColor(GRAY);
 
-		setfont(ITEM_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText(L"irrKlang", { 0, top, w, top + 20 }); top += 20;
-		setfont(URL_FONTSIZE, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, true, false);
+		setfont(URL_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, true, false);
 		url = L"https://www.ambiera.com/irrklang/license.html";
-		size = FontHelper::CalculateTextSize(url.c_str(), DEFAULT_FONT, URL_FONTSIZE, DPI_Scale, FW_DONTCARE, false, false, false);
+		size = FontHelper::CalculateTextSize(url.c_str(), SettingsHelper::Settings.GetFont(), URL_FONTSIZE, DPI_Scale, FW_DONTCARE, false, false, false);
 		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 15 }, url);
 		if (highlight == WA_URL_INDEX_IRRKLANG) CanvasMain->SetTextColor(URL_COLOR);
 		CanvasMain->CenterText(url.c_str(), { 0, top, w, top + 15 }); top += 22;
@@ -162,16 +178,22 @@ namespace WindowAbout
 			else if (PtInRect(&UrlAreas[3], pt))
 			{
 				SetCursor(LoadCursor(NULL, IDC_HAND));
-				DrawCanvas(false, WA_URL_INDEX_EASYX);
+				DrawCanvas(false, WA_URL_INDEX_REPO);
 				return TRUE;
 			}
 			else if (PtInRect(&UrlAreas[4], pt))
 			{
 				SetCursor(LoadCursor(NULL, IDC_HAND));
-				DrawCanvas(false, WA_URL_INDEX_HIEASYX);
+				DrawCanvas(false, WA_URL_INDEX_EASYX);
 				return TRUE;
 			}
 			else if (PtInRect(&UrlAreas[5], pt))
+			{
+				SetCursor(LoadCursor(NULL, IDC_HAND));
+				DrawCanvas(false, WA_URL_INDEX_HIEASYX);
+				return TRUE;
+			}
+			else if (PtInRect(&UrlAreas[6], pt))
 			{
 				SetCursor(LoadCursor(NULL, IDC_HAND));
 				DrawCanvas(false, WA_URL_INDEX_IRRKLANG);
@@ -208,7 +230,7 @@ namespace WindowAbout
 				ScreenToClient(hWnd, &pt);
 
 				int index = -1;
-				while (++index < 6)
+				while (++index < 7)
 				{
 					if (PtInRect(&UrlAreas[index], pt))
 					{
@@ -233,7 +255,7 @@ namespace WindowAbout
 	{
 		isOpened = true;
 		const int WIDTH = 360;
-		const int HEIGHT = 380;
+		const int HEIGHT = 465;
 		DPI_Scale = scale;
 
 		hiex::Window wnd;
@@ -252,7 +274,7 @@ namespace WindowAbout
 
 		wnd.BindCanvas(&canvas);
 		wnd.SetProcFunc(WndProc);
-		setfont(20, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
+		setfont(20, 0, SettingsHelper::Settings.GetFont(), 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
 		setaspectratio(DPI_Scale, DPI_Scale);
 
 		DrawCanvas();

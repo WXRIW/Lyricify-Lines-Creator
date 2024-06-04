@@ -32,6 +32,10 @@ int main()
 
 	// 加载设置项
 	SettingsHelper::LoadSettings();
+	/*if (SettingsHelper::Settings.Language == Languages::ZH_HANT)
+	{
+		DEFAULT_FONT = L"Microsoft JhengHei UI";
+	}*/
 
 	// 设置程序图标
 	hiex::SetCustomIcon(MAKEINTRESOURCE(IDI_ICON1), MAKEINTRESOURCE(IDI_ICON1));

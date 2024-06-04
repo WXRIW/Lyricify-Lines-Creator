@@ -15,6 +15,9 @@
 #include <nlohmann/json.hpp>
 #include "StringHelper.h"
 
+//constexpr auto DEFAULT_FONT = L"PingFang SC Pro";
+constexpr auto DEFAULT_FONT = L"Microsoft YaHei UI";
+
 enum class Languages
 {
     EN,
@@ -64,6 +67,19 @@ public:
     bool IsNeedTextCalc() const
     {
         return Language != Languages::ZH_HANS && Language != Languages::ZH_HANT;
+    }
+
+    const wchar_t* GetFont() const
+    {
+        if (Language == Languages::ZH_HANT)
+        {
+            // 繁体中文使用微软正体黑
+            return L"Microsoft JhengHei UI";
+        }
+        else
+        {
+            return DEFAULT_FONT;
+        }
     }
 
     // 接入 nlohmann::json 的序列化和反序列化

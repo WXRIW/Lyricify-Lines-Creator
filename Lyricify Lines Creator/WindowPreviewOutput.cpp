@@ -92,7 +92,7 @@ namespace WindowPreviewOutput
 
 		wnd.BindCanvas(&canvas);
 		wnd.SetProcFunc(WndProc);
-		setfont(20, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
+		setfont(20, 0, SettingsHelper::Settings.GetFont(), 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
 		setaspectratio(DPI_Scale, DPI_Scale);
 
 		int w = CanvasMain->GetWidth() / DPI_Scale;
@@ -100,11 +100,11 @@ namespace WindowPreviewOutput
 
 		TextBoxOutput->PreSetStyle({ true, false, true });
 		TextBoxOutput->Create(wnd.GetHandle(), MARGIN_HORIZONTAL, MARGIN_VERTICAL, w - MARGIN_HORIZONTAL * 2, h - MARGIN_VERTICAL * 2 - BUTTON_HEIGHT - 10, StringHelper::Replace(FileContent, L"\n", L"\r\n"));
-		TextBoxOutput->SetFont(18, 0, DEFAULT_FONT);
+		TextBoxOutput->SetFont(18, 0, SettingsHelper::Settings.GetFont());
 
 		ButtonSave->Create(wnd.GetHandle(), w - MARGIN_HORIZONTAL - BUTTON_WIDTH, h - MARGIN_VERTICAL - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.PreviewOutput.Save").c_str());
 		ButtonSave->Enable(false);
-		ButtonSave->SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+		ButtonSave->SetFont(DEFAULT_BUTTON_FONTSIZE, 0, SettingsHelper::Settings.GetFont());
 		ButtonSave->RegisterMessage([]()
 			{
 				std::wofstream outFile(FilePath);

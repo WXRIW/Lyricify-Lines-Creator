@@ -139,7 +139,7 @@ namespace WindowSettings
 		SettingsValueChange();
 	}
 
-	static void ButtonSave_Click()
+	static void SaveToSettings()
 	{
 		SettingsHelper::Settings.Language = GetLanguageEnum(GetLanguageIndex(ComboBoxLanguage->GetText()));
 		SettingsHelper::Settings.IsOutputLrc = ComboBoxLyricsOutputFormat->GetText() == L"LRC";
@@ -147,7 +147,32 @@ namespace WindowSettings
 		SettingsHelper::Settings.KeyboardLatencyMs = std::stoi(TextBoxKeyboardLatency->GetText());
 		SettingsHelper::Settings.IsPreviewLyricsOpenMaximize = CheckBoxPreviewLyricsMaximize->IsChecked();
 		SettingsHelper::SaveSettings();
+	}
 
+	static void ButtonSave_Click()
+	{
+		if (LanguageList[(int)SettingsHelper::Settings.Language] != ComboBoxLanguage->GetText())
+		{
+			if (MessageBox(Window->GetHandle(),
+					GetStringFromKey("String.Window.Settings.RestartAppSuggestion", GetLanguageEnum(GetLanguageIndex(ComboBoxLanguage->GetText()))).c_str(),
+					GetStringFromKey("String.Window.Settings.Notification", GetLanguageEnum(GetLanguageIndex(ComboBoxLanguage->GetText()))).c_str(),
+					MB_YESNO | MB_DEFBUTTON2)
+				== IDYES)
+			{
+				// 保存设置
+				SaveToSettings();
+
+				// 执行重启
+				wchar_t exePath[MAX_PATH];
+				GetModuleFileName(NULL, exePath, MAX_PATH);
+				ShellExecute(NULL, NULL, exePath, NULL, NULL, SW_SHOWNORMAL);
+
+				// 关闭当前实例
+				ExitProcess(0);
+			}
+		}
+
+		SaveToSettings();
 		SendMessage(Window->GetHandle(), WM_CLOSE, 0, 0);
 	}
 
@@ -201,7 +226,7 @@ namespace WindowSettings
 		DisableResizing(Window->GetHandle(), true);
 		WindowHelper::EnableMinimizeButton(Window->GetHandle(), false);
 		Window->BindCanvas(CanvasMain);
-		setfont(20, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
+		setfont(20, 0, SettingsHelper::Settings.GetFont(), 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
 		setaspectratio(DPI_Scale, DPI_Scale);
 
 		auto hwnd = Window->GetHandle();
@@ -213,15 +238,15 @@ namespace WindowSettings
 		// 为语言优化 Label 宽度
 		auto LEFT_LABEL_WIDTH = 0;
 		auto padding = 35;
-		auto size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.Language").c_str(), DEFAULT_FONT, FONTSIZE).cx;
+		auto size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.Language").c_str(), SettingsHelper::Settings.GetFont(), FONTSIZE).cx;
 		if (size + padding > LEFT_LABEL_WIDTH) LEFT_LABEL_WIDTH = size + padding;
-		size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.LyricsOutputFormat").c_str(), DEFAULT_FONT, FONTSIZE).cx;
+		size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.LyricsOutputFormat").c_str(), SettingsHelper::Settings.GetFont(), FONTSIZE).cx;
 		if (size + padding > LEFT_LABEL_WIDTH) LEFT_LABEL_WIDTH = size + padding;
-		size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.DeviceLatency").c_str(), DEFAULT_FONT, FONTSIZE).cx;
+		size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.DeviceLatency").c_str(), SettingsHelper::Settings.GetFont(), FONTSIZE).cx;
 		if (size + padding > LEFT_LABEL_WIDTH) LEFT_LABEL_WIDTH = size + padding;
-		size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.KeyboardLatency").c_str(), DEFAULT_FONT, FONTSIZE).cx;
+		size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.KeyboardLatency").c_str(), SettingsHelper::Settings.GetFont(), FONTSIZE).cx;
 		if (size + padding > LEFT_LABEL_WIDTH) LEFT_LABEL_WIDTH = size + padding;
-		size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.PreviewLyricsMaximize").c_str(), DEFAULT_FONT, FONTSIZE).cx;
+		size = FontHelper::CalculateTextSize(GetStringFromKey("String.Window.Settings.PreviewLyricsMaximize").c_str(), SettingsHelper::Settings.GetFont(), FONTSIZE).cx;
 		if (size + padding > LEFT_LABEL_WIDTH) LEFT_LABEL_WIDTH = size + padding;
 
 		LabelLanguage->Create(hwnd, MARGIN_HORIZONTAL, top + LABEL_ADDHEIGHT, LEFT_LABEL_WIDTH, CONTROL_HEIGHT, GetStringFromKey("String.Window.Settings.Language").c_str());
@@ -262,18 +287,18 @@ namespace WindowSettings
 		ButtonCancel->Create(hwnd, w - MARGIN_HORIZONTAL - BUTTON_WIDTH, h - MARGIN_VERTICAL - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Settings.Cancel").c_str());
 		ButtonCancel->RegisterMessage(ButtonCancel_Click);
 
-		LabelLanguage->SetFont(FONTSIZE, 0, DEFAULT_FONT);
-		ComboBoxLanguage->SetFont(FONTSIZE, 0, DEFAULT_FONT);
-		LabelLyricsOutputFormat->SetFont(FONTSIZE, 0, DEFAULT_FONT);
-		ComboBoxLyricsOutputFormat->SetFont(FONTSIZE, 0, DEFAULT_FONT);
-		LabelDeviceLatency->SetFont(FONTSIZE, 0, DEFAULT_FONT);
-		TextBoxDeviceLatency->SetFont(FONTSIZE, 0, DEFAULT_FONT);
-		LabelKeyboardLatency->SetFont(FONTSIZE, 0, DEFAULT_FONT);
-		TextBoxKeyboardLatency->SetFont(FONTSIZE, 0, DEFAULT_FONT);
-		LabelPreviewLyricsMaximize->SetFont(FONTSIZE, 0, DEFAULT_FONT);
-		CheckBoxPreviewLyricsMaximize->SetFont(FONTSIZE, 0, DEFAULT_FONT);
-		ButtonSave->SetFont(FONTSIZE, 0, DEFAULT_FONT);
-		ButtonCancel->SetFont(FONTSIZE, 0, DEFAULT_FONT);
+		LabelLanguage->SetFont(FONTSIZE, 0, SettingsHelper::Settings.GetFont());
+		ComboBoxLanguage->SetFont(FONTSIZE, 0, SettingsHelper::Settings.GetFont());
+		LabelLyricsOutputFormat->SetFont(FONTSIZE, 0, SettingsHelper::Settings.GetFont());
+		ComboBoxLyricsOutputFormat->SetFont(FONTSIZE, 0, SettingsHelper::Settings.GetFont());
+		LabelDeviceLatency->SetFont(FONTSIZE, 0, SettingsHelper::Settings.GetFont());
+		TextBoxDeviceLatency->SetFont(FONTSIZE, 0, SettingsHelper::Settings.GetFont());
+		LabelKeyboardLatency->SetFont(FONTSIZE, 0, SettingsHelper::Settings.GetFont());
+		TextBoxKeyboardLatency->SetFont(FONTSIZE, 0, SettingsHelper::Settings.GetFont());
+		LabelPreviewLyricsMaximize->SetFont(FONTSIZE, 0, SettingsHelper::Settings.GetFont());
+		CheckBoxPreviewLyricsMaximize->SetFont(FONTSIZE, 0, SettingsHelper::Settings.GetFont());
+		ButtonSave->SetFont(FONTSIZE, 0, SettingsHelper::Settings.GetFont());
+		ButtonCancel->SetFont(FONTSIZE, 0, SettingsHelper::Settings.GetFont());
 
 		hiex::init_end(Window->GetHandle());
 		if (hParent != (HWND)nullptr) BringWindowToTop(hParent); // 让主窗体显示于最上方

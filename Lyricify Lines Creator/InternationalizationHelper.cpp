@@ -334,7 +334,7 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 	{
 		"String.Window.Main.PreviousLine",
 		{
-			{ Languages::EN, L"Previous Line:" },
+			{ Languages::EN, L"Prev. Line:" },
 			{ Languages::ZH_HANS, L"上一行：" },
 			{ Languages::ZH_HANT, L"上一行：" },
 			{ Languages::FR, L"Ligne précédente :" },
@@ -344,7 +344,7 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 	{
 		"String.Window.Main.CurrentLine",
 		{
-			{ Languages::EN, L"Current Line:" },
+			{ Languages::EN, L"Curr. Line:" },
 			{ Languages::ZH_HANS, L"当前行：" },
 			{ Languages::ZH_HANT, L"當前行：" },
 			{ Languages::FR, L"Ligne actuelle :" },
@@ -374,7 +374,7 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 	{
 		"String.Window.Main.NoticeCurrentLineEnd",
 		{
-			{ Languages::EN, L"Current Line End: →" },
+			{ Languages::EN, L"Curr. Line End: →" },
 			{ Languages::ZH_HANS, L"当前行结束: →" },
 			{ Languages::ZH_HANT, L"當前行結束: →" },
 			{ Languages::FR, L"Fin de la ligne actuelle : →" },
@@ -384,7 +384,7 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 	{
 		"String.Window.Main.NoticePreviousLineEnd",
 		{
-			{ Languages::EN, L"Previous Line End: ←" },
+			{ Languages::EN, L"Prev. Line End: ←" },
 			{ Languages::ZH_HANS, L"上一行结束: ←" },
 			{ Languages::ZH_HANT, L"上一行結束: ←" },
 			{ Languages::FR, L"Fin de la ligne précédente : ←" },
@@ -394,7 +394,7 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 	{
 		"String.Window.Main.NoticeReturnToPreviousLine",
 		{
-			{ Languages::EN, L"Return to Previous Line: ↓" },
+			{ Languages::EN, L"Back to Prev Line: ↓" },
 			{ Languages::ZH_HANS, L"回到上一行: ↓" },
 			{ Languages::ZH_HANT, L"回到上一行: ↓" },
 			{ Languages::FR, L"Retour à la ligne précédente : ↓" },
@@ -414,7 +414,7 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 	{
 		"String.Window.Main.NoticeSeekBack3s",
 		{
-			{ Languages::EN, L"Seek Back 3s: B" },
+			{ Languages::EN, L"Back 3s: B" },
 			{ Languages::ZH_HANS, L"回退 3s: B" },
 			{ Languages::ZH_HANT, L"回退 3s: B" },
 			{ Languages::FR, L"Reculer de 3s : B" },
@@ -424,7 +424,7 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 	{
 		"String.Window.Main.NoticeSeekForward3s",
 		{
-			{ Languages::EN, L"Seek Forward 3s: N" },
+			{ Languages::EN, L"Fwd 3s: N" },
 			{ Languages::ZH_HANS, L"前进 3s: N" },
 			{ Languages::ZH_HANT, L"前進 3s: N" },
 			{ Languages::FR, L"Avancer de 3s : N" },
@@ -434,7 +434,7 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 	{
 		"String.Window.Main.NoticeSeekForward10s",
 		{
-			{ Languages::EN, L"Seek Forward 10s: M" },
+			{ Languages::EN, L"Fwd 10s: M" },
 			{ Languages::ZH_HANS, L"前进 10s: M" },
 			{ Languages::ZH_HANT, L"前進 10s: M" },
 			{ Languages::FR, L"Avancer de 10s : M" },
@@ -444,7 +444,7 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 	{
 		"String.Window.Main.NoticeSeekForward30s",
 		{
-			{ Languages::EN, L"Seek Forward 30s: C" },
+			{ Languages::EN, L"Fwd 30s: C" },
 			{ Languages::ZH_HANS, L"前进 30s: C" },
 			{ Languages::ZH_HANT, L"前進 30s: C" },
 			{ Languages::FR, L"Avancer de 30s : C" },
@@ -572,6 +572,26 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 		}
 	},
 	{
+		"String.Window.About.Repository",
+		{
+			{ Languages::EN, L"Repository" },
+			{ Languages::ZH_HANS, L"仓库" },
+			{ Languages::ZH_HANT, L"倉庫" },
+			{ Languages::FR, L"Dépôt" },
+			{ Languages::RU, L"Репозиторий" }
+		}
+	},
+	{
+		"String.Window.About.Repository.OpenSource",
+		{
+			{ Languages::EN, L"Open source under LGPL-2.1" },
+			{ Languages::ZH_HANS, L"通过 LGPL-2.1 协议开源" },
+			{ Languages::ZH_HANT, L"透過 LGPL-2.1 協定開源" },
+			{ Languages::FR, L"Open source sous licence LGPL-2.1" },
+			{ Languages::RU, L"Открытый исходный код под лицензией LGPL-2.1." }
+		}
+	},
+	{
 		"String.Window.About.ThirdParty",
 		{
 			{ Languages::EN, L"Third Party Notices" },
@@ -662,6 +682,26 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 		}
 	},
 	{
+		"String.Window.Settings.RestartAppSuggestion",
+		{
+			{ Languages::EN, L"After changing the language, it is recommended to restart the application for the best experience. Would you like to restart now?" },
+			{ Languages::ZH_HANS, L"更改语言后，建议重启应用以获得最佳体验。是否立即重启？" },
+			{ Languages::ZH_HANT, L"更改語言後，建議重啟應用以獲得最佳體驗。是否立即重啟？" },
+			{ Languages::FR, L"Après avoir changé la langue, il est recommandé de redémarrer l'application pour une meilleure expérience. Voulez-vous redémarrer maintenant ?" },
+			{ Languages::RU, L"После изменения языка рекомендуется перезапустить приложение для лучшего опыта. Хотите ли вы перезапустить сейчас?" }
+		}
+	},
+	{
+		"String.Window.Settings.Notification",
+		{
+			{ Languages::EN, L"Notification" },
+			{ Languages::ZH_HANS, L"提示" },
+			{ Languages::ZH_HANT, L"提示" },
+			{ Languages::FR, L"Notification" },
+			{ Languages::RU, L"Уведомление" }
+		}
+	},
+	{
 		"String.Window.Settings.Save",
 		{
 			{ Languages::EN, L"Save" },
@@ -684,7 +724,7 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 	{
 		"String.Window.Settings.InvalidLatencyValue",
 		{
-			{ Languages::EN, L"The latency value should be an integer, usually a natural number." },
+			{ Languages::EN, L"The latency value should be an integer, usually a whole number." },
 			{ Languages::ZH_HANS, L"延迟值应为整数，一般为自然数。" },
 			{ Languages::ZH_HANT, L"延遲值應為整數，一般為自然數。" },
 			{ Languages::FR, L"La valeur de latence doit être un entier, généralement un nombre naturel." },

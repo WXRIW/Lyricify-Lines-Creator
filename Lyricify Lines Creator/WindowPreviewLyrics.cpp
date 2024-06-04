@@ -87,7 +87,7 @@ namespace WindowPreviewLyrics
 		// 颜色设置为灰色
 		// 默认字体大小22
 		int fontSize = 22;
-		setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH), 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH), 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->SetTextColor(GRAY);
 
 		// 默认顶部高度70
@@ -115,13 +115,13 @@ namespace WindowPreviewLyrics
 				if (i == 1)
 				{
 					// 当前播放歌词播放完字体由大到小变化
-					setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH) + 6 * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH) * progress, 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+					setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH) + 6 * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH) * progress, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
 					// 当前播放歌词播放完颜色由黑变灰渐变
 					CanvasMain->SetTextColor(RGB(127 * (1 - realProgress), 127 * (1 - realProgress), 127 * (1 - realProgress)));
 				}
 				else
 				{
-					setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH), 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+					setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH), 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
 					CanvasMain->SetTextColor(GRAY);
 				}
 				RECT rect = { MARGIN_HORIZONTAL,
@@ -136,7 +136,7 @@ namespace WindowPreviewLyrics
 		// 当前歌词开始播放颜色由灰变黑渐变
 		CanvasMain->SetTextColor(RGB(127 * realProgress, 127 * realProgress, 127 * realProgress));
 		// 当前歌词开始播放字体由小到大变化
-		setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH) + 6 * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH) * (1 - progress), 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH) + 6 * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH) * (1 - progress), 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
 		RECT r = { MARGIN_HORIZONTAL,
 			(LONG)(headSpace + (lineHeight * progress) + lineHeight * (rownum - 1) / 2),
 			w - MARGIN_HORIZONTAL ,
@@ -145,7 +145,7 @@ namespace WindowPreviewLyrics
 
 		// 即将播放歌词 字体颜色为灰色
 		// 依据窗口高度绘制相应数量歌词
-		setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH), 0, DEFAULT_FONT, 0, 0, FW_DONTCARE, false, false, false);
+		setfont(fontSize * sqrt((double)w * h / WINDOW_HEIGHT / WINDOW_WIDTH), 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
 
 		for (int i = 1; i <= rownum / 2; i++)
 		{
@@ -337,7 +337,7 @@ namespace WindowPreviewLyrics
 
 		wnd.BindCanvas(&canvas);
 		wnd.SetProcFunc(WndProc);
-		setfont(20, 0, DEFAULT_FONT, 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
+		setfont(20, 0, SettingsHelper::Settings.GetFont(), 0, 0, 0, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH);
 		setaspectratio(DPI_Scale, DPI_Scale);
 
 		// TODO: 按钮的创建
@@ -347,7 +347,7 @@ namespace WindowPreviewLyrics
 
 		ButtonPlayPause->Create(Window->GetHandle(), w / 2 - 40, 10, BUTTON_WIDTH, BUTTON_HEIGHT, L"播放");
 		ButtonPlayPause->RegisterMessage(ButtonPlayPause_Click);
-		ButtonPlayPause->SetFont(DEFAULT_BUTTON_FONTSIZE, 0, DEFAULT_FONT);
+		ButtonPlayPause->SetFont(DEFAULT_BUTTON_FONTSIZE, 0, SettingsHelper::Settings.GetFont());
 
 		wnd.Redraw();
 		TaskHelper::Delay(10).wait();

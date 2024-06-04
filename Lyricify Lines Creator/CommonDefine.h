@@ -19,8 +19,6 @@ constexpr auto VERSION = L"0.1-alpha";
 
 constexpr auto ENABLE_HIGHDPI = true; // 启用高 DPI 支持
 
-//constexpr auto DEFAULT_FONT = L"PingFang SC Pro";
-constexpr auto DEFAULT_FONT = L"Microsoft YaHei UI";
 constexpr auto DEFAULT_CANVAS_FONTSIZE = 20;
 constexpr auto DEFAULT_TEXTBOX_FONTSIZE = 18;
 constexpr auto DEFAULT_BUTTON_FONTSIZE = 18;
