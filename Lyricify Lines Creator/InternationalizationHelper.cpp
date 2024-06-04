@@ -184,11 +184,11 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 	{
 		"String.Window.Main.SelectAudioDialogFilter",
 		{
-			{ Languages::EN, L"Audio (*.mp3;*.wav;*.flac;*.ogg)\0*.mp3;*.wav;*.flac;*.ogg" },
-			{ Languages::ZH_HANS, L"音频 (*.mp3;*.wav;*.flac;*.ogg)\0*.mp3;*.wav;*.flac;*.ogg" },
-			{ Languages::ZH_HANT, L"音頻 (*.mp3;*.wav;*.flac;*.ogg)\0*.mp3;*.wav;*.flac;*.ogg" },
-			{ Languages::FR, L"Audio (*.mp3;*.wav;*.flac;*.ogg)\0*.mp3;*.wav;*.flac;*.ogg" },
-			{ Languages::RU, L"Аудио (*.mp3;*.wav;*.flac;*.ogg)\0*.mp3;*.wav;*.flac;*.ogg" }
+			{ Languages::EN, L"Audio (*.mp3;*.wav;*.flac;*.ogg)|*.mp3;*.wav;*.flac;*.ogg" },
+			{ Languages::ZH_HANS, L"音频 (*.mp3;*.wav;*.flac;*.ogg)|*.mp3;*.wav;*.flac;*.ogg" },
+			{ Languages::ZH_HANT, L"音頻 (*.mp3;*.wav;*.flac;*.ogg)|*.mp3;*.wav;*.flac;*.ogg" },
+			{ Languages::FR, L"Audio (*.mp3;*.wav;*.flac;*.ogg)|*.mp3;*.wav;*.flac;*.ogg" },
+			{ Languages::RU, L"Аудио (*.mp3;*.wav;*.flac;*.ogg)|*.mp3;*.wav;*.flac;*.ogg" }
 		}
 	},
 	{
@@ -204,11 +204,11 @@ std::map<std::string, std::map<Languages, std::wstring>> translations =
 	{
 		"String.Window.Main.SelectLyricsDialogFilter",
 		{
-			{ Languages::EN, L"Text Files (*.txt)\0*.txt" },
-			{ Languages::ZH_HANS, L"文本文档 (*.txt)\0*.txt" },
-			{ Languages::ZH_HANT, L"文本文件 (*.txt)\0*.txt" },
-			{ Languages::FR, L"Fichiers texte (*.txt)\0*.txt" },
-			{ Languages::RU, L"Текстовые файлы (*.txt)\0*.txt" }
+			{ Languages::EN, L"Text Files (*.txt)|*.txt" },
+			{ Languages::ZH_HANS, L"文本文档 (*.txt)|*.txt" },
+			{ Languages::ZH_HANT, L"文本文件 (*.txt)|*.txt" },
+			{ Languages::FR, L"Fichiers texte (*.txt)|*.txt" },
+			{ Languages::RU, L"Текстовые файлы (*.txt)|*.txt" }
 		}
 	},
 	{
