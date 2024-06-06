@@ -24,6 +24,8 @@ namespace WindowMain
 	bool IsMaking = false;
 	std::vector<Lyricify::Lyrics> LyricsList;
 
+	float PlaybackSpeed = 1;
+
 #pragma endregion
 
 #pragma region Control Definitions
@@ -45,6 +47,7 @@ namespace WindowMain
 	// 播放区域
 
 	hiex::SysButton ButtonPlayPause;
+	hiex::SysComboBox ComboBoxPlaybackSpeed;
 
 	// 底部区域
 
@@ -123,6 +126,7 @@ namespace WindowMain
 				}
 			}
 
+			MusicPlayer::SetPlaybackSpeed(PlaybackSpeed);
 			MusicPlayer::Play();
 			ButtonPlayPause.SetText(GetStringFromKey("String.Window.Main.Pause").c_str());
 
@@ -153,6 +157,28 @@ namespace WindowMain
 					IsRefreshThreadRunning = false;
 				}).detach();
 		}
+	}
+
+	static void ComboBoxPlaybackSpeed_Selected(int nSel, std::wstring wstrSelText)
+	{
+		double value = 1.0;
+		try
+		{
+			if (!wstrSelText.empty() && wstrSelText.back() == L'x')
+			{
+				std::wstring trimmedStr = wstrSelText.substr(0, wstrSelText.size() - 1);
+				value = std::stof(trimmedStr);
+			}
+			else
+			{
+				// 如果字符串不以 'x' 结尾，直接转换
+				value = std::stof(wstrSelText);
+			}
+		}
+		catch (...) {}
+
+		PlaybackSpeed = value;
+		MusicPlayer::SetPlaybackSpeed(value);
 	}
 
 	void ButtonAbout_Click()
@@ -468,7 +494,17 @@ namespace WindowMain
 
 		left = w - MARGIN_HORIZONTAL - BUTTON_WIDTH;
 		top = MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 3 + 25;
+		ComboBoxPlaybackSpeed.PreSetStyle({ false, false, false });
 		ButtonPlayPause.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + top, BUTTON_WIDTH, BUTTON_HEIGHT, GetStringFromKey("String.Window.Main.Play").c_str());
+		ComboBoxPlaybackSpeed.Create(hwnd, left, BUTTON_HEIGHT_OFFSET + top + CONTROL_PADDING_VERTICAL, BUTTON_WIDTH, BUTTON_HEIGHT);
+		ComboBoxPlaybackSpeed.AddString(L"0.25x");
+		ComboBoxPlaybackSpeed.AddString(L"0.5x");
+		ComboBoxPlaybackSpeed.AddString(L"0.75x");
+		ComboBoxPlaybackSpeed.AddString(L"1.0x");
+		ComboBoxPlaybackSpeed.AddString(L"1.25x");
+		ComboBoxPlaybackSpeed.AddString(L"1.5x");
+		ComboBoxPlaybackSpeed.AddString(L"2.0x");
+		ComboBoxPlaybackSpeed.SelectString(L"1.0x");
 
 #pragma endregion
 
@@ -541,6 +577,7 @@ namespace WindowMain
 		ButtonChooseRawLyrics.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, SettingsHelper::Settings.GetFont());
 		ButtonOutputPath.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, SettingsHelper::Settings.GetFont());
 		ButtonPlayPause.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, SettingsHelper::Settings.GetFont());
+		ComboBoxPlaybackSpeed.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, SettingsHelper::Settings.GetFont());
 		ButtonAbout.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, SettingsHelper::Settings.GetFont());
 		ButtonSettings.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, SettingsHelper::Settings.GetFont());
 		ButtonViewOutput.SetFont(DEFAULT_BUTTON_FONTSIZE, 0, SettingsHelper::Settings.GetFont());
@@ -553,6 +590,7 @@ namespace WindowMain
 		ButtonChooseRawLyrics.RegisterMessage(ButtonChooseRawLyrics_Click);
 		ButtonOutputPath.RegisterMessage(ButtonOutputPath_Click);
 		ButtonPlayPause.RegisterMessage(ButtonPlayPause_Click);
+		ComboBoxPlaybackSpeed.RegisterSelMessage(ComboBoxPlaybackSpeed_Selected);
 		ButtonAbout.RegisterMessage(ButtonAbout_Click);
 		ButtonSettings.RegisterMessage(ButtonSettings_Click);
 		ButtonViewOutput.RegisterMessage(ButtonViewOutput_Click);
@@ -624,6 +662,7 @@ namespace WindowMain
 		left = w - MARGIN_HORIZONTAL - BUTTON_WIDTH;
 		top = MARGIN_VERTICAL + CONTROL_PADDING_VERTICAL * 3 + 25;
 		ButtonPlayPause.Move(left, BUTTON_HEIGHT_OFFSET + top);
+		ComboBoxPlaybackSpeed.Move(left, BUTTON_HEIGHT_OFFSET + top + CONTROL_PADDING_VERTICAL);
 
 #pragma endregion
 

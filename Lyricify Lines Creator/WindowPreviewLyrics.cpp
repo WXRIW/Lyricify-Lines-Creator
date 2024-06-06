@@ -226,6 +226,7 @@ namespace WindowPreviewLyrics
 		}
 		else
 		{
+			MusicPlayer::SetPlaybackSpeed(); // 重置播放速度到 1.0x
 			MusicPlayer::Play();
 			ButtonPlayPause->SetText(L"暂停");
 

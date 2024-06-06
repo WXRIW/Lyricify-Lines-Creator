@@ -10,6 +10,7 @@
 #pragma once
 
 #include <functional>
+#include <iostream>
 #include "CommonDefine.h"
 #include "LyricsHelper.h"
 #include "FileHelper.h"
