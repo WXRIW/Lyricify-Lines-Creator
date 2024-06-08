@@ -11,17 +11,25 @@
 
 void SettingsHelper::LoadSettings()
 {
-    std::wstring fullPath = GetSettingsFilePath();
-    std::ifstream file(fullPath);
-    if (file.is_open())
+    try
     {
-        nlohmann::json j;
-        file >> j;
-        Settings = j.get<MainSettings>();
+        std::wstring fullPath = GetSettingsFilePath();
+        std::ifstream file(fullPath);
+        if (file.is_open())
+        {
+            nlohmann::json j;
+            file >> j;
+            Settings = j.get<MainSettings>();
+        }
+        else
+        {
+            // 如果文件打开失败，使用默认设置
+            Settings = MainSettings();
+        }
     }
-    else
+    catch (...)
     {
-        // 如果文件打开失败，使用默认设置
+        // 解析过程中出错，使用默认设置
         Settings = MainSettings();
     }
 }

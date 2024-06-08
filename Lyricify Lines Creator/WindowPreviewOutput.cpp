@@ -87,7 +87,7 @@ namespace WindowPreviewOutput
 			int top = (rect.top + rect.bottom - WINDOW_HEIGHT * DPI_Scale) / 2;
 			wnd.PreSetPos(left, top);
 		}
-		wnd.InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, GetStringFromKey("String.Window.PreviewOutput.OutputPreview").c_str(), nullptr, hParent);
+		wnd.InitWindow(WINDOW_WIDTH * DPI_Scale, WINDOW_HEIGHT * DPI_Scale, EW_NORMAL, GetStringFromKey("String.Window.PreviewOutput").c_str(), nullptr, hParent);
 		WindowHelper::EnableMinimizeButton(wnd.GetHandle(), false);
 
 		wnd.BindCanvas(&canvas);
