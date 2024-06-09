@@ -48,7 +48,7 @@ public:
     /// <summary>
     /// 按键延迟毫秒数
     /// </summary>
-    int KeyboardLatencyMs = 100;
+    int KeyboardLatencyMs = 50;
 
     /// <summary>
     /// 预览歌词窗体打开时最大化

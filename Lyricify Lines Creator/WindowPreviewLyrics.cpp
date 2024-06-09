@@ -59,7 +59,7 @@ namespace WindowPreviewLyrics
 		// 找到当前播放歌词的索引index
 		for (int i = LyricsList.size() - 1; i >= 0; i--)
 		{
-			if (currentTime >= LyricsList[i].StartTime - SCROLL_DURATION)
+			if (currentTime + SettingsHelper::Settings.DeviceLatencyMs >= LyricsList[i].StartTime)
 			{
 				index = i;
 				break;
