@@ -21,6 +21,7 @@ namespace WindowAbout
 		WA_URL_INDEX_EASYX,
 		WA_URL_INDEX_HIEASYX,
 		WA_URL_INDEX_IRRKLANG,
+		WA_URL_INDEX_NLOHMANN_JSON,
 	};
 
 	constexpr auto URL_COLOR = RGB(68, 147, 248);
@@ -70,10 +71,10 @@ namespace WindowAbout
 		setfont(16 + (DPI_Scale - 1) * 1, 0, L"Consolas", 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText((std::wstring(L"Version ") + std::wstring(VERSION)).c_str(), { 0, 73, w, 93 });
 
-		top += 110;
+		top += 105;
 		CanvasMain->SetTextColor(BLACK);
 		setfont(SUBTITLE_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain->CenterText(GetStringFromKey("String.Window.About.Developer").c_str(), {0, top, w, top + 20}); top += 26;
+		CanvasMain->CenterText(GetStringFromKey("String.Window.About.Developer").c_str(), {0, top, w, top + 20}); top += 22;
 		CanvasMain->SetTextColor(GRAY);
 
 		setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
@@ -93,10 +94,10 @@ namespace WindowAbout
 		CanvasMain->CenterText(L"Junze Zhang", { 0, top, w, top + 20 }); top += 20;
 		if (highlight == WA_URL_INDEX_CODEV2) { CanvasMain->SetTextColor(GRAY); setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false); }
 
-		top += 20;
+		top += 15;
 		CanvasMain->SetTextColor(BLACK);
 		setfont(18, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain->CenterText(GetStringFromKey("String.Window.About.Repository").c_str(), { 0, top, w, top + 20 }); top += 26;
+		CanvasMain->CenterText(GetStringFromKey("String.Window.About.Repository").c_str(), { 0, top, w, top + 20 }); top += 22;
 		CanvasMain->SetTextColor(GRAY);
 
 		setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
@@ -108,10 +109,10 @@ namespace WindowAbout
 		setfont(URL_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
 		CanvasMain->CenterText(GetStringFromKey("String.Window.About.Repository.OpenSource").c_str(), { 0, top, w, top + 20 }); top += 20;
 
-		top += 20;
+		top += 15;
 		CanvasMain->SetTextColor(BLACK);
 		setfont(18, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain->CenterText(GetStringFromKey("String.Window.About.ThirdParty").c_str(), { 0, top, w, top + 20 }); top += 26;
+		CanvasMain->CenterText(GetStringFromKey("String.Window.About.ThirdParty").c_str(), { 0, top, w, top + 20 }); top += 22;
 		CanvasMain->SetTextColor(GRAY);
 
 		setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
@@ -143,6 +144,16 @@ namespace WindowAbout
 		if (highlight == WA_URL_INDEX_IRRKLANG) CanvasMain->SetTextColor(URL_COLOR);
 		CanvasMain->CenterText(url.c_str(), { 0, top, w, top + 15 }); top += 22;
 		if (highlight == WA_URL_INDEX_IRRKLANG) CanvasMain->SetTextColor(GRAY);
+
+		setfont(ITEM_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, false, false);
+		CanvasMain->CenterText((L"nlohmann.json (" + GetStringFromKey("String.Window.About.License.MIT") + L")").c_str(), { 0, top, w, top + 20 }); top += 20;
+		setfont(URL_FONTSIZE, 0, SettingsHelper::Settings.GetFont(), 0, 0, FW_DONTCARE, false, true, false);
+		url = L"https://github.com/nlohmann/json/blob/develop/LICENSE.MIT";
+		size = FontHelper::CalculateTextSize(url.c_str(), SettingsHelper::Settings.GetFont(), URL_FONTSIZE, DPI_Scale, FW_DONTCARE, false, false, false);
+		if (init) AddUrl({ (w - size.cx) / 2, top, (w + size.cx) / 2, top + 15 }, url);
+		if (highlight == WA_URL_INDEX_NLOHMANN_JSON) CanvasMain->SetTextColor(URL_COLOR);
+		CanvasMain->CenterText(url.c_str(), { 0, top, w, top + 15 }); top += 22;
+		if (highlight == WA_URL_INDEX_NLOHMANN_JSON) CanvasMain->SetTextColor(GRAY);
 
 		Window->Redraw();
 	}
@@ -199,6 +210,12 @@ namespace WindowAbout
 				DrawCanvas(false, WA_URL_INDEX_IRRKLANG);
 				return TRUE;
 			}
+			else if (PtInRect(&UrlAreas[7], pt))
+			{
+				SetCursor(LoadCursor(NULL, IDC_HAND));
+				DrawCanvas(false, WA_URL_INDEX_NLOHMANN_JSON);
+				return TRUE;
+			}
 			else
 			{
 				SetCursor(LoadCursor(NULL, IDC_ARROW));
@@ -230,7 +247,7 @@ namespace WindowAbout
 				ScreenToClient(hWnd, &pt);
 
 				int index = -1;
-				while (++index < 7)
+				while (++index < 8)
 				{
 					if (PtInRect(&UrlAreas[index], pt))
 					{
@@ -255,7 +272,7 @@ namespace WindowAbout
 	{
 		isOpened = true;
 		const int WIDTH = 360;
-		const int HEIGHT = 465;
+		const int HEIGHT = 480;
 		DPI_Scale = scale;
 
 		hiex::Window wnd;
