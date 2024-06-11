@@ -21,6 +21,6 @@ Lyricify Lines 逐行歌词打轴工具。是 Lyricify Lines 歌词的制作工�
 我们鼓励您通过 Pull Request 为本项目添加新功能、进行问题修复，或是添加更多本地化语言支持。  
 
 ## 感谢
-感谢第三方库 [HiEasyX](https://github.com/zouhuidong/HiEasyX)、[EasyX](https://easyx.cn)、[irrKlang](https://www.ambiera.com/irrklang)。  
+感谢第三方库 [HiEasyX](https://github.com/zouhuidong/HiEasyX)、[EasyX](https://easyx.cn)、[irrKlang](https://www.ambiera.com/irrklang)、[nlohmann.json](https://github.com/nlohmann/json)。  
 感谢 [BesLyric](https://github.com/BesLyric-for-X/BesLyric) 作为本项目的部分灵感来源。  
 特别感谢 [OpenAI](https://openai.com/) 对本项目的技术支持。  
