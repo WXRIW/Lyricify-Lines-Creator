@@ -44,6 +44,19 @@ namespace WindowAbout
 		Urls.push_back(url);
 	}
 
+	static std::wstring GetArchitecture()
+	{
+#if defined(_M_X64) || defined(__x86_64__) || defined(_M_AMD64)
+		return L"x64";
+#elif defined(_M_IX86) || defined(__i386__)
+		return L"x86";
+#elif defined(_M_ARM64) || defined(__aarch64__)
+		return L"Arm64";
+#else
+		return L"Unknown";
+#endif
+	}
+
 	static void DrawCanvas(bool init = true, WA_URL_INDEX highlight = WA_URL_INDEX_NONE)
 	{
 		// 防止反复绘制相同内容造成性能损失
@@ -69,7 +82,7 @@ namespace WindowAbout
 		CanvasMain->CenterText(GetStringFromKey("String.Window.About.FullName").c_str(), {0, 47, w, 67});
 		CanvasMain->SetTextColor(GRAY);
 		setfont(16 + (DPI_Scale - 1) * 1, 0, L"Consolas", 0, 0, FW_DONTCARE, false, false, false);
-		CanvasMain->CenterText((std::wstring(L"Version ") + std::wstring(VERSION)).c_str(), { 0, 73, w, 93 });
+		CanvasMain->CenterText((L"Version " + std::wstring(VERSION) + L" (" + GetArchitecture() + L")").c_str(), {0, 73, w, 93});
 
 		top += 105;
 		CanvasMain->SetTextColor(BLACK);
