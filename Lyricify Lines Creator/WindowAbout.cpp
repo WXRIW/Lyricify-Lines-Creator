@@ -46,7 +46,9 @@ namespace WindowAbout
 
 	static std::wstring GetArchitecture()
 	{
-#if defined(_M_X64) || defined(__x86_64__) || defined(_M_AMD64)
+#if defined(_M_ARM64EC)
+		return L"ARM64EC";
+#elif defined(_M_X64) || defined(__x86_64__) || defined(_M_AMD64)
 		return L"x64";
 #elif defined(_M_IX86) || defined(__i386__)
 		return L"x86";

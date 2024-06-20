@@ -414,6 +414,9 @@
     <Image Include="icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="irrKlang\dll\win32-visualStudio\ikpFlac.dll">

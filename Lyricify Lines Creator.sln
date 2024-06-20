@@ -7,16 +7,22 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lyricify Lines Creator", "L
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM64EC = Debug|ARM64EC
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|ARM64EC = Release|ARM64EC
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEBF8B21-A430-4289-A47E-3A0B84340A59}.Debug|ARM64EC.ActiveCfg = Debug|ARM64EC
+		{AEBF8B21-A430-4289-A47E-3A0B84340A59}.Debug|ARM64EC.Build.0 = Debug|ARM64EC
 		{AEBF8B21-A430-4289-A47E-3A0B84340A59}.Debug|x64.ActiveCfg = Debug|x64
 		{AEBF8B21-A430-4289-A47E-3A0B84340A59}.Debug|x64.Build.0 = Debug|x64
 		{AEBF8B21-A430-4289-A47E-3A0B84340A59}.Debug|x86.ActiveCfg = Debug|Win32
 		{AEBF8B21-A430-4289-A47E-3A0B84340A59}.Debug|x86.Build.0 = Debug|Win32
+		{AEBF8B21-A430-4289-A47E-3A0B84340A59}.Release|ARM64EC.ActiveCfg = Release|ARM64EC
+		{AEBF8B21-A430-4289-A47E-3A0B84340A59}.Release|ARM64EC.Build.0 = Release|ARM64EC
 		{AEBF8B21-A430-4289-A47E-3A0B84340A59}.Release|x64.ActiveCfg = Release|x64
 		{AEBF8B21-A430-4289-A47E-3A0B84340A59}.Release|x64.Build.0 = Release|x64
 		{AEBF8B21-A430-4289-A47E-3A0B84340A59}.Release|x86.ActiveCfg = Release|Win32
